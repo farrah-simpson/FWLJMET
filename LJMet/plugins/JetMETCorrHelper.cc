@@ -28,7 +28,7 @@ void JetMETCorrHelper::Initialize(const edm::ParameterSet& iConfig){
     std::string JER_txtfile              = iConfig.getParameter<edm::FileInPath>("JER_txtfile").fullPath();
     std::string JERAK8_txtfile           = iConfig.getParameter<edm::FileInPath>("JERAK8_txtfile").fullPath();
     int year = 2018;
-    if(JEC_txtfile.find("Fall17") != std::string::npos) year = 2017;
+    if(JEC_txtfile.find("UL17") != std::string::npos) year = 2017;
     else if(JEC_txtfile.find("Summer16") != std::string::npos) year = 2016;
 
     if(debug) std::cout << mLegend << "Using JEC files JEC_txtfile    : " << JEC_txtfile << std::endl;
@@ -95,7 +95,8 @@ void JetMETCorrHelper::Initialize(const edm::ParameterSet& iConfig){
 	searchStr = "B_V";
 	mEraReplaceStr["B"] = "B_V";
 	mEraReplaceStr["C"] = "C_V";
-	mEraReplaceStr["DE"] = "DE_V";
+	mEraReplaceStr["D"] = "D_V";
+	mEraReplaceStr["E"] = "E_V";
 	mEraReplaceStr["F"] = "F_V";
       }else{ // 2016
 	searchStr = "BCD_V";
@@ -204,10 +205,15 @@ void JetMETCorrHelper::SetFacJetCorr(edm::EventBase const & event)
   	JetCorrector = mEraFacJetCorr["C"];
   	JetCorrectorAK8 = mEraFacJetCorrAK8["C"];
   }
+  else if(iRun <=303434){
+        if(debug) std::cout << "\t\t\t using 2017 JEC for era D "<< std::endl;
+        JetCorrector = mEraFacJetCorr["D"];
+        JetCorrectorAK8 = mEraFacJetCorrAK8["D"];
+  }
   else if(iRun <= 304827){
-  	if(debug) std::cout << "\t\t\t using 2017 JEC for era DE "<< std::endl;
-  	JetCorrector = mEraFacJetCorr["DE"];
-  	JetCorrectorAK8 = mEraFacJetCorrAK8["DE"];
+  	if(debug) std::cout << "\t\t\t using 2017 JEC for era E "<< std::endl;
+  	JetCorrector = mEraFacJetCorr["E"];
+  	JetCorrectorAK8 = mEraFacJetCorrAK8["E"];
   	}
   else if(iRun <= 306463){
         if(debug) std::cout << "\t\t\t using 2017 JEC for era F "<< std::endl;

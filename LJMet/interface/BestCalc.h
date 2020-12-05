@@ -27,7 +27,7 @@ Requires MiniAOD inputs to access proper set of information
 #include "FWLJMET/LJMet/interface/LjmetEventContent.h"
 #include "FWLJMET/LJMet/interface/LjmetFactory.h"
 #include "FWCore/ParameterSet/interface/ProcessDesc.h"
-#include "FWCore/PythonParameterSet/interface/PythonProcessDesc.h"
+#include "FWCore/PythonParameterSet/interface/PyBind11ProcessDesc.h"
 //#include "FWLJMET/LJMet/interface/VVString.h"
 
 #include <fstream>

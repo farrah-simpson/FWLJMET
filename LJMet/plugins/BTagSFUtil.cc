@@ -61,7 +61,7 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
     MistagUncertDown   = iConfig.getParameter<bool>("MistagUncertDown");
 
     if(DeepJetfile.find("2016Legacy") != std::string::npos) year = 2016;
-    else if(DeepJetfile.find("94X") != std::string::npos) year = 2017;
+    else if(DeepJetfile.find("UL17") != std::string::npos) year = 2017;
     else year = 2018;
 
     std::cout << mLegend << "b-tag check: DeepJet "<<btagOP<<" > "<<bdisc_min<<std::endl;
@@ -88,11 +88,11 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
     // Set Subjet WPs manually since we need DeepCSV instead of DeepJet
     if(btagOP == "LOOSE"){	      
       if (year == 2016) bdisc_sj = 0.2217;
-      else if(year == 2017) bdisc_sj = 0.1522;
+      else if(year == 2017) bdisc_sj = 0.1355;
       else bdisc_sj = 0.1241;
     }else{ // medium, only loose & medium for subjets
       if (year == 2016) bdisc_sj = 0.6321;
-      else if(year == 2017) bdisc_sj = 0.4941;
+      else if(year == 2017) bdisc_sj = 0.4506;
       else bdisc_sj = 0.4184;
     }
 
