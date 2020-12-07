@@ -9,6 +9,13 @@
 <use name="CondFormats/JetMETObjects"/>
 <use name="CondFormats/BTauObjects"/>
 <use name="CondTools/BTau"/>
+<use name="py2-pybind11"/>
+<use name="python"/>
+<export>
+  <use name="py2-pybind11"/>
+  <lib name="1"/>
+</export>
+
 <use name="SimDataFormats/GeneratorProducts"/>
 <use name="SimGeneral/HepPDTRecord"/>
 <use name="lhapdf"/>

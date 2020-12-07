@@ -15,12 +15,13 @@ options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.va
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
-options.isMC = ISMC
-options.isTTbar = ISTTBAR
-options.isVLQsignal = ISVLQSIGNAL
-options.doGenHT = DOGENHT
+#options.isMC = ISMC
+#options.isTTbar = ISTTBAR
+#options.isVLQsignal = ISVLQSIGNAL
+#options.doGenHT = DOGENHT
 options.inputFiles = [
-    'root://cmsxrootd.fnal.gov//store/mc/RunIIFall17MiniAODv2/TprimeTprime_M-1400_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/50000/F82DC089-5591-E811-9210-6C3BE5B58198.root'
+    #'root://cmsxrootd.fnal.gov//store/mc/RunIISummer19UL17MiniAOD/ChargedHiggs_HplusTB_HplusToTB_M-1000_TuneCP5_13TeV_amcatnlo_pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v1/10000/06F45F57-23AA-0F45-B5B0-CCF5B2B8F9F7.root'
+    'root://cmsxrootd.fnal.gov//store/data/Run2017D/SingleMuon/MINIAOD/09Aug2019_UL2017-v1/130000/008170F6-0BB6-7749-B870-BAB6DAFBDBBC.root'
     ]
 options.maxEvents = 100
 options.parseArguments()
@@ -171,8 +172,8 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17', '')
-if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v11')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v8', '')
+if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v28')
 print 'Using global tag', process.GlobalTag.globaltag
 
 
@@ -183,21 +184,21 @@ print 'Using global tag', process.GlobalTag.globaltag
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process,
                        runVID=True,
-                       era='2017-Nov17ReReco')
+                       era='2017-UL')
 
 
 ################################################
 ## Produce modified MET with the ECAL noise fix
 ################################################
-from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-
-runMetCorAndUncFromMiniAOD(
-    process,
-    isData = not isMC,
-    fixEE2017 = True,
-    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
-    postfix = "ModifiedMET"
-    )
+#from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+#
+#runMetCorAndUncFromMiniAOD(
+#    process,
+#    isData = not isMC,
+#    fixEE2017 = True,
+#    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
+#    postfix = "ModifiedMET"
+#    )
 
 ################################
 ## Rerun the ecalBadCalibFilter
@@ -235,15 +236,15 @@ process.ecalBadCalibReducedMINIAODFilter = cms.EDFilter(
 ################################
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 #from RecoBTag.MXNet.pfDeepBoostedJet_cff import *
-from RecoBTag.MXNet.pfDeepBoostedJet_cff import pfDeepBoostedJetTags, pfMassDecorrelatedDeepBoostedJetTags
-from RecoBTag.MXNet.Parameters.V02.pfDeepBoostedJetPreprocessParams_cfi import pfDeepBoostedJetPreprocessParams as pfDeepBoostedJetPreprocessParamsV02
-from RecoBTag.MXNet.Parameters.V02.pfMassDecorrelatedDeepBoostedJetPreprocessParams_cfi import pfMassDecorrelatedDeepBoostedJetPreprocessParams as pfMassDecorrelatedDeepBoostedJetPreprocessParamsV02
+from RecoBTag.ONNXRuntime.pfDeepBoostedJet_cff import pfDeepBoostedJetTags, pfMassDecorrelatedDeepBoostedJetTags
+from RecoBTag.ONNXRuntime.Parameters.DeepBoostedJet.V02.pfDeepBoostedJetPreprocessParams_cfi import pfDeepBoostedJetPreprocessParams as pfDeepBoostedJetPreprocessParamsV02
+from RecoBTag.ONNXRuntime.Parameters.DeepBoostedJet.V02.pfMassDecorrelatedDeepBoostedJetPreprocessParams_cfi import pfMassDecorrelatedDeepBoostedJetPreprocessParams as pfMassDecorrelatedDeepBoostedJetPreprocessParamsV02
 pfDeepBoostedJetTags.preprocessParams = pfDeepBoostedJetPreprocessParamsV02
-pfDeepBoostedJetTags.model_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/full/resnet-symbol.json'
-pfDeepBoostedJetTags.param_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/full/resnet-0000.params'
+#pfDeepBoostedJetTags.model_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/full/resnet-symbol.json'
+#pfDeepBoostedJetTags.param_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/full/resnet-0000.params'
 pfMassDecorrelatedDeepBoostedJetTags.preprocessParams = pfMassDecorrelatedDeepBoostedJetPreprocessParamsV02
-pfMassDecorrelatedDeepBoostedJetTags.model_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/decorrelated/resnet-symbol.json'
-pfMassDecorrelatedDeepBoostedJetTags.param_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/decorrelated/resnet-0000.params'
+#pfMassDecorrelatedDeepBoostedJetTags.model_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/decorrelated/resnet-symbol.json'
+#pfMassDecorrelatedDeepBoostedJetTags.param_path = 'RecoBTag/Combined/data/DeepBoostedJet/V02/decorrelated/resnet-0000.params'
 
 updateJetCollection(
    process,
@@ -319,7 +320,7 @@ updateJetCollection(
 
 )
 process.load('RecoJets.JetProducers.QGTagger_cfi')
-# patAlgosToolsTask.add(process.QGTagger)
+patAlgosToolsTask.add(process.QGTagger)
 process.QGTagger.srcJets = cms.InputTag('slimmedJets')
 process.updatedPatJets.userData.userFloats.src += ['QGTagger:ptD','QGTagger:axis1','QGTagger:axis2']
 process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
@@ -369,24 +370,24 @@ JECdown                  = False
 JERup                    = False
 JERdown                  = False
 doAllJetSyst             = False #this determines whether to save JEC/JER up/down in one job. Default is currently false. Mar 19,2019.
-JEC_txtfile              = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_Uncertainty_AK4PFchs.txt'
-JERSF_txtfile            = 'FWLJMET/LJMet/data/Fall17V3/Fall17_V3_MC_SF_AK4PFchs.txt'
-JER_txtfile              = 'FWLJMET/LJMet/data/Fall17V3/Fall17_V3_MC_PtResolution_AK4PFchs.txt'
+JEC_txtfile              = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_Uncertainty_AK4PFchs.txt'
+JERSF_txtfile            = 'FWLJMET/LJMet/data/UL17_JRV2/Summer19UL17_JRV2_MC_SF_AK4PFchs.txt'
+JER_txtfile              = 'FWLJMET/LJMet/data/UL17_JRV2/Summer19UL17_JRV2_MC_PtResolution_AK4PFchs.txt'
 JERAK8_txtfile           = 'FWLJMET/LJMet/data/Fall17V3/Fall17_V3_MC_PtResolution_AK8PFPuppi.txt'
-MCL1JetPar               = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L1FastJet_AK4PFchs.txt'
-MCL2JetPar               = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L2Relative_AK4PFchs.txt'
-MCL3JetPar               = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L3Absolute_AK4PFchs.txt'
-MCL1JetParAK8            = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L1FastJet_AK8PFPuppi.txt'
-MCL2JetParAK8            = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L2Relative_AK8PFPuppi.txt'
-MCL3JetParAK8            = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017_V32_MC_L3Absolute_AK8PFPuppi.txt'
-DataL1JetPar             = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L1FastJet_AK4PFchs.txt'
-DataL2JetPar             = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L2Relative_AK4PFchs.txt'
-DataL3JetPar             = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L3Absolute_AK4PFchs.txt'
-DataResJetPar            = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L2L3Residual_AK4PFchs.txt'
-DataL1JetParAK8          = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L1FastJet_AK8PFPuppi.txt'
-DataL2JetParAK8          = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L2Relative_AK8PFPuppi.txt'
-DataL3JetParAK8          = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L3Absolute_AK8PFPuppi.txt'
-DataResJetParAK8         = 'FWLJMET/LJMet/data/Fall17V32/Fall17_17Nov2017B_V32_DATA_L2L3Residual_AK8PFPuppi.txt'
+MCL1JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L1FastJet_AK4PFchs.txt'
+MCL2JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L2Relative_AK4PFchs.txt'
+MCL3JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L3Absolute_AK4PFchs.txt'
+MCL1JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L1FastJet_AK8PFPuppi.txt'
+MCL2JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L2Relative_AK8PFPuppi.txt'
+MCL3JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L3Absolute_AK8PFPuppi.txt'
+DataL1JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK4PFchs.txt'
+DataL2JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK4PFchs.txt'
+DataL3JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK4PFchs.txt'
+DataResJetPar            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK4PFchs.txt'
+DataL1JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK8PFPuppi.txt'
+DataL2JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK8PFPuppi.txt'
+DataL3JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK8PFPuppi.txt'
+DataResJetParAK8         = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -566,10 +567,10 @@ MultiLepSelector_cfg = cms.PSet(
             #Btag
             btag_cuts                = cms.bool(False), #not implemented
             btagOP                   = cms.string('MEDIUM'),
-            bdisc_min                = cms.double(0.3033), # THIS HAS TO MATCH btagOP !
+            bdisc_min                = cms.double(0.3040), # THIS HAS TO MATCH btagOP !
             applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepFlavour_94XSF_WP_V3_B_F.csv'),
-            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv'),
+            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL17SF.csv'),
+            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_106X_UL17_SF.csv'),
             BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -655,10 +656,10 @@ MultiLepCalc_cfg = cms.PSet(
 
             #Btagging - Btag info needs to be passed here again if Calc uses Btagging.
             btagOP                   = cms.string('MEDIUM'),
-            bdisc_min                = cms.double(0.3033), # THIS HAS TO MATCH btagOP !
+            bdisc_min                = cms.double(0.3040), # THIS HAS TO MATCH btagOP !
             applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepFlavour_94XSF_WP_V3_B_F.csv'),
-            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv'),
+            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL17SF.csv'),
+            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_106X_UL17_SF.csv'),
             BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -711,10 +712,10 @@ JetSubCalc_cfg = cms.PSet(
 
             #Btagging - Btag info needs to be passed here again if Calc uses Btagging.
             btagOP                   = cms.string('MEDIUM'),
-            bdisc_min                = cms.double(0.3033), # THIS HAS TO MATCH btagOP !
+            bdisc_min                = cms.double(0.3040), # THIS HAS TO MATCH btagOP !
             applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepFlavour_94XSF_WP_V3_B_F.csv'),
-            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv'),
+            DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL17SF.csv'),
+            DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_106X_UL17_SF.csv'),
             BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
             MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -1017,7 +1018,7 @@ if (isTTbar):
     process.p = cms.Path(
                          process.mcweightanalyzer *
                          process.filter_any_explicit *
-                         process.fullPatMetSequenceModifiedMET *
+                         #process.fullPatMetSequenceModifiedMET *
                          process.prefiringweight *
                          process.egammaPostRecoSeq *
                          process.updatedJetsAK8PuppiSoftDropPacked *
@@ -1038,7 +1039,7 @@ elif(isMC):
     process.p = cms.Path(
        process.mcweightanalyzer *
        process.filter_any_explicit *
-       process.fullPatMetSequenceModifiedMET *
+       #process.fullPatMetSequenceModifiedMET *
        process.prefiringweight *
        process.egammaPostRecoSeq *
        process.updatedJetsAK8PuppiSoftDropPacked *
@@ -1056,7 +1057,7 @@ elif(isMC):
 else: #Data
     process.p = cms.Path(
        process.filter_any_explicit *
-       process.fullPatMetSequenceModifiedMET *
+       #process.fullPatMetSequenceModifiedMET *
        #process.prefiringweight *
        process.egammaPostRecoSeq *
        process.updatedJetsAK8PuppiSoftDropPacked *
