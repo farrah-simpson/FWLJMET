@@ -8,25 +8,27 @@ install:
 	
 	#from SLC7 (recommended)
 	setenv SCRAM_ARCH slc7_amd64_gcc700
-	cmsrel CMSSW_10_2_16_UL
-	cd CMSSW_10_2_16_UL/src/
+	cmsrel CMSSW_10_6_19
+	cd CMSSW_10_6_19/src/
 	
-	#from SLC6
-	setenv SCRAM_ARCH slc6_amd64_gcc700
-	cmsrel CMSSW_10_2_16
-	cd CMSSW_10_2_16/src/
 	
 	cmsenv
 
-	## Modified MET
-	git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X
-
+	
 	## Redo MET filter
 	git cms-addpkg RecoMET/METFilters
 
 	## HOT tagger part1
-	git cms-merge-topic -u pastika:AddAxis1_1026
-	git clone git@github.com:susy2015/TopTagger
+	git clone https://github.com/susy2015/TopTagger.git
+	#### For top tagger, the current version at github is not compatible with CMSSW_10_6_19, the following modifications need to be made:
+	###  In TopTagger/DataFormats/BuildFile.xml, add:
+	## <use name="clhep"/>
+	## <use name="root"/>
+	###
+	
+	#### The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for CMSSW_10_6_19, please do the following steps by hand:
+	git cms-addpkg RecoJets/JetProducers
+	### Then in RecoJets/JetProducers/plugins/QGTagger.cc, replace it with the one at https://github.com/jingyuluo/QG_SA/blob/master/QGTagger.cc
 
 	## EGamma post-reco for MVA values (NOTE: won't work in 10_2_9)
 	git cms-merge-topic cms-egamma:EgammaPostRecoTools
@@ -38,9 +40,14 @@ install:
 	cp -r ~jmanagan/nobackup/CMSSW_9_4_12/src/lwtnn .   ## use scp after a Fermilab kinit to copy onto non-LPC clusters
 
 	## Check out FWLJMET
-	git clone -b 10_2_X_fullRun2data git@github.com:cms-ljmet/FWLJMET.git
+	git clone -b 10_6_19_UL17 https://github.com/cms-ljmet/FWLJMET.git
 	cd FWLJMET
-	git checkout -b v4.2 v4.2
+	
+	## Update the prefiring map for UL17 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe, more specifically:
+	git-cms-addpkg PhysicsTools/PatUtils 
+	cd PhysicsTools/PatUtils/data/
+	wget --no-check-certificate https://github.com/cms-data/PhysicsTools-PatUtils/raw/master/L1PrefiringMaps.root 
+
 
 	## JetSubCalc currently uses uses PUPPI mass corrections:
 	cd ${CMSSW_BASE}/src/FWLJMET/LJMet/data/
