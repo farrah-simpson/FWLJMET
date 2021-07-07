@@ -8,25 +8,32 @@ install:
 	
 	#from SLC7 (recommended)
 	setenv SCRAM_ARCH slc7_amd64_gcc700
-	cmsrel CMSSW_10_2_16_UL
-	cd CMSSW_10_2_16_UL/src/
+	cmsrel CMSSW_10_6_19
+	cd CMSSW_10_6_19/src/
 	
-	#from SLC6
-	setenv SCRAM_ARCH slc6_amd64_gcc700
-	cmsrel CMSSW_10_2_16
-	cd CMSSW_10_2_16/src/
 	
 	cmsenv
 
-	## Modified MET
-	git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X
-
+	
 	## Redo MET filter
 	git cms-addpkg RecoMET/METFilters
 
 	## HOT tagger part1
-	git cms-merge-topic -u pastika:AddAxis1_1026
-	git clone git@github.com:susy2015/TopTagger
+	git clone https://github.com/susy2015/TopTagger.git
+	#### For top tagger, the current version at github is not compatible with CMSSW_10_6_19, the following modifications need to be made:
+	###  In TopTagger/DataFormats/BuildFile.xml, add:
+	## <use name="clhep"/>
+	## <use name="root"/>
+	###
+	
+	#### The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for CMSSW_10_6_19, please do the following steps by hand:
+	git cms-addpkg RecoJets/JetProducers
+	### Then in RecoJets/JetProducers/plugins/QGTagger.cc, add the axis1 info by hand. More specifically:
+	## In L40 (https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/RecoJets/JetProducers/plugins/QGTagger.cc#L40), add:
+	#  produces<edm::ValueMap<float>>("axis1");
+	## In L55 (https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/RecoJets/JetProducers/plugins/QGTagger.cc#L55), add:
+	#  std::vector<float>* axis1Product              = new std::vector<float>;
+	## In 
 
 	## EGamma post-reco for MVA values (NOTE: won't work in 10_2_9)
 	git cms-merge-topic cms-egamma:EgammaPostRecoTools
