@@ -70,6 +70,12 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     // NOTE: Training used is for ak5PFJetsCHS in CMSSW 5.3.X and Run 1 pileup
     std::vector<double> theJetPileupJetId;
 
+    //pileup Jet categories based pn Pileup id
+    std::vector<bool>  theJetPileupJetLoose;
+    std::vector<bool>  theJetPileupJetMedium; 
+    std::vector<bool>  theJetPileupJetTight;
+  
+
     //Identity
     std::vector<int> theJetIndex;
     std::vector<int> theJetnDaughters;
@@ -105,6 +111,36 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
       thePileupJetId = -std::numeric_limits<double>::max();
       thePileupJetId = (double)ijet->userFloat("pileupJetId:fullDiscriminant");
       theJetPileupJetId.push_back(thePileupJetId);
+   
+      int thePUID = ijet->userInt("pileupJetId:fullId");
+      if(thePUID==0){
+          theJetPileupJetLoose.push_back(false);
+          theJetPileupJetMedium.push_back(false);
+          theJetPileupJetTight.push_back(false);
+      }
+      else if(thePUID==4){
+          theJetPileupJetLoose.push_back(true);
+          theJetPileupJetMedium.push_back(false);
+          theJetPileupJetTight.push_back(false);
+      }
+     
+      else if(thePUID==6){
+          theJetPileupJetLoose.push_back(true);
+          theJetPileupJetMedium.push_back(true);
+          theJetPileupJetTight.push_back(false);
+      }
+
+      else if(thePUID==7){
+          theJetPileupJetLoose.push_back(true);
+          theJetPileupJetMedium.push_back(true);
+          theJetPileupJetTight.push_back(true);
+      }
+    
+      else{
+          theJetPileupJetLoose.push_back(false);
+          theJetPileupJetMedium.push_back(false);
+          theJetPileupJetTight.push_back(false);
+      }
 
       theJetPt     . push_back(ijet->pt());
       theJetEta    . push_back(ijet->eta());
@@ -167,6 +203,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     SetValue("theJetSubLeadPt", second_leading_pt);
 
     SetValue("theJetPileupJetId", theJetPileupJetId);
+    SetValue("theJetPileupJetLoose", theJetPileupJetLoose);
+    SetValue("theJetPileupJetMedium", theJetPileupJetMedium);
+    SetValue("theJetPileupJetTight", theJetPileupJetTight);
     SetValue("theJetnDaughters", theJetnDaughters);
 
     // Load in AK8 jets (no selection performed on these)
