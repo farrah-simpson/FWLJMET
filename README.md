@@ -28,12 +28,7 @@ install:
 	
 	#### The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for CMSSW_10_6_19, please do the following steps by hand:
 	git cms-addpkg RecoJets/JetProducers
-	### Then in RecoJets/JetProducers/plugins/QGTagger.cc, add the axis1 info by hand. More specifically:
-	## In L40 (https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/RecoJets/JetProducers/plugins/QGTagger.cc#L40), add:
-	#  produces<edm::ValueMap<float>>("axis1");
-	## In L55 (https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/RecoJets/JetProducers/plugins/QGTagger.cc#L55), add:
-	#  std::vector<float>* axis1Product              = new std::vector<float>;
-	## In 
+	### Then in RecoJets/JetProducers/plugins/QGTagger.cc, replace it with the one at https://github.com/jingyuluo/QG_SA/blob/master/QGTagger.cc
 
 	## EGamma post-reco for MVA values (NOTE: won't work in 10_2_9)
 	git cms-merge-topic cms-egamma:EgammaPostRecoTools
@@ -45,9 +40,14 @@ install:
 	cp -r ~jmanagan/nobackup/CMSSW_9_4_12/src/lwtnn .   ## use scp after a Fermilab kinit to copy onto non-LPC clusters
 
 	## Check out FWLJMET
-	git clone -b 10_2_X_fullRun2data git@github.com:cms-ljmet/FWLJMET.git
+	git clone -b 10_6_19_UL17 https://github.com/cms-ljmet/FWLJMET.git
 	cd FWLJMET
-	git checkout -b v4.2 v4.2
+	
+	## Update the prefiring map for UL17 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe, more specifically:
+	git-cms-addpkg PhysicsTools/PatUtils 
+        cd PhysicsTools/PatUtils/data/
+        wget --no-check-certificate https://github.com/cms-data/PhysicsTools-PatUtils/raw/master/L1PrefiringMaps.root 
+
 
 	## JetSubCalc currently uses uses PUPPI mass corrections:
 	cd ${CMSSW_BASE}/src/FWLJMET/LJMet/data/
