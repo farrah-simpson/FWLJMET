@@ -29,6 +29,7 @@ install:
 	#### The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for CMSSW_10_6_19, please do the following steps by hand:
 	git cms-addpkg RecoJets/JetProducers
 	### Then in RecoJets/JetProducers/plugins/QGTagger.cc, replace it with the one at https://github.com/jingyuluo/QG_SA/blob/master/QGTagger.cc
+	### Also in RecoJets/JetProducers/interface/QGTagger.h, "std::tuple<int, float, float> calcVariables" should be replaced with "std::tuple<int, float, float, float> calcVariables"
 
 	## EGamma post-reco for MVA values (NOTE: won't work in 10_2_9)
 	git cms-merge-topic cms-egamma:EgammaPostRecoTools
