@@ -20,8 +20,8 @@ options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.inputFiles = [
-    'root://cmsxrootd.fnal.gov//store/mc/RunIIFall17MiniAODv2/TprimeTprime_M-1400_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/50000/F82DC089-5591-E811-9210-6C3BE5B58198.root'
-    ]
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
+]
 options.maxEvents = 100
 options.parseArguments()
 
@@ -172,7 +172,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mcRun2_asymptotic_v3', '')
-if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v10')
+if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, "106X_dataRun2_v35" )
 print 'Using global tag', process.GlobalTag.globaltag
 
 
@@ -183,7 +183,7 @@ print 'Using global tag', process.GlobalTag.globaltag
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process,
                        runVID=True,
-                       era='2016-Legacy')
+                       era='2016postVFP-UL') 
 
 ################################
 ## Produce DeepAK8 jet tags
