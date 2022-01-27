@@ -20,7 +20,7 @@ options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
+    
 ]
 options.maxEvents = 100
 options.parseArguments()
@@ -174,7 +174,6 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mcRun2_asymptotic_v3', '')
 if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, "106X_dataRun2_v35" )
 print 'Using global tag', process.GlobalTag.globaltag
-
 
 
 ################################################
