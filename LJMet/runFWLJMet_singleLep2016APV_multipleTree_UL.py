@@ -20,8 +20,8 @@ options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
-  ]
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPV/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v1/2510000/25C9E812-9ABA-A048-A8BF-90716E314534.root"
+]
 options.maxEvents = 100
 options.parseArguments()
 
@@ -110,7 +110,7 @@ process.mcweightanalyzer = cms.EDAnalyzer(
     )
 
 ################################
-## Trigger filter
+## Trigger filter https://twiki.cern.ch/twiki/bin/view/CMS/EgHLTRunIISummary
 ################################
 import HLTrigger.HLTfilters.hltHighLevel_cfi as hlt
 # accept if any path succeeds (explicit)
@@ -171,7 +171,7 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, "106X_mcRun2_asymptotic_v17", "" )
+process.GlobalTag = GlobalTag(process.GlobalTag, "106X_mcRun2_asymptotic_preVFP_v11", "" )
 if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, "106X_dataRun2_v35" )
 print 'Using global tag', process.GlobalTag.globaltag
 
@@ -183,7 +183,7 @@ print 'Using global tag', process.GlobalTag.globaltag
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process,
                        runVID=True,
-                       era= "2016postVFP-UL" )
+                       era= "2016preVFP-UL" )
 
 ################################
 ## Produce DeepAK8 jet tags
@@ -287,8 +287,8 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
 process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
     TheJets = cms.InputTag("tightAK4Jets"),
-    DataEraECAL = cms.string("UL2016postVFP"),
-    DataEraMuon = cms.string("2016postVFP"),
+    DataEraECAL = cms.string("UL2016preVFP"),
+    DataEraMuon = cms.string("2016preVFP"),
     UseJetEMPt = cms.bool(False),
     PrefiringRateSystematicUnctyECAL = cms.double(0.2),
     PrefiringRateSystematicUnctyMuon = cms.double(0.2),
@@ -330,24 +330,24 @@ JECdown                  = False
 JERup                    = False
 JERdown                  = False
 doAllJetSyst             = False #this determines whether to save JEC/JER up/down in one job. Default is currently false. Mar 19,2019.
-JEC_txtfile              = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_Uncertainty_AK4PFchs.txt'
-JERSF_txtfile            = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16_JRV3_MC_SF_AK4PFchs.txt'
-JER_txtfile              = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16_JRV3_MC_PtResolution_AK4PFchs.txt'
-JERAK8_txtfile           = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16_JRV3_MC_PtResolution_AK8PFPuppi.txt'
-MCL1JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L1FastJet_AK4PFchs.txt'
-MCL2JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L2Relative_AK4PFchs.txt'
-MCL3JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L3Absolute_AK4PFchs.txt'
-MCL1JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L1FastJet_AK8PFPuppi.txt'
-MCL2JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L2Relative_AK8PFPuppi.txt'
-MCL3JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_V7_MC_L3Absolute_AK8PFPuppi.txt'
-DataL1JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L1FastJet_AK4PFchs.txt'
-DataL2JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L2Relative_AK4PFchs.txt'
-DataL3JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L3Absolute_AK4PFchs.txt'
-DataResJetPar            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L2L3Residual_AK4PFchs.txt'
-DataL1JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L1FastJet_AK8PFPuppi.txt'
-DataL2JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L2Relative_AK8PFPuppi.txt'
-DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L3Absolute_AK8PFPuppi.txt'
-DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunFGH_V7_DATA_L2L3Residual_AK8PFPuppi.txt'
+JEC_txtfile              = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_Uncertainty_AK4PFchs.txt'
+JERSF_txtfile            = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16APV_JRV3_MC_SF_AK4PFchs.txt'
+JER_txtfile              = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16APV_JRV3_MC_PtResolution_AK4PFchs.txt'
+JERAK8_txtfile           = 'FWLJMET/LJMet/data/Summer20UL16_JRV3/Summer20UL16APV_JRV3_MC_PtResolution_AK8PFPuppi.txt'
+MCL1JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L1FastJet_AK4PFchs.txt'
+MCL2JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L2Relative_AK4PFchs.txt'
+MCL3JetPar               = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L3Absolute_AK4PFchs.txt'
+MCL1JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L1FastJet_AK8PFPuppi.txt'
+MCL2JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L2Relative_AK8PFPuppi.txt'
+MCL3JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_V7_MC_L3Absolute_AK8PFPuppi.txt'
+DataL1JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L1FastJet_AK4PFchs.txt'
+DataL2JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L2Relative_AK4PFchs.txt'
+DataL3JetPar             = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L3Absolute_AK4PFchs.txt'
+DataResJetPar            = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L2L3Residual_AK4PFchs.txt'
+DataL1JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L1FastJet_AK8PFPuppi.txt'
+DataL2JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L2Relative_AK8PFPuppi.txt'
+DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L3Absolute_AK8PFPuppi.txt'
+DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -525,9 +525,9 @@ MultiLepSelector_cfg = cms.PSet(
     #Btag
     btag_cuts                = cms.bool(False), #not implemented
     btagOP                   = cms.string('MEDIUM'),
-    bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
+    bdisc_min                = cms.double(0.2598), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16preVFPSF_v1.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -613,9 +613,9 @@ MultiLepCalc_cfg = cms.PSet(
 
     #Btagging - Btag info needs to be passed here again if Calc uses Btagging.
     btagOP                   = cms.string('MEDIUM'),
-    bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
+    bdisc_min                = cms.double(0.2598), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16preVFPSF_v1.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
