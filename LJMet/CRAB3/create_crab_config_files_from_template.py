@@ -40,12 +40,14 @@ REQNAME             = option.finalState+option.year
 OUTFOLDER           = option.outfolder
 
 #JSON for Data
-JSONFORDATA         = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/Final/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt' #https://twiki.cern.ch/twiki/bin/view/CMS/PdmV2017Analysis#DATA
+JSONFORDATA         = "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"
 if option.year == '2018': 
-	JSONFORDATA = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt' #https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2018Analysis#Early2018Re_reco_17Sep2018_datas
+	JSONFORDATA = "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"
 elif option.year == '2016':
-	JSONFORDATA = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt' #https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2016Analysis#Re_miniAOD_datasets
-
+	JSONFORDATA = "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt" 
+elif option.year == "2016APV":
+	JSONFORDATA = "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
+	
 if option.brux:
 	OUTPATH = '/store/group/bruxljm/'
 	STORESITE = 'T3_US_Brown'
