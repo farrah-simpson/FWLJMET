@@ -12,10 +12,10 @@ userName = os.environ['USER']
 ### SET YOUR STRINGS
 ####################
 cmsRun_config  = '../runFWLJMet_singleLep_multipleTree.py'
-inputDataset   = '/TprimeTprime_M-1400_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM'
+inputDataset   = "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
 requestName    = 'FWLJMET_1Lep_'+date_str+'_'+userName
 outputFolder   = 'FWLJMET_crab_test'
-Json_for_data  = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSONtxt'
+Json_for_data  = "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
 isMC           = True
 isVLQsignal    = False
 isTTbar        = False
