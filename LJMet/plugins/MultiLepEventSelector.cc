@@ -517,7 +517,7 @@ bool MultiLepEventSelector::METfilter(edm::Event const & event)
 	      hbhenoiseisopass &&
 	      globaltighthalopass &&
 	      ecaldeadcellpass &&
-	      (isMc || eebadscpass) &&
+	      eebadscpass &&
 	      goodvertpass &&
 	      badpfmuonpass &&
 	      //badchargedcandpass &&  // now not recommended due to high pT jet inefficiency
