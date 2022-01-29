@@ -33,6 +33,11 @@ install:
 
 	## EGamma post-reco for MVA values (NOTE: won't work in 10_2_9)
 	git cms-merge-topic cms-egamma:EgammaPostRecoTools
+	git cms-addpkg RecoEgamma/EgammaTools  ### essentially just checkout the package from CMSSW
+	git clone https://github.com/cms-egamma/EgammaPostRecoTools.git
+	mv EgammaPostRecoTools/python/EgammaPostRecoTools.py RecoEgamma/EgammaTools/python/.
+	git clone -b ULSSfiles_correctScaleSysMC https://github.com/jainshilpi/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data/
+	git cms-addpkg EgammaAnalysis/ElectronTools
 
 	### BestCalc: copy lwtnn so that BestCalc.cc will compile.
 	### This is not ideal, should always try to get official CMSSW / GitHub recipes whenever possible.
