@@ -998,13 +998,13 @@ elif(isMC):
     process.p = cms.Path(
        process.mcweightanalyzer *
        process.filter_any_explicit *
-       process.prefiringweight *
        process.egammaPostRecoSeq *
        process.updatedJetsAK8PuppiSoftDropPacked *
        process.packedJetsAK8Puppi *
        process.QGTagger *
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
+       process.prefiringweight *
        process.ljmet *#(ntuplizer) 
        process.ljmet_JECup *#(ntuplizer) 
        process.ljmet_JECdown *#(ntuplizer) 

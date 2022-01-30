@@ -508,13 +508,15 @@ bool MultiLepEventSelector::METfilter(edm::Event const & event)
 	  }
   
           
-          if( ! ecalBadCalibFilterToken ) eebadcalibpass = true; // 2016 doesn't use the ecalBadCalibFilter 
-  
+          if( ! ecalBadCalibFilterToken ){
+            eebadcalibpass = true; // 2016 doesn't use the ecalBadCalibFilter 
+          }  
+
 	  if( hbhenoisepass &&
 	      hbhenoiseisopass &&
 	      globaltighthalopass &&
 	      ecaldeadcellpass &&
-	      ( eebadscpass || isMc ) && // only for 2016
+	      eebadscpass && // only for 2016
 	      goodvertpass &&
 	      badpfmuonpass &&
 	      //badchargedcandpass &&  // now not recommended due to high pT jet inefficiency
