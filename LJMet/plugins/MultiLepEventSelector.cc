@@ -35,6 +35,7 @@ void MultiLepEventSelector::BeginJob( const edm::ParameterSet& iConfig, edm::Con
     trigger_path_el     = selectorConfig.getParameter<std::vector<std::string>>("trigger_path_el");
     trigger_path_mu     = selectorConfig.getParameter<std::vector<std::string>>("trigger_path_mu");
     trigger_path_hadronic     = selectorConfig.getParameter<std::vector<std::string>>("trigger_path_hadronic");
+    ecalBadCalibFilterToken = selectorConfig.getParameter<bool>("ecalBadCalibFilter");
 
     //PV
     const edm::ParameterSet& PVconfig = selectorConfig.getParameterSet("pvSelector") ;
@@ -44,7 +45,6 @@ void MultiLepEventSelector::BeginJob( const edm::ParameterSet& iConfig, edm::Con
 
     //MET filter
     METfilterToken       = iC.consumes<edm::TriggerResults>(selectorConfig.getParameter<edm::InputTag>("flag_tag"));
-    METfilterToken_extra = iC.consumes<bool>(selectorConfig.getParameter<edm::InputTag>("METfilter_extra"));
     metfilters           = selectorConfig.getParameter<bool>("metfilters");
 
     //Muon
@@ -506,18 +506,15 @@ bool MultiLepEventSelector::METfilter(edm::Event const & event)
 	    if (patTrigNames.triggerName(i) == "Flag_eeBadScFilter") eebadscpass = PatTriggerResults->accept(patTrigNames.triggerIndex(patTrigNames.triggerName(i)));
 	    if (patTrigNames.triggerName(i) == "Flag_ecalBadCalibFilter") eebadcalibpass = PatTriggerResults->accept(patTrigNames.triggerIndex(patTrigNames.triggerName(i)));
 	  }
-
-	  // Rerun ecalBadCalibReducedMINIAODFilter if possible
-	  edm::Handle<bool> passecalBadCalibFilterUpdate;
-	  if(event.getByToken( METfilterToken_extra , passecalBadCalibFilterUpdate)){
-	    eebadcalibpass = *passecalBadCalibFilterUpdate;
-	  }else{ eebadcalibpass = true; }// for 2016
-	    
+  
+          
+          if( ! ecalBadCalibFilterToken ) eebadcalibpass = true; // 2016 doesn't use the ecalBadCalibFilter 
+  
 	  if( hbhenoisepass &&
 	      hbhenoiseisopass &&
 	      globaltighthalopass &&
 	      ecaldeadcellpass &&
-	      eebadscpass &&
+	      ( eebadscpass || isMc ) && // only for 2016
 	      goodvertpass &&
 	      badpfmuonpass &&
 	      //badchargedcandpass &&  // now not recommended due to high pT jet inefficiency

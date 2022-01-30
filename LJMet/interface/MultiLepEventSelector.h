@@ -79,6 +79,7 @@ protected:
 
     //MET Filter
     bool   metfilters;
+    bool   ecalBadCalibFilterToken;
 
     //MET
     bool   met_cuts;
@@ -153,13 +154,12 @@ protected:
     edm::EDGetTokenT<edm::TriggerResults>            triggersToken;
     edm::EDGetTokenT<reco::VertexCollection>         PVToken;
     edm::EDGetTokenT<edm::TriggerResults>            METfilterToken;
-    edm::EDGetTokenT<bool>                           METfilterToken_extra;
     edm::EDGetTokenT<std::vector<pat::MET> >         METtoken;
     edm::EDGetTokenT<pat::MuonCollection>            muonsToken;
     edm::EDGetTokenT<pat::ElectronCollection>        electronsToken;
     edm::EDGetTokenT<pat::PackedCandidateCollection> PFCandToken;
     edm::EDGetTokenT<double>                         rhoJetsNC_Token;
-	edm::EDGetTokenT<double>                         rhoJetsToken;
+    edm::EDGetTokenT<double>                         rhoJetsToken;
     edm::EDGetTokenT<pat::JetCollection>             jetsToken;
     edm::EDGetTokenT<pat::JetCollection>             AK8jetsToken;
 

@@ -284,15 +284,15 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
-process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
+process.prefiringweight = l1PrefiringWeightProducer.clone(
     TheJets = cms.InputTag("tightAK4Jets"),
     DataEraECAL = cms.string("UL2016postVFP"),
     DataEraMuon = cms.string("2016postVFP"),
     UseJetEMPt = cms.bool(False),
     PrefiringRateSystematicUnctyECAL = cms.double(0.2),
     PrefiringRateSystematicUnctyMuon = cms.double(0.2),
-    SkipWarnings = False)
+)
 
 ################################
 ## Apply Jet ID to AK4 and AK8
@@ -322,6 +322,7 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ## For MET filter
 if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
 else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+ecalBadCalibFilter                 = True
 
 ## For Jet corrections
 doNewJEC                 = True
@@ -420,8 +421,9 @@ MultiLepSelector_cfg = cms.PSet(
                 ),
 
     # MET filter - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
-    metfilters      = cms.bool(True),
-    flag_tag        = cms.InputTag(MET_filt_flag_tag),
+    metfilters         = cms.bool(True),
+    flag_tag           = cms.InputTag(MET_filt_flag_tag),
+    ecalBadCalibFilter = cms.bool(False), # only 2016 doesn't use the ecalBadCalib Filter
 
     # MET cuts
     met_cuts       = cms.bool(True),
@@ -527,7 +529,7 @@ MultiLepSelector_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -615,7 +617,7 @@ MultiLepCalc_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -671,7 +673,7 @@ JetSubCalc_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.

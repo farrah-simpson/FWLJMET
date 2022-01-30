@@ -60,7 +60,7 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
     MistagUncertUp     = iConfig.getParameter<bool>("MistagUncertUp");
     MistagUncertDown   = iConfig.getParameter<bool>("MistagUncertDown");
 
-    if(DeepJetfile.find("2016Legacy") != std::string::npos) year = 2016;
+    if(DeepJetfile.find("UL16") != std::string::npos) year = 2016;
     else if(DeepJetfile.find("UL17") != std::string::npos) year = 2017;
     else year = 2018;
 
