@@ -20,10 +20,10 @@ options.isTTbar = False
 options.isVLQsignal = False
 options.doGenHT = False
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPV/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v1/2510000/25C9E812-9ABA-A048-A8BF-90716E314534.root",
+    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPVv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v2/100000/0AD9EE2D-6792-A54B-AF1C-1BDED1C9A994.root",
     "/store/mc/RunIISummer20UL16MiniAODAPVv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/120000/2CF6A298-801D-DE4E-A94D-9F1EFC07D2DD.root"
   ]
-options.maxEvents = -1
+options.maxEvents = 10000
 options.parseArguments()
 
 isMC= options.isMC
@@ -39,7 +39,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 20
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -183,7 +183,7 @@ print 'Using global tag', process.GlobalTag.globaltag
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process,
                        runVID=True,
-                       era= "2016postVFP-UL" )
+                       era= "2016preVFP-UL" )
 
 ################################
 ## Produce DeepAK8 jet tags
@@ -979,13 +979,13 @@ if (isTTbar):
     process.p = cms.Path(
         process.mcweightanalyzer *
         process.filter_any_explicit *
-        process.prefiringweight *
         process.egammaPostRecoSeq *
         process.updatedJetsAK8PuppiSoftDropPacked *
         process.packedJetsAK8Puppi *
         process.QGTagger *
         process.tightAK4Jets *
         process.tightPackedJetsAK8Puppi *
+        process.prefiringweight *
         process.ttbarcat *
         process.ljmet *#(ntuplizer) 
         process.ljmet_JECup *#(ntuplizer) 
