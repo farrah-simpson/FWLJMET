@@ -516,11 +516,11 @@ bool MultiLepEventSelector::METfilter(edm::Event const & event)
 	      hbhenoiseisopass &&
 	      globaltighthalopass &&
 	      ecaldeadcellpass &&
-	      eebadscpass && // only for 2016
+	      eebadscpass && 
 	      goodvertpass &&
 	      badpfmuonpass &&
 	      //badchargedcandpass &&  // now not recommended due to high pT jet inefficiency
-	      eebadcalibpass)
+	      eebadcalibpass )
 	  {
 	    if(debug)std::cout << "\t\t" <<"Passes MET Filter selection."<< std::endl;
 	    pass=true;

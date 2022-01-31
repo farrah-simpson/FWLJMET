@@ -16,13 +16,14 @@ options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.va
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
 options.isMC = True
-options.isTTbar = False
+options.isTTbar = True
 options.isVLQsignal = False
 options.doGenHT = False
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
+    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v1/120000/01572CA8-C7AE-0346-B660-8AB4F7C2AE36.root"
   ]
-options.maxEvents = 1000
+options.maxEvents = 10000
 options.parseArguments()
 
 isMC= options.isMC
@@ -979,13 +980,13 @@ if (isTTbar):
     process.p = cms.Path(
         process.mcweightanalyzer *
         process.filter_any_explicit *
-        process.prefiringweight *
         process.egammaPostRecoSeq *
         process.updatedJetsAK8PuppiSoftDropPacked *
         process.packedJetsAK8Puppi *
         process.QGTagger *
         process.tightAK4Jets *
         process.tightPackedJetsAK8Puppi *
+        process.prefiringweight *
         process.ttbarcat *
         process.ljmet *#(ntuplizer) 
         process.ljmet_JECup *#(ntuplizer) 
