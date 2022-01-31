@@ -20,9 +20,10 @@ options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPV/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v1/2510000/25C9E812-9ABA-A048-A8BF-90716E314534.root"
-]
-options.maxEvents = 100
+    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPVv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v2/100000/0AD9EE2D-6792-A54B-AF1C-1BDED1C9A994.root",
+    "/store/mc/RunIISummer20UL16MiniAODAPVv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/120000/2CF6A298-801D-DE4E-A94D-9F1EFC07D2DD.root"
+  ]
+options.maxEvents = -1
 options.parseArguments()
 
 isMC= options.isMC
@@ -38,7 +39,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 20
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -110,7 +111,7 @@ process.mcweightanalyzer = cms.EDAnalyzer(
     )
 
 ################################
-## Trigger filter https://twiki.cern.ch/twiki/bin/view/CMS/EgHLTRunIISummary
+## Trigger filter
 ################################
 import HLTrigger.HLTfilters.hltHighLevel_cfi as hlt
 # accept if any path succeeds (explicit)
@@ -174,7 +175,6 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, "106X_mcRun2_asymptotic_preVFP_v11", "" )
 if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, "106X_dataRun2_v35" )
 print 'Using global tag', process.GlobalTag.globaltag
-
 
 
 ################################################
@@ -284,15 +284,15 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
-process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
+process.prefiringweight = l1PrefiringWeightProducer.clone(
     TheJets = cms.InputTag("tightAK4Jets"),
     DataEraECAL = cms.string("UL2016preVFP"),
     DataEraMuon = cms.string("2016preVFP"),
     UseJetEMPt = cms.bool(False),
     PrefiringRateSystematicUnctyECAL = cms.double(0.2),
     PrefiringRateSystematicUnctyMuon = cms.double(0.2),
-    SkipWarnings = False)
+)
 
 ################################
 ## Apply Jet ID to AK4 and AK8
@@ -322,6 +322,7 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ## For MET filter
 if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
 else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+ecalBadCalibFilter                 = True
 
 ## For Jet corrections
 doNewJEC                 = True
@@ -420,8 +421,9 @@ MultiLepSelector_cfg = cms.PSet(
                 ),
 
     # MET filter - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
-    metfilters      = cms.bool(True),
-    flag_tag        = cms.InputTag(MET_filt_flag_tag)
+    metfilters         = cms.bool(True),
+    flag_tag           = cms.InputTag(MET_filt_flag_tag),
+    ecalBadCalibFilter = cms.bool(False), # only 2016 doesn't use the ecalBadCalib Filter
 
     # MET cuts
     met_cuts       = cms.bool(True),
@@ -525,9 +527,9 @@ MultiLepSelector_cfg = cms.PSet(
     #Btag
     btag_cuts                = cms.bool(False), #not implemented
     btagOP                   = cms.string('MEDIUM'),
-    bdisc_min                = cms.double(0.2598), # THIS HAS TO MATCH btagOP !
+    bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16preVFPSF_v1.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -613,9 +615,9 @@ MultiLepCalc_cfg = cms.PSet(
 
     #Btagging - Btag info needs to be passed here again if Calc uses Btagging.
     btagOP                   = cms.string('MEDIUM'),
-    bdisc_min                = cms.double(0.2598), # THIS HAS TO MATCH btagOP !
+    bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16preVFPSF_v1.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -671,7 +673,7 @@ JetSubCalc_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -977,13 +979,13 @@ if (isTTbar):
     process.p = cms.Path(
         process.mcweightanalyzer *
         process.filter_any_explicit *
-        process.prefiringweight *
         process.egammaPostRecoSeq *
         process.updatedJetsAK8PuppiSoftDropPacked *
         process.packedJetsAK8Puppi *
         process.QGTagger *
         process.tightAK4Jets *
         process.tightPackedJetsAK8Puppi *
+        process.prefiringweight *
         process.ttbarcat *
         process.ljmet *#(ntuplizer) 
         process.ljmet_JECup *#(ntuplizer) 
@@ -996,13 +998,13 @@ elif(isMC):
     process.p = cms.Path(
        process.mcweightanalyzer *
        process.filter_any_explicit *
-       process.prefiringweight *
        process.egammaPostRecoSeq *
        process.updatedJetsAK8PuppiSoftDropPacked *
        process.packedJetsAK8Puppi *
        process.QGTagger *
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
+       process.prefiringweight *
        process.ljmet *#(ntuplizer) 
        process.ljmet_JECup *#(ntuplizer) 
        process.ljmet_JECdown *#(ntuplizer) 
