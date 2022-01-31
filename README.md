@@ -8,8 +8,8 @@ install:
 	
 	#from SLC7 (recommended)
 	setenv SCRAM_ARCH slc7_amd64_gcc700
-	cmsrel CMSSW_10_6_19
-	cd CMSSW_10_6_19/src/
+	cmsrel CMSSW_10_6_29
+	cd CMSSW_10_6_29/src/
 	
 	
 	cmsenv
@@ -51,9 +51,6 @@ install:
 	
 	## Update the prefiring map for UL17 following https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe, more specifically:
 	git-cms-addpkg PhysicsTools/PatUtils 
-	cd PhysicsTools/PatUtils/data/
-	wget --no-check-certificate https://github.com/cms-data/PhysicsTools-PatUtils/raw/master/L1PrefiringMaps.root 
-
 
 	## JetSubCalc currently uses uses PUPPI mass corrections:
 	cd ${CMSSW_BASE}/src/FWLJMET/LJMet/data/
