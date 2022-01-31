@@ -16,25 +16,25 @@ parser.add_argument("--outfolder",action="store",default="FWLJMET_crab_output")
 option = parser.parse_args()
 
 #Sample list file
-sampleListPath = "sample_list_"+option.finalState+option.year+".py"
+sampleListPath = "sample_list_"+option.finalState+option.year+"UL.py"
 sample = imp.load_source("Sample",sampleListPath,open(sampleListPath,"r"))
 
 ####################
 ### SET YOUR STRINGS
 ####################
 #cmsRun config
-runScript = option.finalState+option.year if option.nominalTreeOnly else option.finalState+option.year+'_multipleTree'
+runScript = option.finalState+option.year + "UL" if option.nominalTreeOnly else option.finalState+option.year+'_multipleTree_UL'
 
 CMSRUNCONFIG        = '../runFWLJMet_'+runScript+'.py'
 
 #folder to save the created crab configs
-CRABCONFIG_DIR      = 'crabConfigs_'+option.finalState+option.year
+CRABCONFIG_DIR      = 'crabConfigs_'+option.finalState+option.year + "UL"
 
 #the crab cfg template to copy from
 CRABCONFIG_TEMPLATE = 'crab_FWLJMET_cfg_template.py'
 
 #crab request name
-REQNAME             = option.finalState+option.year
+REQNAME             = option.finalState+option.year + "UL"
 
 #eos out folder
 OUTFOLDER           = option.outfolder

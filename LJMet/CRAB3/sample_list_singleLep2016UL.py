@@ -1,5 +1,9 @@
 import os,sys
 
+testdict = {
+  'TTTT': '/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM'
+}
+
 signaldict = {}
 
 ##VLQ TT -- samples not submitted for UL
