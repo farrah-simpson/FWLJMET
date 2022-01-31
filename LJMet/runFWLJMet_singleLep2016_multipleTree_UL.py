@@ -20,9 +20,10 @@ options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.inputFiles = [
-    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
+    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v1/120000/01572CA8-C7AE-0346-B660-8AB4F7C2AE36.root"
   ]
-options.maxEvents = -1
+options.maxEvents = 10000
 options.parseArguments()
 
 isMC= options.isMC
@@ -284,15 +285,15 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
-process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
+process.prefiringweight = l1PrefiringWeightProducer.clone(
     TheJets = cms.InputTag("tightAK4Jets"),
     DataEraECAL = cms.string("UL2016postVFP"),
     DataEraMuon = cms.string("2016postVFP"),
     UseJetEMPt = cms.bool(False),
     PrefiringRateSystematicUnctyECAL = cms.double(0.2),
     PrefiringRateSystematicUnctyMuon = cms.double(0.2),
-    SkipWarnings = False)
+)
 
 ################################
 ## Apply Jet ID to AK4 and AK8
@@ -322,6 +323,7 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ## For MET filter
 if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
 else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+ecalBadCalibFilter                 = True
 
 ## For Jet corrections
 doNewJEC                 = True
@@ -420,8 +422,9 @@ MultiLepSelector_cfg = cms.PSet(
                 ),
 
     # MET filter - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
-    metfilters      = cms.bool(True),
-    flag_tag        = cms.InputTag(MET_filt_flag_tag),
+    metfilters         = cms.bool(True),
+    flag_tag           = cms.InputTag(MET_filt_flag_tag),
+    ecalBadCalibFilter = cms.bool(False), # only 2016 doesn't use the ecalBadCalib Filter
 
     # MET cuts
     met_cuts       = cms.bool(True),
@@ -527,7 +530,7 @@ MultiLepSelector_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -615,7 +618,7 @@ MultiLepCalc_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -671,7 +674,7 @@ JetSubCalc_cfg = cms.PSet(
     btagOP                   = cms.string('MEDIUM'),
     bdisc_min                = cms.double(0.2489), # THIS HAS TO MATCH btagOP !
     applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16postVFPSF_v2.csv'),
+    DeepJetfile              = cms.FileInPath('FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'),
     DeepCSVSubjetfile        = cms.FileInPath('FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv'), # need to update
     BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
     BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -977,13 +980,13 @@ if (isTTbar):
     process.p = cms.Path(
         process.mcweightanalyzer *
         process.filter_any_explicit *
-        process.prefiringweight *
         process.egammaPostRecoSeq *
         process.updatedJetsAK8PuppiSoftDropPacked *
         process.packedJetsAK8Puppi *
         process.QGTagger *
         process.tightAK4Jets *
         process.tightPackedJetsAK8Puppi *
+        process.prefiringweight *
         process.ttbarcat *
         process.ljmet *#(ntuplizer) 
         process.ljmet_JECup *#(ntuplizer) 
@@ -996,13 +999,13 @@ elif(isMC):
     process.p = cms.Path(
        process.mcweightanalyzer *
        process.filter_any_explicit *
-       process.prefiringweight *
        process.egammaPostRecoSeq *
        process.updatedJetsAK8PuppiSoftDropPacked *
        process.packedJetsAK8Puppi *
        process.QGTagger *
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
+       process.prefiringweight *
        process.ljmet *#(ntuplizer) 
        process.ljmet_JECup *#(ntuplizer) 
        process.ljmet_JECdown *#(ntuplizer) 
