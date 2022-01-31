@@ -22,7 +22,7 @@ options.doGenHT = DOGENHT
 options.inputFiles = [
     "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/100000/56286008-90EE-8B40-8ECA-E1066A0C5649.root"
   ]
-options.maxEvents = 1000
+options.maxEvents = -1
 options.parseArguments()
 
 isMC= options.isMC
