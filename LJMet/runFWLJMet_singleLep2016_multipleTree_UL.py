@@ -276,7 +276,7 @@ updateJetCollection(
 
 )
 process.load('RecoJets.JetProducers.QGTagger_cfi')
-# patAlgosToolsTask.add(process.QGTagger)
+patAlgosToolsTask.add(process.QGTagger)
 process.QGTagger.srcJets = cms.InputTag('slimmedJets')
 process.updatedPatJets.userData.userFloats.src += ['QGTagger:ptD','QGTagger:axis1','QGTagger:axis2']
 process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
@@ -428,7 +428,7 @@ MultiLepSelector_cfg = cms.PSet(
 
     # MET cuts
     met_cuts       = cms.bool(True),
-    min_met        = cms.double(30.0),
+    min_met        = cms.double(20.0),
     max_met        = cms.double(99999999999.0),
     met_collection = cms.InputTag('slimmedMETs'),
     rhoJetsInputTag = cms.InputTag("fixedGridRhoFastjetAll"), #for jetmetcorrection
