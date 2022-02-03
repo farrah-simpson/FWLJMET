@@ -15,16 +15,16 @@ options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.va
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
-options.isMC = True #ISMC
-options.isTTbar = False #ISTTBAR 
-options.isVLQsignal = False #ISVLQSIGNAL 
-options.doGenHT = False #DOGENHT
+options.isMC = ISMC
+options.isTTbar = ISTTBAR 
+options.isVLQsignal = ISVLQSIGNAL 
+options.doGenHT = DOGENHT
 options.inputFiles = [
     #'root://cmsxrootd.fnal.gov//store/mc/RunIISummer19UL17MiniAOD/ChargedHiggs_HplusTB_HplusToTB_M-1000_TuneCP5_13TeV_amcatnlo_pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v1/10000/06F45F57-23AA-0F45-B5B0-CCF5B2B8F9F7.root'
     'root://cmsxrootd.fnal.gov//store/mc/RunIISummer19UL17MiniAOD/ChargedHiggs_HplusTB_HplusToTB_M-500_TuneCP5_13TeV_amcatnlo_pythia8/MINIAODSIM/106X_mc2017_realistic_v6-v1/20000/06C1E8F8-2ADC-4645-943D-AD569FA4D727.root'
     #'root://cmsxrootd.fnal.gov//store/data/Run2017D/SingleMuon/MINIAOD/09Aug2019_UL2017-v1/130000/008170F6-0BB6-7749-B870-BAB6DAFBDBBC.root'
     ]
-options.maxEvents = 1000#100
+options.maxEvents = -1
 options.parseArguments()
 
 isMC= options.isMC
@@ -174,7 +174,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v8', '')
-if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v28')
+if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v35')
 print 'Using global tag', process.GlobalTag.globaltag
 
 
@@ -200,37 +200,6 @@ setupEgammaPostRecoSeq(process,
 #    fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
 #    postfix = "ModifiedMET"
 #    )
-
-################################
-## Rerun the ecalBadCalibFilter
-################################
-process.load('RecoMET.METFilters.ecalBadCalibFilter_cfi')
-
-baddetEcallist = cms.vuint32(
-    [872439604,872422825,872420274,872423218,
-     872423215,872416066,872435036,872439336,
-     872420273,872436907,872420147,872439731,
-     872436657,872420397,872439732,872439339,
-     872439603,872422436,872439861,872437051,
-     872437052,872420649,872421950,872437185,
-     872422564,872421566,872421695,872421955,
-     872421567,872437184,872421951,872421694,
-     872437056,872437057,872437313,872438182,
-     872438951,872439990,872439864,872439609,
-     872437181,872437182,872437053,872436794,
-     872436667,872436536,872421541,872421413,
-     872421414,872421031,872423083,872421439]
-)
-
-process.ecalBadCalibReducedMINIAODFilter = cms.EDFilter(
-    "EcalBadCalibFilter",
-    EcalRecHitSource = cms.InputTag("reducedEgamma:reducedEERecHits"),
-    ecalMinEt        = cms.double(50.),
-    baddetEcal    = baddetEcallist,
-    taggingMode = cms.bool(True),
-    debug = cms.bool(False)
-)
-
 
 ################################
 ## Produce DeepAK8 jet tags
@@ -330,14 +299,15 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1ECALPrefiringWeightProducer
+from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1PrefiringWeightProducer
 process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
     TheJets = cms.InputTag("tightAK4Jets"),
-    L1Maps = cms.string("L1PrefiringMaps.root"),
-    DataEra = cms.string("UL2017BtoF"),
+    DataEraECAL = cms.string( "UL2017BtoF" ),
+    DataEraMuon = cms.string( "20172018" ),
     UseJetEMPt = cms.bool(False),
-    PrefiringRateSystematicUncty = cms.double(0.2),
-    SkipWarnings = False)
+    PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    PrefiringRateSystematicUnctyMuon = cms.double(0.2),
+)
 
 
 ################################
@@ -374,10 +344,10 @@ JECdown                  = False
 JERup                    = False
 JERdown                  = False
 doAllJetSyst             = False #this determines whether to save JEC/JER up/down in one job. Default is currently false. Mar 19,2019.
-JEC_txtfile              = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_Uncertainty_AK4PFchs.txt'
-JERSF_txtfile            = 'FWLJMET/LJMet/data/UL17_JRV2/Summer19UL17_JRV2_MC_SF_AK4PFchs.txt'
-JER_txtfile              = 'FWLJMET/LJMet/data/UL17_JRV2/Summer19UL17_JRV2_MC_PtResolution_AK4PFchs.txt'
-JERAK8_txtfile           = 'FWLJMET/LJMet/data/Fall17V3/Fall17_V3_MC_PtResolution_AK8PFPuppi.txt'
+JEC_txtfile              = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_Uncertainty_AK4PFchs.txt'
+JERSF_txtfile            = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV2_MC_SF_AK4PFchs.txt'
+JER_txtfile              = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV2_MC_PtResolution_AK4PFchs.txt'
+JERAK8_txtfile           = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Fall17_V3_MC_PtResolution_AK8PFPuppi.txt'
 MCL1JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L1FastJet_AK4PFchs.txt'
 MCL2JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L2Relative_AK4PFchs.txt'
 MCL3JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L3Absolute_AK4PFchs.txt'
@@ -464,13 +434,13 @@ MultiLepSelector_cfg = cms.PSet(
                         ),
 
             # MET filter - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
-            metfilters      = cms.bool(True),
-            flag_tag        = cms.InputTag(MET_filt_flag_tag),
-            METfilter_extra = cms.InputTag("ecalBadCalibReducedMINIAODFilter"),
+            metfilters         = cms.bool(True),
+            flag_tag           = cms.InputTag(MET_filt_flag_tag),
+            ecalBadCalibFilter = cms.bool(True),
 
             # MET cuts
             met_cuts       = cms.bool(True),
-            min_met        = cms.double(30.0),
+            min_met        = cms.double(20.0),
             max_met        = cms.double(99999999999.0),
             met_collection = cms.InputTag('slimmedMETs'),
             rhoJetsInputTag = cms.InputTag("fixedGridRhoFastjetAll"), #for jetmetcorrection
