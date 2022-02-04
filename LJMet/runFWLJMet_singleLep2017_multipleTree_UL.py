@@ -993,7 +993,6 @@ if (isTTbar):
                          process.mcweightanalyzer *
                          process.filter_any_explicit *
                          #process.fullPatMetSequenceModifiedMET *
-                         #process.prefiringweight *
                          process.egammaPostRecoSeq *
                          process.updatedJetsAK8PuppiSoftDropPacked *
                          process.packedJetsAK8Puppi *
@@ -1001,7 +1000,6 @@ if (isTTbar):
                          process.tightAK4Jets *
                          process.tightPackedJetsAK8Puppi *
                          process.prefiringweight *
-                         process.ecalBadCalibReducedMINIAODFilter *
                          process.ttbarcat *
                          process.ljmet *#(ntuplizer) 
                          process.ljmet_JECup *#(ntuplizer) 
@@ -1022,7 +1020,6 @@ elif(isMC):
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
        process.prefiringweight *
-       process.ecalBadCalibReducedMINIAODFilter *
        process.ljmet *#(ntuplizer) 
        process.ljmet_JECup *#(ntuplizer) 
        process.ljmet_JECdown *#(ntuplizer) 
@@ -1040,7 +1037,6 @@ else: #Data
        process.QGTagger *
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
-       process.ecalBadCalibReducedMINIAODFilter *
        process.ljmet #(ntuplizer) 
     )
 
