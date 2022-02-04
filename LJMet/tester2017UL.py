@@ -20,7 +20,7 @@ options.isTTbar = True
 options.isVLQsignal = False 
 options.doGenHT = False
 options.inputFiles = [
-   
+   "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL17MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/00000/005708B7-331C-904E-88B9-189011E6C9DD.root"
 ]
 options.maxEvents = 5000
 options.parseArguments()
