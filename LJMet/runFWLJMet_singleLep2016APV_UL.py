@@ -8,10 +8,11 @@ relBase = os.environ['CMSSW_BASE']
 ## PARSE ARGUMENTS
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
-options.register('isMC', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is MC')
-options.register('isTTbar', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is TTbar')
-options.register('isVLQsignal', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is VLQ Signal')
-options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Do Gen HT')
+options.register( 'isMC', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is MC')
+options.register( 'isTTbar', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is TTbar')
+options.register( 'isVLQsignal', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is VLQ Signal')
+options.register( 'doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Do Gen HT')
+options.register( 'shifts', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Include JEC/JER shift trees')
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
@@ -19,6 +20,7 @@ options.isMC = ISMC
 options.isTTbar = ISTTBAR
 options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
+options.shifts = SHIFTS
 options.inputFiles = [
     #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPVv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v2/100000/0AD9EE2D-6792-A54B-AF1C-1BDED1C9A994.root",
     "/store/mc/RunIISummer20UL16MiniAODAPVv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/120000/2CF6A298-801D-DE4E-A94D-9F1EFC07D2DD.root"
@@ -30,6 +32,7 @@ isMC= options.isMC
 isTTbar = options.isTTbar
 isVLQsignal = options.isVLQsignal
 doGenHT = options.doGenHT
+shifts = options.shifts
 
 #Check arguments
 print options
@@ -946,7 +949,7 @@ process.ljmet_JERdown = cms.EDAnalyzer(
 # Configure a path and endpath to run the producer and output modules
 
 # ----------------------- GenHFHadronMatcher -----------------                                                
-if (isTTbar):
+if isTTbar:
     process.load("PhysicsTools.JetMCAlgos.GenHFHadronMatcher_cff")
 
     from PhysicsTools.JetMCAlgos.HadronAndPartonSelector_cfi import selectedHadronsAndPartons
@@ -976,41 +979,70 @@ if (isTTbar):
         process.categorizeGenTtbar  ## return already a categorization id for tt                  
         )
 
-    process.p = cms.Path(
-        process.mcweightanalyzer *
-        process.filter_any_explicit *
-        process.egammaPostRecoSeq *
-        process.updatedJetsAK8PuppiSoftDropPacked *
-        process.packedJetsAK8Puppi *
-        process.QGTagger *
-        process.tightAK4Jets *
-        process.tightPackedJetsAK8Puppi *
-        process.prefiringweight *
-        process.ttbarcat *
-        process.ljmet *#(ntuplizer) 
-        process.ljmet_JECup *#(ntuplizer) 
-        process.ljmet_JECdown * #(ntuplizer) 
-        process.ljmet_JERup *#(ntuplizer) 
-        process.ljmet_JERdown #(ntuplizer) 
-     )
-
-elif(isMC):
-    process.p = cms.Path(
-       process.mcweightanalyzer *
-       process.filter_any_explicit *
-       process.egammaPostRecoSeq *
-       process.updatedJetsAK8PuppiSoftDropPacked *
-       process.packedJetsAK8Puppi *
-       process.QGTagger *
-       process.tightAK4Jets *
-       process.tightPackedJetsAK8Puppi *
-       process.prefiringweight *
-       process.ljmet *#(ntuplizer) 
-       process.ljmet_JECup *#(ntuplizer) 
-       process.ljmet_JECdown *#(ntuplizer) 
-       process.ljmet_JERup *#(ntuplizer) 
-       process.ljmet_JERdown #(ntuplizer) 
-    )
+    if shifts:
+        process.p = cms.Path(
+            process.mcweightanalyzer *
+            process.filter_any_explicit *
+            process.egammaPostRecoSeq *
+            process.updatedJetsAK8PuppiSoftDropPacked *
+            process.packedJetsAK8Puppi *
+            process.QGTagger *
+            process.tightAK4Jets *
+            process.tightPackedJetsAK8Puppi *
+            process.prefiringweight *
+            process.ttbarcat *
+            process.ljmet *#(ntuplizer) 
+            process.ljmet_JECup *#(ntuplizer) 
+            process.ljmet_JECdown * #(ntuplizer) 
+            process.ljmet_JERup *#(ntuplizer) 
+            process.ljmet_JERdown #(ntuplizer) 
+        )
+    else:
+        process.p = cms.Path(
+            process.mcweightanalyzer *
+            process.filter_any_explicit *
+            process.egammaPostRecoSeq *
+            process.updatedJetsAK8PuppiSoftDropPacked *
+            process.packedJetsAK8Puppi *
+            process.QGTagger *
+            process.tightAK4Jets *
+            process.tightPackedJetsAK8Puppi *
+            process.prefiringweight *
+            process.ttbarcat *
+            process.ljmet #(ntuplizer) 
+        )
+       
+elif isMC:
+    if shifts:
+        process.p = cms.Path(
+           process.mcweightanalyzer *
+           process.filter_any_explicit *
+           process.egammaPostRecoSeq *
+           process.updatedJetsAK8PuppiSoftDropPacked *
+           process.packedJetsAK8Puppi *
+           process.QGTagger *
+           process.tightAK4Jets *
+           process.tightPackedJetsAK8Puppi *
+           process.prefiringweight *
+           process.ljmet *#(ntuplizer) 
+           process.ljmet_JECup *#(ntuplizer) 
+           process.ljmet_JECdown *#(ntuplizer) 
+           process.ljmet_JERup *#(ntuplizer) 
+           process.ljmet_JERdown #(ntuplizer) 
+        )
+    else:
+        process.p = cms.Path(
+           process.mcweightanalyzer *
+           process.filter_any_explicit *
+           process.egammaPostRecoSeq *
+           process.updatedJetsAK8PuppiSoftDropPacked *
+           process.packedJetsAK8Puppi *
+           process.QGTagger *
+           process.tightAK4Jets *
+           process.tightPackedJetsAK8Puppi *
+           process.prefiringweight *
+           process.ljmet #(ntuplizer) 
+        )
 else: #Data
     process.p = cms.Path(
        process.filter_any_explicit *
@@ -1024,10 +1056,3 @@ else: #Data
     )
 
 process.p.associate(patAlgosToolsTask)
-
-
-# process.ep = cms.EndPath(process.out)
-# process.ep = cms.EndPath(process.out,patAlgosToolsTask)
-# process.scedule = cms.Schedule(
-#     process.p,
-#     process.outpath)
