@@ -1,4 +1,4 @@
-import FWCore.ParameterSet.Config as cms
+                import FWCore.ParameterSet.Config as cms
 import os
 
 
@@ -345,23 +345,23 @@ JERup                    = False
 JERdown                  = False
 doAllJetSyst             = False #this determines whether to save JEC/JER up/down in one job. Default is currently false. Mar 19,2019.
 JEC_txtfile              = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_Uncertainty_AK4PFchs.txt'
-JERSF_txtfile            = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV2_MC_SF_AK4PFchs.txt'
-JER_txtfile              = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV2_MC_PtResolution_AK4PFchs.txt'
-JERAK8_txtfile           = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Fall17_V3_MC_PtResolution_AK8PFPuppi.txt'
-MCL1JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L1FastJet_AK4PFchs.txt'
-MCL2JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L2Relative_AK4PFchs.txt'
-MCL3JetPar               = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L3Absolute_AK4PFchs.txt'
-MCL1JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L1FastJet_AK8PFPuppi.txt'
-MCL2JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L2Relative_AK8PFPuppi.txt'
-MCL3JetParAK8            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_V5_MC_L3Absolute_AK8PFPuppi.txt'
-DataL1JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK4PFchs.txt'
-DataL2JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK4PFchs.txt'
-DataL3JetPar             = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK4PFchs.txt'
-DataResJetPar            = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK4PFchs.txt'
-DataL1JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK8PFPuppi.txt'
-DataL2JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK8PFPuppi.txt'
-DataL3JetParAK8          = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK8PFPuppi.txt'
-DataResJetParAK8         = 'FWLJMET/LJMet/data/UL17V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
+JERSF_txtfile            = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV3_MC_SF_AK4PFchs.txt'
+JER_txtfile              = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV3_MC_PtResolution_AK4PFchs.txt'
+JERAK8_txtfile           = 'FWLJMET/LJMet/data/Summer19UL17_JRV3/Summer19UL17_JRV3_MC_PtResolution_AK8PFPuppi.txt'
+MCL1JetPar               = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L1FastJet_AK4PFchs.txt'
+MCL2JetPar               = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L2Relative_AK4PFchs.txt'
+MCL3JetPar               = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L3Absolute_AK4PFchs.txt'
+MCL1JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L1FastJet_AK8PFPuppi.txt'
+MCL2JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L2Relative_AK8PFPuppi.txt'
+MCL3JetParAK8            = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_V5_MC_L3Absolute_AK8PFPuppi.txt'
+DataL1JetPar             = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK4PFchs.txt'
+DataL2JetPar             = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK4PFchs.txt'
+DataL3JetPar             = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK4PFchs.txt'
+DataResJetPar            = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK4PFchs.txt'
+DataL1JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L1FastJet_AK8PFPuppi.txt'
+DataL2JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L2Relative_AK8PFPuppi.txt'
+DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L3Absolute_AK8PFPuppi.txt'
+DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
