@@ -946,7 +946,7 @@ if isTTbar:
     jetFlavourInfos = "genJetFlavourInfos"
   )
   from PhysicsTools.JetMCAlgos.GenHFHadronMatcher_cff import matchGenCHadron
-    process.matchGenCHadron = matchGenCHadron.clone(
+  process.matchGenCHadron = matchGenCHadron.clone(
     genParticles = cms.InputTag("prunedGenParticles"),
     jetFlavourInfos = "genJetFlavourInfos"
   )
