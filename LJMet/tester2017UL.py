@@ -81,7 +81,7 @@ process.source = cms.Source(
   fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),)
 )
 
-OUTFILENAME = "DATASET"
+OUTFILENAME = "TEST_2017UL"
 process.TFileService = cms.Service("TFileService", fileName = cms.string(OUTFILENAME+'.root'))
 
 # OUTFILENAME = "cmsRun" #This could be better !
@@ -299,8 +299,8 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1PrefiringWeightProducer
-process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
+process.prefiringweight = l1PrefiringWeightProducer.clone(
   TheJets = cms.InputTag("tightAK4Jets"),
   DataEraECAL = cms.string( "UL2017BtoF" ),
   DataEraMuon = cms.string( "20172018" ),
@@ -550,7 +550,7 @@ MultiLepSelector_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -639,7 +639,7 @@ MultiLepCalc_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -693,7 +693,7 @@ JetSubCalc_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.

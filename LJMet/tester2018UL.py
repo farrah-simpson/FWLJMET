@@ -78,10 +78,9 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxE
 
 process.source = cms.Source(
   "PoolSource",
-  fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),
+  fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),)
 )
-
-OUTFILENAME = "DATASET"
+OUTFILENAME = "TEST_2018UL"
 process.TFileService = cms.Service("TFileService", fileName = cms.string(OUTFILENAME+'.root'))
 
 ################################
@@ -334,7 +333,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB
 
 # for b-jet SF
 DeepJetfile       = "FWLJMET/LJMet/data/DeepJet_106XUL18SF.csv" 
-DeepCSVSubjetfile = "subjet_DeepCSV_94XSF_V3_B_F.csv"
+DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv"
 btagOP    = "MEDIUM"
 bdisc_min = 0.2783 # THIS HAS TO MATCH btagOP !
 
@@ -515,7 +514,7 @@ MultiLepSelector_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
