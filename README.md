@@ -85,7 +85,8 @@ Some info:
      - https://github.com/demarley/lwtnn/tree/CMSSW_8_0_X-compatible#cmssw-compatibility
 
 
-run LJMet tester file:
+Run a test LJMet EDAnalyzer configuration for each year (`2016APV`,`2016`,`2017`,`2018`):
 
-    cmsRun LJMet/tester2017.py (or tester2016.py, or tester2018.py)
+    cd ${CMSSW_BASE}/src/FWLJMET/LJMet/
+    cmsRun tester2017UL.py 
 
