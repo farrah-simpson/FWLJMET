@@ -38,24 +38,12 @@ config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = cmsRun_config
 
-#cmsRun params
-#config.JobType.pyCfgParams = ['dataset='+dataset]
-#if(isMC):
-#	config.JobType.pyCfgParams = ['isMC=True']
-#else:
-#	config.JobType.pyCfgParams = ['isMC=False']
-#
-#if(isTTbar):
-#	config.JobType.pyCfgParams += ['isTTbar=True']
-
 #for VLQ signal this will run using crab_script.sh which will reset the env var in order to access LHApdf outside of CMSSW
-if(isVLQsignal):
+if isVLQsignal:
 	config.JobType.scriptExe = relBase+'/src/FWLJMET/LJMet/CRAB3/crab_script.sh'
-#else:
-#	config.JobType.pyCfgParams += ['isVLQsignal=False']
 	
 # runtime, memory, cores
-if(isMC):
+if isMC:
 	config.JobType.maxJobRuntimeMin = 2750 #minutes
 config.JobType.maxMemoryMB = 4000 #MB, believed to be per core based on CRAB3FAQ TWiki, evidently not based on tests
 config.JobType.numCores = 4 #use wisely if turned on.
@@ -66,10 +54,10 @@ config.JobType.numCores = 4 #use wisely if turned on.
 config.section_("Data")
 config.Data.inputDataset = inputDataset
 config.Data.allowNonValidInputDataset = True
-if(isMC):
+if isMC:
 	#config.Data.splitting = 'Automatic'
 	#config.Data.unitsPerJob = 1440 # 24 hours
-	if(isVLQsignal):
+	if isVLQsignal:
 		config.Data.splitting = 'LumiBased'
 		config.Data.unitsPerJob = 2
 	else:
