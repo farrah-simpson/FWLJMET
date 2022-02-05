@@ -17,14 +17,13 @@ def check_crab_jobs( sample_dict, crab_dir ):
   for dataset in sample_dict:
     if option.resubmit:
       print( ">> Resubmitting {}: {}".format( dataset, sample_dict[dataset] )
-      os.system( "crab resubmit {}".format( os.path.join( crab_dir, "crab_UL{}_{}".format( option.year, sample ) )
+      os.system( "crab resubmit {}".format( os.path.join( crab_dir, "crab_UL{}_{}".format( option.year, sample ) ) ) )
     elif option.kill:
-      print '\nAttempting to kill ',dataset,':',sample_dict[dataset]
-      os.system('crab kill '+crab_submit_dir)
+      print( ">> Killing {}: {} ".format( dataset, sample_dict[dataset] )
+      os.system( "crab kill {}".format( os.path.join( crab_dir ) ) )
     else:
-      print( ">> Checking status {}: {}".format( dataset, sample_dict[dataset] )
-      os.system( "crab status ".format( os.path.join( crab_dir, "crab_UL{}_{}".format( option.year, sample ) )
-
+      print( ">> Checking status {}: {}".format( dataset, sample_dict[dataset] ) )
+      os.system( "crab status {}".format( os.path.join( crab_dir, "crab_UL{}_{}".format( option.year, sample ) ) )
 
 
 if __name__ == '__main__':
