@@ -27,7 +27,6 @@ isVLQsignal    = ISVLQSIGNAL
 config.section_("General")
 config.General.requestName = requestName+"_"+logFolder
 config.General.workArea = 'crabSubmitLogs/'+requestName+'/'
-#config.General.workArea = home+'/nobackup/FWLJMET102X_crabSubmitLogs/'+requestName+'/'  #JH: crab stuff in nobackup
 config.General.transferLogs = True
 config.General.transferOutputs = True
 
