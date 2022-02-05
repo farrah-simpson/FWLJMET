@@ -338,9 +338,9 @@ DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_RunBCDEF_V7_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 # b-jet settings
-btagOP                   = 'MEDIUM',
-bdisc_min                = 0.2489, # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv',
+btagOP                   = 'MEDIUM'
+bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
+DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
 DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update, check: https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation106XUL16preVFP
 
 ## El MVA ID
