@@ -54,7 +54,7 @@ bkghtdict = {}
 
 #DYJetsToLL M-50
 bkghtdict['DYM50HT200to400'] = '/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'
-bkghtdict['DYM50HT400to600'] = '/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v15_ext2-v3/MINIAODSIM'
+bkghtdict['DYM50HT400to600'] = '/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'
 bkghtdict['DYM50HT600to800'] = '/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'
 bkghtdict['DYM50HT800to1200'] = '/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'
 bkghtdict['DYM50HT1200to2500'] = '/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'
@@ -116,20 +116,20 @@ ttbarbkgdict['TT_Mtt1000'] = '/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8/Run
 
 datadict = {}
 
-datadict['SingleElectronRun2018A']  = '/EGamma/Run2018A-17Sep2018-v2/MINIAOD'
-datadict['SingleElectronRun2018B']  = '/EGamma/Run2018B-17Sep2018-v1/MINIAOD'
-datadict['SingleElectronRun2018C']  = '/EGamma/Run2018C-17Sep2018-v1/MINIAOD'
-datadict['SingleElectronRun2018D']  = '/EGamma/Run2018D-PromptReco-v2/MINIAOD'
+datadict['SingleElectronRun2018A']  = '/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['SingleElectronRun2018B']  = '/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['SingleElectronRun2018C']  = '/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['SingleElectronRun2018D']  = '/EGamma/Run2018B-UL2018_MiniAODv2-v2/MINIAOD'
 
-datadict['SingleMuonRun2018A']  = '/SingleMuon/Run2018A-17Sep2018-v2/MINIAOD'
-datadict['SingleMuonRun2018B']  = '/SingleMuon/Run2018B-17Sep2018-v1/MINIAOD'
-datadict['SingleMuonRun2018C']  = '/SingleMuon/Run2018C-17Sep2018-v1/MINIAOD'
-datadict['SingleMuonRun2018D']  = '/SingleMuon/Run2018D-PromptReco-v2/MINIAOD'
+datadict['SingleMuonRun2018A']  = '/SingleMuon/Run2018A-UL2018_MiniAODv2-v3/MINIAOD'
+datadict['SingleMuonRun2018B']  = '/SingleMuon/Run2018B-UL2018_MiniAODv2-v2/MINIAOD'
+datadict['SingleMuonRun2018C']  = '/SingleMuon/Run2018C-UL2018_MiniAODv2-v2/MINIAOD'
+datadict['SingleMuonRun2018D']  = '/SingleMuon/Run2018D-UL2018_MiniAODv2-v3/MINIAOD'
 
-datadict['JetHTRun2018A'] = '/JetHT/Run2018A-17Sep2018-v1/MINIAOD'
-datadict['JetHTRun2018B'] = '/JetHT/Run2018B-17Sep2018-v1/MINIAOD'
-datadict['JetHTRun2018C'] = '/JetHT/Run2018C-17Sep2018-v1/MINIAOD'
-datadict['JetHTRun2018D'] = '/JetHT/Run2018D-PromptReco-v2/MINIAOD'
+datadict['JetHTRun2018A'] = '/JetHT/Run2018A-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['JetHTRun2018B'] = '/JetHT/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['JetHTRun2018C'] = '/JetHT/Run2018C-UL2018_MiniAODv2-v1/MINIAOD'
+datadict['JetHTRun2018D'] = '/JetHT/Run2018D-UL2018_MiniAODv2-v2/MINIAOD'
 
 fourtopssigdict = {}
 fourtopsttdict = {}
