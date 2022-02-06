@@ -20,7 +20,7 @@ options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.shifts = SHIFTS
 options.inputFiles = [
-/store/mc/RunIISummer20UL17MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/00000/005708B7-331C-904E-88B9-189011E6C9DD.root
+"/store/mc/RunIISummer20UL17MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/00000/005708B7-331C-904E-88B9-189011E6C9DD.root"
 ]
 options.maxEvents = -1
 options.parseArguments()
@@ -299,8 +299,8 @@ process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 ################################
 ## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
 ################################
-from PhysicsTools.PatUtils.l1ECALPrefiringWeightProducer_cfi import l1PrefiringWeightProducer
-process.prefiringweight = l1ECALPrefiringWeightProducer.clone(
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
+process.prefiringweight = l1PrefiringWeightProducer.clone(
   TheJets = cms.InputTag("tightAK4Jets"),
   DataEraECAL = cms.string( "UL2017BtoF" ),
   DataEraMuon = cms.string( "20172018" ),
@@ -550,7 +550,7 @@ MultiLepSelector_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -639,7 +639,7 @@ MultiLepCalc_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -693,7 +693,7 @@ JetSubCalc_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.

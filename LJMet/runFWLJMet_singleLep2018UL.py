@@ -78,7 +78,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxE
 
 process.source = cms.Source(
   "PoolSource",
-  fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),
+  fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),)
 )
 
 OUTFILENAME = "DATASET"
@@ -515,7 +515,7 @@ MultiLepSelector_cfg = cms.PSet(
   btagOP                   = cms.string(btagOP),
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
-  DeepJetfile              = cms.FileInPath(DeepJetFile),
+  DeepJetfile              = cms.FileInPath(DeepJetfile),
   DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile),
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.

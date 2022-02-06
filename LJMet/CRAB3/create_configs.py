@@ -11,14 +11,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f","--finalState",action="store")
 parser.add_argument("-y","--year",action="store")
 parser.add_argument("--shifts",action="store_true")
-parser.add_argument("--nominalTreeOnly",action="store_true")
 parser.add_argument("--brux",action="store_true")
-parser.add_argument("-o","--outfolder",action="store",default="crab_log")
+parser.add_argument("-o","--outfolder",action="store",default="default")
 option = parser.parse_args()
 
 if option.finalState not in [ "singleLep", "doubleLep", "multiLep" ]: quit( "[ERR] Invalid -f (--finalState) argument passed." )
 if option.year not in [ "2016APV", "2016", "2017", "2018" ]: quit( "[ERR] Invalid -y (--year) argument passed." )
-if option.shifts: SHIFTS = "True" else "False"
+SHIFTS = "True" if option.shifts else "False"
 	
 #Sample list file
 sampleListPath = "sample_list_"+option.finalState+option.year+"UL.py"
@@ -34,6 +33,9 @@ CMSRUNCONFIG        = '../runFWLJMet_{}{}UL.py'.format( option.finalState, optio
 #folder to save the created crab configs
 CRABCONFIG_DIR      = 'crab_configs_{}{}UL'.format( option.finalState, option.year )
 
+#folder to store submit logs
+CRABSUBMIT_DIR      = "crab_submit_{}{}UL".format( option.finalState, option.year )
+
 #the crab cfg template to copy from
 CRABCONFIG_TEMPLATE = 'crab_config_template.py'
 
@@ -41,17 +43,17 @@ CRABCONFIG_TEMPLATE = 'crab_config_template.py'
 REQNAME             = option.finalState+option.year + "UL"
 
 #eos out folder
-OUTFOLDER           = "{}_{}{}UL".format( option.outfolder, option.finalState, option.year ) if option.outfolder == "crab_log" else option.outfolder
+OUTFOLDER           = "FWLJMET106XUL_crab_{}{}".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 
 #JSON for Data
 JSONDATA = {
-  "16": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL URL
+  "2016": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL URL
   #"16": "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL lxplus
-  "16APV": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL URL
+  "2016APV": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL URL
   #"16APV": "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL lxplus
-  "17": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt", # UL URL
+  "2017": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt", # UL URL
   #"17": "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt", # UL lxplus
-  "18": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt", # UL URL
+  "2018": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt", # UL URL
   #"18": "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt" # UL lxplus
 }
 
@@ -68,8 +70,8 @@ def create_crab_config_files_from_template(sample_dict,**kwargs):
 
 		print dataset,sample_dict[dataset]
 
-		filename = 'crab_config_'+dataset+'.py'
-		cmsRunname = 'runFWLJMet_'+dataset+'.py'
+		filename = 'crab_config_shifts_{}.py'.format( dataset ) if kwargs["SHIFTS"] else "crab_config_{}.py".format( dataset )
+		cmsRunname = 'runFWLJMet_shifts_{}.py'.format( dataset ) if kwargs["SHIFTS"] else "runFWLJMet_{}.py".format( dataset )
 
 		#copy template file to new directory
 		os.system('cp -v '+CRABCONFIG_TEMPLATE+' '+CRABCONFIG_DIR+'/'+filename)
@@ -81,9 +83,10 @@ def create_crab_config_files_from_template(sample_dict,**kwargs):
 		os.system("sed -i 's|REQNAME|"+REQNAME+"|g' "+CRABCONFIG_DIR+"/"+filename)
 		os.system("sed -i 's|OUTFOLDER|"+OUTFOLDER+"|g' "+CRABCONFIG_DIR+"/"+filename)
 		os.system("sed -i 's|LOGFOLDER|"+dataset+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|JSONFORDATA|"+JSONFORDATA+"|g' "+CRABCONFIG_DIR+"/"+filename)
+		os.system("sed -i 's|JSONFORDATA|"+JSONDATA[option.year]+"|g' "+CRABCONFIG_DIR+"/"+filename)
 		os.system("sed -i 's|ISMC|"+kwargs['ISMC']+"|g' "+CRABCONFIG_DIR+"/"+filename)
 		os.system("sed -i 's|ISVLQSIGNAL|"+kwargs['ISVLQSIGNAL']+"|g' "+CRABCONFIG_DIR+"/"+filename)
+                os.system("sed -i 's|CRABSUBMITLOG|"+CRABSUBMIT_DIR+"|g' "+CRABCONFIG_DIR+"/"+filename)
 
 		#replace strings in new cmsRun file
 		if 'EGamma' in dataset or 'Single' in dataset or 'JetHT' in dataset:
@@ -97,7 +100,7 @@ def create_crab_config_files_from_template(sample_dict,**kwargs):
 		os.system("sed -i 's|ISVLQSIGNAL|"+kwargs['ISVLQSIGNAL']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)		
 		os.system("sed -i 's|ISTTBAR|"+kwargs['ISTTBAR']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
 		os.system("sed -i 's|DOGENHT|"+kwargs['DOGENHT']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		os.system("sed -i 's|SHIFTS|" + kwargs["SHIFTS"] + "|g' " + CRABCONFIG_DIR + "/" + filename)
+		os.system("sed -i 's|SHIFTS|" + kwargs["SHIFTS"] + "|g' " + CRABCONFIG_DIR + "/" + cmsRunname)
 
 		os.system("sed -i 's|OUTPATH|"+OUTPATH+"|g' "+CRABCONFIG_DIR+"/"+filename)
 		os.system("sed -i 's|STORESITE|"+STORESITE+"|g' "+CRABCONFIG_DIR+"/"+filename)

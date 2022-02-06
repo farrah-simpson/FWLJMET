@@ -25,8 +25,8 @@ isVLQsignal    = ISVLQSIGNAL
 ### GENERAL
 ##############
 config.section_("General")
-config.General.requestName = requestName+"_"+logFolder
-config.General.workArea = 'crabSubmitLogs/'+requestName+'/'
+config.General.requestName = logFolder
+config.General.workArea = "logs_" + requestName 
 config.General.transferLogs = True
 config.General.transferOutputs = True
 
@@ -64,15 +64,16 @@ if isMC:
 		config.Data.splitting = 'FileBased'
 		config.Data.unitsPerJob = 1
 else:
-	config.Data.splitting = 'Automatic'
-	config.Data.unitsPerJob = 1440 # 24 hours
+	config.Data.splitting = 'LumiBased'
+	config.Data.unitsPerJob = 20 
 	config.Data.lumiMask = Json_for_data
+
 config.Data.inputDBS = 'global'
 config.Data.ignoreLocality = False
 config.Data.publication = False
 # This string is used to construct the output dataset name : /store/user/lpcljm/<outputFolder>/<inpuDataset>/<requestName>/<someCRABgeneratedNumber>/<someCRABgeneratedNumber>/
 config.Data.outputDatasetTag = requestName
-config.Data.outLFNDirBase = 'OUTPATH'+outputFolder
+config.Data.outLFNDirBase = 'OUTPATH' + outputFolder + "_" + requestName 
 
 config.section_("Site")
 config.Site.storageSite = 'STORESITE'
