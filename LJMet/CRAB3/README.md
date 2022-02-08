@@ -1,10 +1,21 @@
-### Set environment for CRAB3
+# `FWLJMET` CRAB3 
+CRAB3 submissions require a configuration file, as well, which are formatted similar to [crab_config_template.py](https://github.com/daniel-sunyou-li/FWLJMET/blob/10_6_29_UL/LJMet/CRAB3/crab_config_template.py). The template itself has substitute names for variables that are overridden when runnning [create_configs.py](https://github.com/daniel-sunyou-li/FWLJMET/blob/10_6_29_UL/LJMet/CRAB3/create_configs.py). A CRAB configuration file can then be submitted easily following the proceeding instructions:
 
-       source /cvmfs/cms.cern.ch/crab3/crab.sh
+## Set environment for CRAB3
+Note, if you are running in `bash`, use `.sh` extension instead of `.csh`.
 
-### Configure the crab jobs
+	source /cvmfs/cms.cern.ch/cmsset_default.csh
+	cmsenv
+	source /cvmfs/cms.cern.ch/crab3/crab.csh
 
-Check the following variables in create_crab_config_files_from_template.py. You will need to set OUTFOLDER, likely the others are ok as is.
+Make sure that your grid proxy is registered in the CMS VO and then run:
+
+	voms-proxy-init --voms cms
+
+## Create the CRAB3 Configurations  
+Before you create the CRAB configuration files using `create_configs.py`, be sure to check the sample lists for your respective years in the files `sample_list_*20*UL.py`. 
+	
+
 The default behavior is to create crab configs and store logs inside this CRAB3 directory. Commented options for some variables are available to move these logs to your nobackup area (also check crab_FWLJMET_cfg_template.py if you want to use these option). 
 
 CMSRUNCONFIG        
