@@ -73,7 +73,7 @@ config.Data.ignoreLocality = False
 config.Data.publication = False
 # This string is used to construct the output dataset name : /store/user/lpcljm/<outputFolder>/<inpuDataset>/<requestName>/<someCRABgeneratedNumber>/<someCRABgeneratedNumber>/
 config.Data.outputDatasetTag = requestName
-config.Data.outLFNDirBase = 'OUTPATH' + outputFolder + "_" + requestName 
+config.Data.outLFNDirBase = 'OUTPATH' + outputFolder
 
 config.section_("Site")
 config.Site.storageSite = 'STORESITE'
