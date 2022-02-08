@@ -46,6 +46,9 @@ groups = {
     "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM",
     "TTTW": "/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM"
   },
+  "VLQ": {
+    
+  },
   "TPRIMEBPRIME": {
   # Not submitted
   },
