@@ -43,7 +43,7 @@ CRABCONFIG_TEMPLATE = 'crab_config_template.py'
 REQNAME             = option.finalState+option.year + "UL"
 
 #eos out folder
-OUTFOLDER           = "FWLJMET106XUL_{}{}UL".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
+OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 
 #JSON for Data
 JSONDATA = {
