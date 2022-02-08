@@ -10,6 +10,7 @@ home = os.environ['HOME']
 parser = argparse.ArgumentParser()
 parser.add_argument("-f","--finalState",action="store")
 parser.add_argument("-y","--year",action="store")
+parser.add_argument("-g","--group",nargs="+",required=True)
 parser.add_argument("--shifts",action="store_true")
 parser.add_argument("--brux",action="store_true")
 parser.add_argument("-o","--outfolder",action="store",default="default")
@@ -20,13 +21,12 @@ if option.year not in [ "2016APV", "2016", "2017", "2018" ]: quit( "[ERR] Invali
 SHIFTS = "True" if option.shifts else "False"
 	
 #Sample list file
-sampleListPath = "sample_list_"+option.finalState+option.year+"UL.py"
-sample = imp.load_source("Sample",sampleListPath,open(sampleListPath,"r"))
+sampleListPath = "sample_list_{}{}UL.py".format( option.finalState, option.year )
+samples = imp.load_source( "Sample", sampleListPath, open( sampleListPath, "r" ) )
 
 ####################
 ### SET YOUR STRINGS
 ####################
-#cmsRun config
 
 CMSRUNCONFIG        = '../runFWLJMet_{}{}UL.py'.format( option.finalState, option.year )
 
@@ -64,124 +64,63 @@ else:
 	OUTPATH = '/store/group/lpcljm/'
 	STORESITE = 'T3_US_FNALLPC'
 
-def create_crab_config_files_from_template(sample_dict,**kwargs):
+def create_crab_config( group, process, shifts ):
+	ISMC = "True" if process not in samples.groups[ "DATA" ].keys() else "False"
+	SHIFTS = "True" if shifts else "False"
+	try: 
+		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
+	except:
+		ISVLQSIGNAL = "False
+	try: 
+		ISTTBAR = "True" if ( ( process in samples.groups[ "TTBAR" ].keys() ) or ( process in samples.groups[ "TTMT" ].keys() ) or ( process in samples.groups[ "TTTX" ].keys() ) or ( process in samples.groups[ "TTBAR_SHIFTS" ].keys() ) or ( process in samples.groups[ "TTXY" ].keys() ) ) else "False"
+	except:
+		ISTTBAR = "False"
+	try:
+		DOGENHT = "True" if ( ( process in samples.groups[ "WJETSHT" ].keys() ) or ( process in samples.groups[ "QCDHT" ].keys() ) or ( process in samples.groups[ "DYMHT" ].keys() ) ) else "False"
+	except:
+		DOGENHT = "False"
+		
+	filename = 'crab_config_shifts_{}.py'.format( process ) if SHIFTS else "crab_config_{}.py".format( process )
+	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if SHIFTS else "runFWLJMet_{}.py".format( process )
 
-	for dataset in sample_dict:
+	#copy template file to new directory
+	os.system( 'cp -v {} {}/{}'.format( CRABCONFIG_TEMPLATE, CRABCONFIG_DIR, filename ) )
+	os.system( 'cp -v {} {}/{}'.format( CMSRUNCONFIG, CRABCONFIG_DIR, cmsRunname ) )
 
-		print dataset,sample_dict[dataset]
+	#replace strings in new crab file
+	os.system( "sed -i 's|CMSRUNCONFIG|{}/{}|g' {}/{}".format( CRABCONFIG_DIR, cmsRunname, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|INPUT|{}|g' {}/{}".format( samples.groups[ group ][ process ], CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|REQNAME|{}|g' {}/{}".format( REQNAME, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|OUTFOLDER|{}|g' {}/{}".format( OUTFOLDER, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|LOGFOLDER|{}|g' {}/{}".format( dataset, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|JSONFORDATA|{}|g' {}/{}".format( JSONDATA[option.year], CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|ISMC|{}|g' {}/{}".format( ISMC, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|ISVLQSIGNAL|{}|g' {}/{}".format( ISVLQSIGNAL, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|CRABSUBMITLOG|{}|g' {}/{}".format( CRABSUBMIT_DIR, CRABCONFIG_DIR, filename ) )
 
-		filename = 'crab_config_shifts_{}.py'.format( dataset ) if kwargs["SHIFTS"] else "crab_config_{}.py".format( dataset )
-		cmsRunname = 'runFWLJMet_shifts_{}.py'.format( dataset ) if kwargs["SHIFTS"] else "runFWLJMet_{}.py".format( dataset )
-
-		#copy template file to new directory
-		os.system('cp -v '+CRABCONFIG_TEMPLATE+' '+CRABCONFIG_DIR+'/'+filename)
-		os.system('cp -v '+CMSRUNCONFIG+' '+CRABCONFIG_DIR+'/'+cmsRunname)
-
-		#replace strings in new crab file
-		os.system("sed -i 's|CMSRUNCONFIG|"+CRABCONFIG_DIR+"/"+cmsRunname+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|INPUT|"+sample_dict[dataset]+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|REQNAME|"+REQNAME+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|OUTFOLDER|"+OUTFOLDER+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|LOGFOLDER|"+dataset+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|JSONFORDATA|"+JSONDATA[option.year]+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|ISMC|"+kwargs['ISMC']+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|ISVLQSIGNAL|"+kwargs['ISVLQSIGNAL']+"|g' "+CRABCONFIG_DIR+"/"+filename)
-                os.system("sed -i 's|CRABSUBMITLOG|"+CRABSUBMIT_DIR+"|g' "+CRABCONFIG_DIR+"/"+filename)
-
-		#replace strings in new cmsRun file
-		if 'EGamma' in dataset or 'Single' in dataset or 'JetHT' in dataset:
-			os.system("sed -i 's|DATASET|"+dataset+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		elif 'ext' in dataset:
-			extcode = dataset[dataset.find('ext'):]
-			os.system("sed -i 's|DATASET|"+sample_dict[dataset].split('/')[1]+'-'+extcode+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		else:
-			os.system("sed -i 's|DATASET|"+sample_dict[dataset].split('/')[1]+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		os.system("sed -i 's|ISMC|"+kwargs['ISMC']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		os.system("sed -i 's|ISVLQSIGNAL|"+kwargs['ISVLQSIGNAL']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)		
-		os.system("sed -i 's|ISTTBAR|"+kwargs['ISTTBAR']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		os.system("sed -i 's|DOGENHT|"+kwargs['DOGENHT']+"|g' "+CRABCONFIG_DIR+"/"+cmsRunname)
-		os.system("sed -i 's|SHIFTS|" + kwargs["SHIFTS"] + "|g' " + CRABCONFIG_DIR + "/" + cmsRunname)
-
-		os.system("sed -i 's|OUTPATH|"+OUTPATH+"|g' "+CRABCONFIG_DIR+"/"+filename)
-		os.system("sed -i 's|STORESITE|"+STORESITE+"|g' "+CRABCONFIG_DIR+"/"+filename)
-
+	#replace strings in new cmsRun file
+	if ( ( "EGamma" in process ) or ( "Single" in process ) or ( "JetHT" in process ) ):
+		os.system( "sed -i 's|DATASET|{}|g' {}/{}".format( process, CRABCONFIG_DIR, cmsRunname ) )
+	elif 'ext' in process:
+		extcode = process[ process.find("ext"): ]
+		os.system( "sed -i 's|DATASET|{}-{}|g' {}/{}".format( samples.groups[ group ][ process ].split("/")[1], extcode, CRABCONFIG_DIR, cmsRunname ) )
+	else:
+		os.system( "sed -i 's|DATASET|{}|g' {}/{}".format( samples.groups[ group ][ process ].split("/")[1], CRABCONFIG_DIR, cmsRunname ) )
+	os.system( "sed -i 's|ISMC|{}|g' {}/{}".format( ISMC, CRABCONFIG_DIR, cmsRunname ) )
+	os.system( "sed -i 's|ISVLQSIGNAL|{}|g' {}/{}".format( ISVLQSIGNAL, CRABCONFIG_DIR, cmsRunname ) )		
+	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, cmsRunname ) )
+	os.system( "sed -i 's|DOGENHT|{}|g' {}/{}".format( DOGENHT, CRABCONFIG_DIR, cmsRunname ) )
+	os.system( "sed -i 's|SHIFTS|{}|g' {}/{}".format( SHIFTS, CRABCONFIG_DIR, cmsRunname ) )
+	os.system( "sed -i 's|OUTPATH|{}|g' {}/{}".format( OUTPATH, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|STORESITE|{}|g' {}/{}".format( STORESITE, CRABCONFIG_DIR, filename ) )
 
 if __name__=='__main__':
-
+	
 	os.system('mkdir -vp '+CRABCONFIG_DIR)
 
-	#### Bkg MC - no ttbar - yes MLM
-	create_crab_config_files_from_template(
-		sample.bkghtdict,
-		ISMC='True',
-		ISVLQSIGNAL='False',
-		ISTTBAR='False',
- 		DOGENHT='True',
-		SHIFTS=SHIFTS
-		)
-
-	#### Bkg MC - no ttbar - no MLM
-	create_crab_config_files_from_template(
-		sample.bkgdict,
-		ISMC='True',
-		ISVLQSIGNAL='False',
-		ISTTBAR='False',
- 		DOGENHT='False',
-		SHIFTS=SHIFTS
-		)
-
-	#### Bkg MC - ttbar
-	create_crab_config_files_from_template(
- 		sample.ttbarbkgdict,
- 		ISMC='True',
- 		ISVLQSIGNAL='False',
- 		ISTTBAR='True',
- 		DOGENHT='False',
-		SHIFTS=SHIFTS
- 		)
-
-        #### fourtops MC
-        create_crab_config_files_from_template(
-                sample.fourtopssigdict,
-                ISMC='True',
-                ISVLQSIGNAL='False',
-                ISTTBAR='False',
- 		DOGENHT='False',
-		SHIFTS=SHIFTS
-                )
-        create_crab_config_files_from_template(
-                sample.fourtopsttdict,
-                ISMC='True',
-                ISVLQSIGNAL='False',
-                ISTTBAR='True',
- 		DOGENHT='False',
-		SHIFTS=SHIFTS
-                )
-        create_crab_config_files_from_template(
-                sample.fourtopsbkgdict,
-                ISMC='True',
-                ISVLQSIGNAL='False',
-                ISTTBAR='False',
- 		DOGENHT='False',
-		SHIFTS=SHIFTS
-                )
-
-	#### VLQ signal MC
-	create_crab_config_files_from_template(
-		sample.signaldict,
-		ISMC='True',
-		ISVLQSIGNAL='True',
-		ISTTBAR='False',
-		DOGENHT='False',
-		SHIFTS=SHIFTS
-		)
-
-	#### Data
-	create_crab_config_files_from_template(
-	 	sample.datadict,
-	 	ISMC='False',
-	 	ISVLQSIGNAL='False',
-	 	ISTTBAR='False',
-	 	DOGENHT='False',
-		SHIFTS="False"
-	 	)
+	for group in args.groups:
+		if group not in list( samples.groups.keys() ):
+			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, args.finalState, args.year ) )
+		else:
+			for process in sample.groups[ group ]:
+				create_crab_config( group, process, SHIFTS )
