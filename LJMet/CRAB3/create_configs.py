@@ -118,9 +118,9 @@ if __name__=='__main__':
 	
 	os.system('mkdir -vp '+CRABCONFIG_DIR)
 
-	for group in args.groups:
+	for group in option.groups:
 		if group not in list( samples.groups.keys() ):
-			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, args.finalState, args.year ) )
+			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
 		else:
 			for process in sample.groups[ group ]:
 				create_crab_config( group, process, SHIFTS )
