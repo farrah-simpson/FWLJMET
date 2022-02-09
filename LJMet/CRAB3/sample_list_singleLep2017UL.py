@@ -5,22 +5,26 @@ groups = {
     "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM",
     "SingleElectronRun2017B": "/SingleElectron/Run2017B-UL2017_MiniAODv2-v1/MINIAOD"
   },
-  "DATA": {
+  "DATAE": {
     "SingleElectronRun2017B": "/SingleElectron/Run2017B-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2017C": "/SingleElectron/Run2017C-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2017D": "/SingleElectron/Run2017D-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2017E": "/SingleElectron/Run2017E-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2017F": "/SingleElectron/Run2017F-UL2017_MiniAODv2-v1/MINIAOD",
+  },
+  "DATAM": {
     "SingleMuonRun2017B": "/SingleMuon/Run2017B-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleMuonRun2017C": "/SingleMuon/Run2017C-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleMuonRun2017D": "/SingleMuon/Run2017D-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleMuonRun2017E": "/SingleMuon/Run2017E-UL2017_MiniAODv2-v1/MINIAOD",
     "SingleMuonRun2017F": "/SingleMuon/Run2017F-UL2017_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2017B": "/JetHT/Run2017B-UL2017_MiniAODv2-v1/MINIAOD", # not a priority for now
-    #"JetHTRun2017C": "/JetHT/Run2017C-UL2017_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2017D": "/JetHT/Run2017D-UL2017_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2017E": "/JetHT/Run2017E-UL2017_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2017F": "/JetHT/Run2017F-UL2017_MiniAODv2-v1/MINIAOD",
+  },
+  "DATAJ": { # not a priority for now
+    "JetHTRun2017B": "/JetHT/Run2017B-UL2017_MiniAODv2-v1/MINIAOD", 
+    "JetHTRun2017C": "/JetHT/Run2017C-UL2017_MiniAODv2-v1/MINIAOD",
+    "JetHTRun2017D": "/JetHT/Run2017D-UL2017_MiniAODv2-v1/MINIAOD",
+    "JetHTRun2017E": "/JetHT/Run2017E-UL2017_MiniAODv2-v1/MINIAOD",
+    "JetHTRun2017F": "/JetHT/Run2017F-UL2017_MiniAODv2-v1/MINIAOD",
   },
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM",
