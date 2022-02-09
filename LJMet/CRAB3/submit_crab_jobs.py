@@ -14,16 +14,20 @@ samples = imp.load_source( "Sample", sampleListPath, open(sampleListPath,"r") )
 home = os.environ['HOME']
 CRABCONFIG_DIR = option.folder
 
-def submit_crab_job( group, process, shifts ):
+def submit_crab_job( group, process, shifts, failed_submissions ):
   if shifts:
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_shifts_{}.py".format( process ) )
   else:
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_{}.py".format( process ) )
-  os.system( "crab submit {}".format( crab_cfg ) )
+  try: 
+    os.system( "crab submit {}".format( crab_cfg ) )
+  except:
+    failed_submissions.append( process )
 
 if __name__ == '__main__':
   print( "[START] Submitting CRAB3 jobs" )
   count = 0
+  failed_submissions = []
   for group in option.groups:
     print( ">> Submitting jobs for {}".format( group ) )
     if group not in list( samples.groups.keys() ):
@@ -33,4 +37,9 @@ if __name__ == '__main__':
         print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
         submit_crab_job( group, process, option.shifts )
         count += 1
+  if len( failed_submissions ) > 0:
+    print( "[WARN] {} submissions failed, please check the naming or availability on GrASP or DAS:" )
+    for submission in failed_submissions:
+      print( "   - {}".format( submission ) )
   print( "[DONE] Submitted {} CRAB jobs.".format( count ) )
+
