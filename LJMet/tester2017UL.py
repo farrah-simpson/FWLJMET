@@ -1023,7 +1023,7 @@ if isTTbar:
     )
 
 elif isMC:
-  if shift:
+  if shifts:
     process.p = cms.Path(
       process.mcweightanalyzer *
       process.filter_any_explicit *
