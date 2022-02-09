@@ -44,7 +44,7 @@ where you reference the directory you just created-it will automatically parse t
 
 	python check_crab_jobs.py -l logs_[FINALSTATE][YEAR]UL/ -g TEST --report
 	
-to see the state of your CRAB3 jobs. Adding `--verbose` will show you any errors in the CRAB job in greater detail. In case you need to resubmit your jobs, you can replace `--report` with `--resubmit`, and similarly, if you need to kill the job, you can replace with `--kill`.
+to see the state of your CRAB3 jobs. Adding `--verbose` will show you any errors in the CRAB job in greater detail. In case you need to resubmit your jobs, you can replace `--report` with `--resubmit`, and similarly, if you need to kill the job, you can replace with `--kill`. If you happen to need to resubmit `submit_crab_jobs.py` (i.e. editing EDAnalyzer configuration or CRAB3 configuration files), be sure to remove the older log directory since CRAB3 does not override existing logs. Before you do that, it is best to `--kill` the jobs in that folder.
 
 __Checking the completed jobs:__  
 When your jobs finish, they should be stored on the LPC EOS group area by default-the other option is on BRUX. If stored on EOS, you can view them using:
