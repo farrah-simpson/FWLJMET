@@ -5,19 +5,23 @@ groups = {
     "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM",
     "SingleElectronRun2017B": "/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD"
   },
-  "DATA": {
+  "DATAE": {
     "SingleElectronRun2018A": "/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2018B": "/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2018C": "/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD",
     "SingleElectronRun2018D": "/EGamma/Run2018B-UL2018_MiniAODv2-v2/MINIAOD",
+  },
+  "DATAM": {
     "SingleMuonRun2018A": "/SingleMuon/Run2018A-UL2018_MiniAODv2-v3/MINIAOD",
     "SingleMuonRun2018B": "/SingleMuon/Run2018B-UL2018_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2018C": "/SingleMuon/Run2018C-UL2018_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2018D": "/SingleMuon/Run2018D-UL2018_MiniAODv2-v3/MINIAOD",
-    #"JetHTRun2018A": "/JetHT/Run2018A-UL2018_MiniAODv2-v1/MINIAOD", # not a priority for now
-    #"JetHTRun2018B": "/JetHT/Run2018B-UL2018_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2018C": "/JetHT/Run2018C-UL2018_MiniAODv2-v1/MINIAOD",
-    #"JetHTRun2018D": "/JetHT/Run2018D-UL2018_MiniAODv2-v2/MINIAOD",
+  },
+  "DATAJ": {
+    "JetHTRun2018A": "/JetHT/Run2018A-UL2018_MiniAODv2-v1/MINIAOD", # not a priority for now
+    "JetHTRun2018B": "/JetHT/Run2018B-UL2018_MiniAODv2-v1/MINIAOD",
+    "JetHTRun2018C": "/JetHT/Run2018C-UL2018_MiniAODv2-v1/MINIAOD",
+    "JetHTRun2018D": "/JetHT/Run2018D-UL2018_MiniAODv2-v2/MINIAOD",
   },
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM",
