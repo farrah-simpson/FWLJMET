@@ -5,22 +5,26 @@ groups = {
     "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM",
     #"SingleElectronRun2016B": "/SingleElectron/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v2/MINIAOD",
   },
-  "DATA": {
+  "DATAE": {
     "SingleElectronRun2016B": "/SingleElectron/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleElectronRun2016C": "/SingleElectron/Run2016C-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleElectronRun2016D": "/SingleElectron/Run2016D-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleElectronRun2016E": "/SingleElectron/Run2016E-HIPM_UL2016_MiniAODv2-v5/MINIAOD",
     "SingleElectronRun2016F": "/SingleElectron/Run2016F-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
+  },
+  "DATAM": {
     "SingleMuonRun2016B": "/SingleMuon/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2016C": "/SingleMuon/Run2016C-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2016D": "/SingleMuon/Run2016D-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2016E": "/SingleMuon/Run2016E-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
     "SingleMuonRun2016F": "/SingleMuon/Run2016F-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
-    #"JetHTRun2016B": "/JetHT/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v2/MINIAOD", # not a priority for now
-    #"JetHTRun2016C": "/JetHT/Run2016C-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
-    #"JetHTRun2016D": "/JetHT/Run2016D-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
-    #"JetHTRun2016E": "/JetHT/Run2016E-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
-    #"JetHTRun2016F": "/JetHT/Run2016F-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
+  },
+  "DATAJ": { # not a priority for now
+    "JetHTRun2016B": "/JetHT/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v2/MINIAOD", 
+    "JetHTRun2016C": "/JetHT/Run2016C-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
+    "JetHTRun2016D": "/JetHT/Run2016D-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
+    "JetHTRun2016E": "/JetHT/Run2016E-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
+    "JetHTRun2016F": "/JetHT/Run2016F-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
   },
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM",
