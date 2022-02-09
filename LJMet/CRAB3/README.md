@@ -49,7 +49,7 @@ to see the state of your CRAB3 jobs. Adding `--verbose` will show you any errors
 __Checking the completed jobs:__  
 When your jobs finish, they should be stored on the LPC EOS group area by default-the other option is on BRUX. If stored on EOS, you can view them using:
 
-	eosls /store/group/lpcljm/FWLJMET106XUL_[FINALSTATE][YEAR]UL_RunIISummer20/ -lh
+	eosls /store/group/lpcljm/FWLJMET106XUL_[FINALSTATE][YEAR]UL_RunIISummer20_test/ -lh
 
 
 
