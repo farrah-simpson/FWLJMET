@@ -35,7 +35,7 @@ if __name__ == '__main__':
     else:
       for process in samples.groups[ group ]:
         print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
-        submit_crab_job( group, process, option.shifts )
+        submit_crab_job( group, process, option.shifts, failed_submissions )
         count += 1
   if len( failed_submissions ) > 0:
     print( "[WARN] {} submissions failed, please check the naming or availability on GrASP or DAS:" )

@@ -28,6 +28,9 @@ samples = imp.load_source( "Sample", sampleListPath, open( sampleListPath, "r" )
 ### SET YOUR STRINGS
 ####################
 
+#folder to save the created crab configs
+CRABCONFIG_DIR      = 'crab_configs_{}{}UL'.format( option.finalState, option.year )
+
 #JSON for Data
 JSONDATA = {
   "2016": "https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt", # UL URL
@@ -50,8 +53,6 @@ else:
 def create_crab_config( group, process, shifts ):
 	CMSRUNCONFIG        = '../runFWLJMet_{}{}UL.py'.format( option.finalState, option.year )
 
-	#folder to save the created crab configs
-	CRABCONFIG_DIR      = 'crab_configs_{}{}UL'.format( option.finalState, option.year )
 
 	#folder to store submit logs
 	CRABSUBMIT_DIR      = "crab_submit_{}{}UL".format( option.finalState, option.year )
@@ -65,7 +66,7 @@ def create_crab_config( group, process, shifts ):
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
-	ISMC = "True" if process not in samples.groups[ "DATA" ].keys() else "False"
+	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) or ( process not in samples.groups[ "DATAM" ].keys() ) or ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
