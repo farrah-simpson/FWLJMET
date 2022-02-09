@@ -24,13 +24,13 @@ def submit_crab_job( group, process, shifts ):
 if __name__ == '__main__':
   print( "[START] Submitting CRAB3 jobs" )
   count = 0
-	for group in option.groups:
+  for group in option.groups:
     print( ">> Submitting jobs for {}".format( group ) )
-		if group not in list( samples.groups.keys() ):
-			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
-		else:
-			for process in sample.groups[ group ]:
+    if group not in list( samples.groups.keys() ):
+      print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
+    else:
+      for process in samples.groups[ group ]:
         print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
-				submit_crab_job( group, process, option.shifts )
+        submit_crab_job( group, process, option.shifts )
         count += 1
   print( "[DONE] Submitted {} CRAB jobs.".format( count ) )

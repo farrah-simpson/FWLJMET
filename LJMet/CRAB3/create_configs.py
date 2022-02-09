@@ -8,11 +8,11 @@ relBase = os.environ['CMSSW_BASE']
 home = os.environ['HOME']
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f","--finalState",action="store")
-parser.add_argument("-y","--year",action="store")
-parser.add_argument("-g","--group",nargs="+",required=True)
-parser.add_argument("--shifts",action="store_true")
-parser.add_argument("--brux",action="store_true")
+parser.add_argument("-f","--finalState",action="store",help="singleLep")
+parser.add_argument("-y","--year",action="store",help="2016APV,2016,2017,2018")
+parser.add_argument("-g","--groups",nargs="+",required=True,help="See sample_list_*UL.py")
+parser.add_argument("--shifts",action="store_true",help="JER/JEC shifts")
+parser.add_argument("--brux",action="store_true",help="Store CRAB output on BRUX")
 parser.add_argument("-o","--outfolder",action="store",default="default")
 option = parser.parse_args()
 
@@ -70,7 +70,7 @@ def create_crab_config( group, process, shifts ):
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
 	except:
-		ISVLQSIGNAL = "False
+		ISVLQSIGNAL = "False"
 	try: 
 		ISTTBAR = "True" if ( ( process in samples.groups[ "TTBAR" ].keys() ) or ( process in samples.groups[ "TTMT" ].keys() ) or ( process in samples.groups[ "TTTX" ].keys() ) or ( process in samples.groups[ "TTBAR_SHIFTS" ].keys() ) or ( process in samples.groups[ "TTXY" ].keys() ) ) else "False"
 	except:
@@ -92,7 +92,7 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|INPUT|{}|g' {}/{}".format( samples.groups[ group ][ process ], CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|REQNAME|{}|g' {}/{}".format( REQNAME, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|OUTFOLDER|{}|g' {}/{}".format( OUTFOLDER, CRABCONFIG_DIR, filename ) )
-	os.system( "sed -i 's|LOGFOLDER|{}|g' {}/{}".format( dataset, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|LOGFOLDER|{}|g' {}/{}".format( process, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|JSONFORDATA|{}|g' {}/{}".format( JSONDATA[option.year], CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|ISMC|{}|g' {}/{}".format( ISMC, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|ISVLQSIGNAL|{}|g' {}/{}".format( ISVLQSIGNAL, CRABCONFIG_DIR, filename ) )
@@ -122,5 +122,5 @@ if __name__=='__main__':
 		if group not in list( samples.groups.keys() ):
 			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
 		else:
-			for process in sample.groups[ group ]:
+			for process in samples.groups[ group ]:
 				create_crab_config( group, process, SHIFTS )
