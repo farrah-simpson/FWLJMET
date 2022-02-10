@@ -55,9 +55,11 @@ The old instruction for adding Axis1 information "git cms-merge-topic -u pastika
 	* Instructions using 'vim':
 		1. Open `QGTagger.cc` with 'vim': `vim RecoJets/JetProducers/plugins/QGTagger.cc`
 		2. Delete all contents: `dG`
-		3. Open 'paste' mode: `:set paste`
-		4. Copy new `QGTagger.cc` contents into empty file using 'copy+paste'
-		5. Save and exit: `:wq`
+		3. Set 'paste' mode: `:set paste`
+		4. Set 'insert' mode: `i`
+		5. Copy new `QGTagger.cc` contents into empty file using 'copy+paste'
+		6. Exit 'insert' mode: `esc` key
+		7. Save and exit: `:wq`
 * Update `RecoJets/JetProducers/interface/QGTagger.h` by replacing L24: `std::tuple<int, float, float> calcVariables` with `std::tuple<int, float, float, float> calcVariables`
 
 __Adding `EGammaPostRecoTools` and `ElectronTools` for [Electron MVA ID](https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2):__
