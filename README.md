@@ -56,7 +56,6 @@ The old instruction for adding Axis1 information "git cms-merge-topic -u pastika
 
 __Adding `EGammaPostRecoTools` and `ElectronTools` for [Electron MVA ID](https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2):__
 
-	git cms-merge-topic cms-egamma:EgammaPostRecoTools
 	git cms-addpkg RecoEgamma/EgammaTools
 	git clone https://github.com/cms-egamma/EgammaPostRecoTools.git
 	mv EgammaPostRecoTools/python/EgammaPostRecoTools.py RecoEgamma/EgammaTools/python/.
@@ -74,10 +73,6 @@ For more information about `BestCalc`, or BoostedEventShapeTagger (BEST):
 * https://bregnery.github.io/docs/BESTstandaloneTutorial/
 * https://github.com/justinrpilot/BESTAnalysis/tree/master
 * https://github.com/demarley/lwtnn/tree/CMSSW_8_0_X-compatible#cmssw-compatibility
-
-__Add `PatUtils` for [L1 Prefiring Weights](https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe):__  
-
-	git-cms-addpkg PhysicsTools/PatUtils 
 
 __Checking out FWLJMET from Github:__  
 Finally, we can download the `FWLJMET` code base after setting up all the necessary dependencies:
