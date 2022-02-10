@@ -19,7 +19,7 @@ logFolder      = 'LOGFOLDER'
 Json_for_data  = 'JSONFORDATA'
 isMC           = ISMC
 isVLQsignal    = ISVLQSIGNAL
-
+isTTbar        = ISTTBAR
 ##############
 ### GENERAL
 ##############
@@ -59,12 +59,15 @@ if isMC:
 	if isVLQsignal:
 		config.Data.splitting = 'LumiBased'
 		config.Data.unitsPerJob = 2
+        elif isTTbar:
+                config.Data.splitting = "FileBased"
+                config.Data.unitsPerJob = 2
 	else:
 		config.Data.splitting = 'FileBased'
 		config.Data.unitsPerJob = 1
 else:
 	config.Data.splitting = 'Automatic'
-	config.Data.unitsPerJob = 720 
+	config.Data.unitsPerJob = 720
 	config.Data.lumiMask = Json_for_data
 
 config.Data.inputDBS = 'global'
