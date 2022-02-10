@@ -17,7 +17,8 @@ __Retrieving the `CMSSW` environment:__
 Note that if you are running a `bash` environment, the postfix should be `.sh` rather than `.csh` for `tcsh`. Also, `setenv [alias] [name]` in `tcsh` should be `export [alias]=[name]` in `bash`.
 
 For `tcsh`:
-
+	
+	cd ~/nobackup
 	source /cvmfs/cms.cern.ch/cmsset_default.csh
 	setenv SCRAM_ARCH slc7_amd64_gcc700
 	cmsrel CMSSW_10_6_29
@@ -25,7 +26,8 @@ For `tcsh`:
 	cmsenv
 
 For `bash`:
-
+	
+	cd ~/nobackup
 	source /cvmfs/cms.cern.ch/cmsset_default.sh
 	export SCRAM_ARCH=slc7_amd64_gcc700
 	cmsrel CMSSW_10_6_29

@@ -100,6 +100,7 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|ISMC|{}|g' {}/{}".format( ISMC, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|ISVLQSIGNAL|{}|g' {}/{}".format( ISVLQSIGNAL, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|CRABSUBMITLOG|{}|g' {}/{}".format( CRABSUBMIT_DIR, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, filename ) )
 
 	#replace strings in new cmsRun file
 	if ( ( "EGamma" in process ) or ( "Single" in process ) or ( "JetHT" in process ) ):
