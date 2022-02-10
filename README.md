@@ -42,7 +42,7 @@ __[HOT (Resolved top) Tagger](https://github.com/susy2015/TopTagger/tree/master/
 
 	git clone https://github.com/susy2015/TopTagger.git
 	
-To make `TopTagger` compatible with `CMSSW_10_6_29`, you must manually edit the following file: `/TopTagger/DataFormats/BuildFile.xml` with the following:
+To make `TopTagger` compatible with `CMSSW_10_6_29`, you must manually edit (i.e. using 'vim') the following file: `/TopTagger/DataFormats/BuildFile.xml` with the following:
 * Add `<use name="clhep"/>`
 * Add `<use name="root"/>`
 	
@@ -52,6 +52,12 @@ __Adding `Axis1` information for `RecoJets`:__
 
 The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for `CMSSW_10_6_29`, please do the following steps by hand:
 * Replace `RecoJets/JetProducers/plugins/QGTagger.cc` with [this version](https://github.com/jingyuluo/QG_SA/blob/master/QGTagger.cc)
+	* Instructions using 'vim':
+		1. Open `QGTagger.cc` with 'vim': `vim RecoJets/JetProducers/plugins/QGTagger.cc`
+		2. Delete all contents: `dG`
+		3. Open 'paste' mode: `:set paste`
+		4. Copy new `QGTagger.cc` contents into empty file using 'copy+paste'
+		5. Save and exit: `:wq`
 * Update `RecoJets/JetProducers/interface/QGTagger.h` by replacing L24: `std::tuple<int, float, float> calcVariables` with `std::tuple<int, float, float, float> calcVariables`
 
 __Adding `EGammaPostRecoTools` and `ElectronTools` for [Electron MVA ID](https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2):__
