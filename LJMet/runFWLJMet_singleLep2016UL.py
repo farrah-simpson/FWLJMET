@@ -408,7 +408,7 @@ MultiLepSelector_cfg = cms.PSet(
   # MET filter - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
   metfilters      = cms.bool(True),
   flag_tag        = cms.InputTag(MET_filt_flag_tag),
-  ecalBadCalibFilter = cms.bool(True),
+  ecalBadCalibFilter = cms.bool(False),
 
   # MET cuts
   met_cuts       = cms.bool(True),
