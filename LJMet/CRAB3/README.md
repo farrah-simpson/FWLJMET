@@ -51,8 +51,10 @@ When your jobs finish, they should be stored on the LPC EOS group area by defaul
 
 	eosls /store/group/lpcljm/FWLJMET106XUL_[FINALSTATE][YEAR]UL_RunIISummer20_test/ -lh
 
+If stored on BRUX, first sign-in to BRUX:
 
+	ssh [username]@brux20.hep.brown.edu
+	
+Then you can view the samples stored at:
 
-Note:
- * sample_list_XX.py contain the dataset lists.
- * crab_script.sh -- is used when running VLQ samples. This resets environment variable in order to access LHApdf files not in CMSSW. This is run using scripExe in the crab cfg.
+	ls /isilon/hadoop/store/group/bruxljm/FWLJMET106XUL_[FINALSTATE][YEAR]UL_RunIISummer20_test/ 
