@@ -66,7 +66,7 @@ def create_crab_config( group, process, shifts ):
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
-	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) or ( process not in samples.groups[ "DATAM" ].keys() ) or ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
+	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
