@@ -172,7 +172,7 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v8', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v9', '')
 if isMC == False: process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v35')
 print 'Using global tag', process.GlobalTag.globaltag
 

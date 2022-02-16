@@ -115,10 +115,11 @@ Set the `LHAFPDF_DATA_PATH` alias for pdf change environment variable:
 	export LHAPDF_DATA_PATH="/cvmfs/cms.cern.ch/lhapdf/pdfsets/current/":${LHAPDF_DATA_PATH}  ## bash
 
 
-## Running a test `LJMet` EDAnalyzer
+## (OPTIONAL) Running a test `LJMet` EDAnalyzer
 There are four test configuration scripts (`2016APV`,`2016`,`2017`,`2018`) available that allow you to run the EDAnalyzer locally for purposes such as quick debugging or viewing. Run parameters can be changed inside the script, such as the input sample and number of events. 
 
     cd ${CMSSW_BASE}/src/FWLJMET/LJMet/
+    voms-proxy-init --voms cms
     cmsRun tester2017UL.py 
 
 At the end of running, you should have a `.root` file with a name similar to `test_2017UL.root`.
