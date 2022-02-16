@@ -3,7 +3,6 @@ Note that for `bash`, use `.sh` extensions instead of `.csh`:
 
 	source /cvmfs/cms.cern.ch/cmsset_default.csh
 	cmsenv
-	source /cvmfs/cms.cern.ch/crab3/crab.csh
 	
 If you haven't initialized your grid proxy yet:
 
