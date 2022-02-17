@@ -64,6 +64,8 @@ def create_crab_config( group, process, shifts ):
 	#crab request name
 	REQNAME             = option.finalState+option.year + "UL"
 
+	MAXEVENTS = "-1"
+	
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
@@ -84,7 +86,8 @@ def create_crab_config( group, process, shifts ):
 		DOGENHT = "False"
 	if group == "TEST":
 		OUTFOLDER += "_test"
-		
+		MAXEVENTS = "100"
+	
 	filename = 'crab_config_shifts_{}.py'.format( process ) if shifts else "crab_config_{}.py".format( process )
 	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if shifts else "runFWLJMet_{}.py".format( process )
 
@@ -103,6 +106,8 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|ISVLQSIGNAL|{}|g' {}/{}".format( ISVLQSIGNAL, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|CRABSUBMITLOG|{}|g' {}/{}".format( CRABSUBMIT_DIR, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|OUTPATH|{}|g' {}/{}".format( OUTPATH, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|STORESITE|{}|g' {}/{}".format( STORESITE, CRABCONFIG_DIR, filename ) )
 
 	#replace strings in new cmsRun file
 	if ( ( "EGamma" in process ) or ( "Single" in process ) or ( "JetHT" in process ) ):
@@ -117,8 +122,7 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, cmsRunname ) )
 	os.system( "sed -i 's|DOGENHT|{}|g' {}/{}".format( DOGENHT, CRABCONFIG_DIR, cmsRunname ) )
 	os.system( "sed -i 's|SHIFTS|{}|g' {}/{}".format( SHIFTS, CRABCONFIG_DIR, cmsRunname ) )
-	os.system( "sed -i 's|OUTPATH|{}|g' {}/{}".format( OUTPATH, CRABCONFIG_DIR, filename ) )
-	os.system( "sed -i 's|STORESITE|{}|g' {}/{}".format( STORESITE, CRABCONFIG_DIR, filename ) )
+        os.system( "sed -i 's|MAXEVENTS|{}|g' {}/{}".format( MAXEVENTS, CRABCONFIG_DIR, cmsRunname ) )
 
 if __name__=='__main__':
 	
