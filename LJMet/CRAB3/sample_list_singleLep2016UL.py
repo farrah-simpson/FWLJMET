@@ -2,7 +2,8 @@ import os,sys
 
 groups = {
   "TEST": {
-    "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM",
+    #"TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM",
+    "SingleElectronRun2016H": "/SingleElectron/Run2016H-UL2016_MiniAODv2-v2/MINIAOD"
   },
   "DATAE": {
     "SingleElectronRun2016F": "/SingleElectron/Run2016F-UL2016_MiniAODv2-v2/MINIAOD",
@@ -10,14 +11,14 @@ groups = {
     "SingleElectronRun2016H": "/SingleElectron/Run2016H-UL2016_MiniAODv2-v2/MINIAOD",
   },
   "DATAM": {
-    "SingleMuonRun2016B": "/SingleMuon/Run2016F-UL2016_MiniAODv2-v2/MINIAOD",
-    "SingleMuonRun2016C": "/SingleMuon/Run2016G-UL2016_MiniAODv2-v2/MINIAOD",
-    "SingleMuonRun2016D": "/SingleMuon/Run2016H-UL2016_MiniAODv2-v2/MINIAOD",
+    "SingleMuonRun2016F": "/SingleMuon/Run2016F-UL2016_MiniAODv2-v2/MINIAOD",
+    "SingleMuonRun2016G": "/SingleMuon/Run2016G-UL2016_MiniAODv2-v2/MINIAOD",
+    "SingleMuonRun2016H": "/SingleMuon/Run2016H-UL2016_MiniAODv2-v2/MINIAOD",
   },
   "DATAJ": { # not a priority for now
-    "JetHTRun2016B": "/JetHT/Run2016F-UL2016_MiniAODv2-v2/MINIAOD", 
-    "JetHTRun2016C": "/JetHT/Run2016G-UL2016_MiniAODv2-v2/MINIAOD",
-    "JetHTRun2016D": "/JetHT/Run2016H-UL2016_MiniAODv2-v2/MINIAOD",
+    "JetHTRun2016F": "/JetHT/Run2016F-UL2016_MiniAODv2-v2/MINIAOD", 
+    "JetHTRun2016G": "/JetHT/Run2016G-UL2016_MiniAODv2-v2/MINIAOD",
+    "JetHTRun2016H": "/JetHT/Run2016H-UL2016_MiniAODv2-v2/MINIAOD",
   },
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM",

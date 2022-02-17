@@ -18,7 +18,6 @@ option = parser.parse_args()
 
 if option.finalState not in [ "singleLep", "doubleLep", "multiLep" ]: quit( "[ERR] Invalid -f (--finalState) argument passed." )
 if option.year not in [ "2016APV", "2016", "2017", "2018" ]: quit( "[ERR] Invalid -y (--year) argument passed." )
-SHIFTS = "True" if option.shifts else "False"
 	
 #Sample list file
 sampleListPath = "sample_list_{}{}UL.py".format( option.finalState, option.year )
@@ -51,6 +50,8 @@ else:
 	STORESITE = 'T3_US_FNALLPC'
 
 def create_crab_config( group, process, shifts ):
+        print( "   + {} > {}".format( group, process ) ), 
+
 	CMSRUNCONFIG        = '../runFWLJMet_{}{}UL.py'.format( option.finalState, option.year )
 
 
@@ -67,6 +68,7 @@ def create_crab_config( group, process, shifts ):
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
 	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
+        print( "(MC = {})".format( ISMC ) )
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
@@ -83,8 +85,8 @@ def create_crab_config( group, process, shifts ):
 	if group == "TEST":
 		OUTFOLDER += "_test"
 		
-	filename = 'crab_config_shifts_{}.py'.format( process ) if SHIFTS else "crab_config_{}.py".format( process )
-	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if SHIFTS else "runFWLJMet_{}.py".format( process )
+	filename = 'crab_config_shifts_{}.py'.format( process ) if shifts else "crab_config_{}.py".format( process )
+	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if shifts else "runFWLJMet_{}.py".format( process )
 
 	#copy template file to new directory
 	os.system( 'cp -v {} {}/{}'.format( CRABCONFIG_TEMPLATE, CRABCONFIG_DIR, filename ) )
@@ -121,10 +123,10 @@ def create_crab_config( group, process, shifts ):
 if __name__=='__main__':
 	
 	os.system('mkdir -vp '+CRABCONFIG_DIR)
-
+        print( "[START] Creating CRAB configurations" )
 	for group in option.groups:
 		if group not in list( samples.groups.keys() ):
 			print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
 		else:
 			for process in samples.groups[ group ]:
-				create_crab_config( group, process, SHIFTS )
+				create_crab_config( group, process, option.shifts )
