@@ -66,7 +66,7 @@ if isMC:
 		config.Data.splitting = 'FileBased'
 		config.Data.unitsPerJob = UNITSPERJOB
 else:
-	config.Data.splitting = 'FileBased'
+	config.Data.splitting = 'LumiBased'
 	config.Data.unitsPerJob = UNITSPERJOB
 	config.Data.lumiMask = Json_for_data
 
