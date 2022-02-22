@@ -88,8 +88,8 @@ def create_crab_config( group, process, shifts ):
 		OUTFOLDER += "_test"
 		MAXEVENTS = "100"
 	
-	filename = 'crab_config_shifts_{}.py'.format( process ) if shifts else "crab_config_{}.py".format( process )
-	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if shifts else "runFWLJMet_{}.py".format( process )
+	filename = 'crab_config_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" ) else "crab_config_{}.py".format( process )
+	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" )  else "runFWLJMet_{}.py".format( process )
 
 	#copy template file to new directory
 	os.system( 'cp -v {} {}/{}'.format( CRABCONFIG_TEMPLATE, CRABCONFIG_DIR, filename ) )
