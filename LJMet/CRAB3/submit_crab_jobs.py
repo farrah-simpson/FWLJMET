@@ -4,6 +4,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument( "-f", "--folder", required = True, help = "singleLep,doubleLep,multiLep" )
 parser.add_argument( "-g", "--groups", nargs = "+", required = True )
 parser.add_argument( "--shifts", action = "store_true" )
+parser.add_argument( "--dryrun", action = "store_true" )
 option = parser.parse_args()
 
 #Sample list file
@@ -19,10 +20,16 @@ def submit_crab_job( group, process, shifts, failed_submissions ):
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_shifts_{}.py".format( process ) )
   else:
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_{}.py".format( process ) )
-  try: 
-    os.system( "crab submit {}".format( crab_cfg ) )
-  except:
-    failed_submissions.append( process )
+  if option.dryrun:
+    try: 
+      os.system( "crab submit --dryrun {}".format( crab_cfg ) )
+    except:
+      pass
+  else:
+    try: 
+      os.system( "crab submit {}".format( crab_cfg ) )
+    except:
+      failed_submissions.append( process )
 
 if __name__ == '__main__':
   print( "[START] Submitting CRAB3 jobs" )
