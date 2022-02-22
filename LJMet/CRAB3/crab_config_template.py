@@ -61,13 +61,13 @@ if isMC:
 		config.Data.unitsPerJob = 2
         elif isTTbar:
                 config.Data.splitting = "FileBased"
-                config.Data.unitsPerJob = 2
+                config.Data.unitsPerJob = UNITSPERJOB
 	else:
 		config.Data.splitting = 'FileBased'
-		config.Data.unitsPerJob = 1
+		config.Data.unitsPerJob = UNITSPERJOB
 else:
 	config.Data.splitting = 'FileBased'
-	config.Data.unitsPerJob = 2
+	config.Data.unitsPerJob = UNITSPERJOB
 	config.Data.lumiMask = Json_for_data
 
 config.Data.inputDBS = 'global'

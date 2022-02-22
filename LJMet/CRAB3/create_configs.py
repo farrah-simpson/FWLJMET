@@ -65,7 +65,7 @@ def create_crab_config( group, process, shifts ):
 	REQNAME             = option.finalState+option.year + "UL"
 
 	MAXEVENTS = "-1"
-	
+	UNITSPERJOB = "2"	
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
@@ -86,7 +86,8 @@ def create_crab_config( group, process, shifts ):
 		DOGENHT = "False"
 	if group == "TEST":
 		OUTFOLDER += "_test"
-		MAXEVENTS = "100"
+		MAXEVENTS = "10"
+		UNITSPERJOB = 1000
 	
 	filename = 'crab_config_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" ) else "crab_config_{}.py".format( process )
 	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" )  else "runFWLJMet_{}.py".format( process )
@@ -108,6 +109,7 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|OUTPATH|{}|g' {}/{}".format( OUTPATH, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|STORESITE|{}|g' {}/{}".format( STORESITE, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|UNITSPERJOB|{}|g' {}/{}".format( UNITSPERJOB, CRABCONFIG_DIR, filename ) )
 
 	#replace strings in new cmsRun file
 	if ( ( "EGamma" in process ) or ( "Single" in process ) or ( "JetHT" in process ) ):
