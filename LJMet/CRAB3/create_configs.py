@@ -65,12 +65,11 @@ def create_crab_config( group, process, shifts ):
 	REQNAME             = option.finalState+option.year + "UL"
 
 	MAXEVENTS = "-1"
-	
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
 	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
-        print( "(MC = {})".format( ISMC ) )
+	UNITSPERJOB = "5" if ISMC = "True" else "25" 
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
@@ -86,10 +85,11 @@ def create_crab_config( group, process, shifts ):
 		DOGENHT = "False"
 	if group == "TEST":
 		OUTFOLDER += "_test"
-		MAXEVENTS = "100"
+		MAXEVENTS = "10"
+		UNITSPERJOB = "1000"
 	
-	filename = 'crab_config_shifts_{}.py'.format( process ) if shifts else "crab_config_{}.py".format( process )
-	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if shifts else "runFWLJMet_{}.py".format( process )
+	filename = 'crab_config_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" ) else "crab_config_{}.py".format( process )
+	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" )  else "runFWLJMet_{}.py".format( process )
 
 	#copy template file to new directory
 	os.system( 'cp -v {} {}/{}'.format( CRABCONFIG_TEMPLATE, CRABCONFIG_DIR, filename ) )
@@ -108,6 +108,7 @@ def create_crab_config( group, process, shifts ):
 	os.system( "sed -i 's|ISTTBAR|{}|g' {}/{}".format( ISTTBAR, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|OUTPATH|{}|g' {}/{}".format( OUTPATH, CRABCONFIG_DIR, filename ) )
 	os.system( "sed -i 's|STORESITE|{}|g' {}/{}".format( STORESITE, CRABCONFIG_DIR, filename ) )
+	os.system( "sed -i 's|UNITSPERJOB|{}|g' {}/{}".format( UNITSPERJOB, CRABCONFIG_DIR, filename ) )
 
 	#replace strings in new cmsRun file
 	if ( ( "EGamma" in process ) or ( "Single" in process ) or ( "JetHT" in process ) ):

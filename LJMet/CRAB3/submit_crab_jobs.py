@@ -16,10 +16,12 @@ home = os.environ['HOME']
 CRABCONFIG_DIR = option.folder
 
 def submit_crab_job( group, process, shifts, failed_submissions ):
-  if shifts:
+  if shifts and ( process not in samples.groups[ "DATAE" ].keys() and process not in samples.groups[ "DATAM" ].keys() and process not in samples.groups[ "DATAJ" ].keys() ):
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_shifts_{}.py".format( process ) )
+    print( "   + {}: {} (shifts)".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
   else:
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_{}.py".format( process ) )
+    print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
   if option.dryrun:
     try: 
       os.system( "crab submit --dryrun {}".format( crab_cfg ) )
@@ -41,7 +43,6 @@ if __name__ == '__main__':
       print( "[WARN] {} is not a valid group listed in 'sample_list_{}{}UL.py'. Skipping.".format( group, option.finalState, option.year ) )
     else:
       for process in samples.groups[ group ]:
-        print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
         submit_crab_job( group, process, option.shifts, failed_submissions )
         count += 1
   if len( failed_submissions ) > 0:

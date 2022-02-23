@@ -2,7 +2,7 @@ import os,sys
 
 groups = {
   "TEST": {
-    #"TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM",
+    "TTTJ": "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM",
     "SingleElectronRun2016H": "/SingleElectron/Run2016H-UL2016_MiniAODv2-v2/MINIAOD"
   },
   "DATAE": {
