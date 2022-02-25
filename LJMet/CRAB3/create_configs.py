@@ -65,12 +65,11 @@ def create_crab_config( group, process, shifts ):
 	REQNAME             = option.finalState+option.year + "UL"
 
 	MAXEVENTS = "-1"
-	UNITSPERJOB = "2"	
 	#eos out folder
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
 	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
-        print( "(MC = {})".format( ISMC ) )
+	UNITSPERJOB = "5" if ISMC = "True" else "25" 
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
@@ -87,7 +86,7 @@ def create_crab_config( group, process, shifts ):
 	if group == "TEST":
 		OUTFOLDER += "_test"
 		MAXEVENTS = "10"
-		UNITSPERJOB = 1000
+		UNITSPERJOB = "1000"
 	
 	filename = 'crab_config_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" ) else "crab_config_{}.py".format( process )
 	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" )  else "runFWLJMet_{}.py".format( process )
