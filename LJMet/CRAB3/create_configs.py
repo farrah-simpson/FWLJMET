@@ -69,7 +69,7 @@ def create_crab_config( group, process, shifts ):
 	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
 	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
-	UNITSPERJOB = "5" if ISMC = "True" else "25" 
+	UNITSPERJOB = "5" if ISMC == "True" else "25" 
 	SHIFTS = "True" if shifts else "False"
 	try: 
 		ISVLQSIGNAL = "True" if process in samples.groups[ "VLQ" ].keys() else "False"
