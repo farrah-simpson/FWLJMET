@@ -106,6 +106,7 @@ process.filter_any_explicit = hlt.hltHighLevel.clone(
     'HLT_Ele38_WPTight_Gsf_v*',
     'HLT_Ele40_WPTight_Gsf_v*',
     'HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v*',
+    'HLT_Ele15_IsoVVVL_PFHT350_v*',
     'HLT_Ele15_IsoVVVL_PFHT450_PFMET50_v*',
     'HLT_Ele15_IsoVVVL_PFHT400_v*', # 2016
     'HLT_Ele15_IsoVVVL_PFHT400_PFMET50_v*', # 2016
@@ -116,6 +117,9 @@ process.filter_any_explicit = hlt.hltHighLevel.clone(
     'HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v*',
     'HLT_Ele115_CaloIdVT_GsfTrkIdT_v*',
 
+    'HLT_Ele35_WPLoose_Gsf_v*',
+    'HLT_Ele27_WPTight_Gsf_v*',
+    'HLT_Ele32_eta2p1_WPTight_Gsf_v*',
     'HLT_Ele32_WPTight_Gsf_v*',
     'HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*',
     'HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v*',
@@ -127,6 +131,7 @@ process.filter_any_explicit = hlt.hltHighLevel.clone(
     'HLT_Mu50_v*',
     'HLT_TkMu50_v*',
     'HLT_Mu55_v*',
+    'HLT_Mu15_IsoVVVL_PFHT350_v*',
     'HLT_Mu15_IsoVVVL_PFHT400_v*',
     'HLT_Mu15_IsoVVVL_PFHT400_PFMET50_v*',
     'HLT_Mu50_IsoVVVL_PFHT400_v*',
@@ -359,6 +364,8 @@ hlt_path_el  = cms.vstring(
   'HLT_Ele38_WPTight_Gsf_v',
   'HLT_Ele40_WPTight_Gsf_v',
   'HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v',
+  'HLT_Ele15_IsoVVVL_PFHT350_v',
+  'HLT_Ele15_IsoVVVL_PFHT400_v',
   'HLT_Ele15_IsoVVVL_PFHT450_PFMET50_v',
   'HLT_Ele15_IsoVVVL_PFHT450_v',
   'HLT_Ele50_IsoVVVL_PFHT450_v',
@@ -366,6 +373,9 @@ hlt_path_el  = cms.vstring(
   'HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v',
   'HLT_Ele115_CaloIdVT_GsfTrkIdT_v',
 
+  'HLT_Ele35_WPLoose_Gsf_v',
+  'HLT_Ele27_WPTight_Gsf_v',
+  'HLT_Ele32_eta2p1_WPTight_Gsf_v',
   'HLT_Ele32_WPTight_Gsf_v',
   'HLT_Ele32_WPTight_Gsf_L1DoubleEG_v',
   'HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v',
@@ -379,6 +389,8 @@ hlt_path_mu = cms.vstring(
   'HLT_Mu50_v',
   'HLT_TkMu50_v',
   'HLT_Mu55_v',
+  'HLT_Mu15_IsoVVVL_PFHT350_v',
+  'HLT_Mu15_IsoVVVL_PFHT400_v',
   'HLT_Mu15_IsoVVVL_PFHT450_PFMET50_v',
   'HLT_Mu15_IsoVVVL_PFHT450_v',
   'HLT_Mu50_IsoVVVL_PFHT450_v',
@@ -562,7 +574,7 @@ MultiLepCalc_cfg = cms.PSet(
   UseElMVA                 = cms.bool(True), #True means save MVA values, False means not saving.
   UseElIDV1                = cms.bool(UseElIDV1_), #False means using ElIDV2.
 
-  elTrigMatchFilters      = cms.vstring('hltEle15VVVLGsfTrackIsoFilter','hltEle38noerWPTightGsfTrackIsoFilter'), #Ele15_IsoVVVL_PFHT450, Ele38_WPTight
+  elTrigMatchFilters      = cms.vstring('hltEle15VVVLGsfTrackIsoFilter','hltEle27WPTightGsfTrackIsoFilter','hltEle32WPTightGsfTrackIsoFilter'), #Ele15_IsoVVVL_PFHT450, Ele38_WPTight
   muTrigMatchFilters      = cms.vstring('hltL3MuVVVLIsoFIlter','hltL3crIsoL1sMu22Or25L1f0L2f10QL3f27QL3trkIsoFiltered0p07','hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q'), # Mu15_IsoVVVL_PFHT450, IsoMu27, Mu50
   triggerCollection      = cms.InputTag("TriggerResults::HLT"),
   triggerSummary         = cms.InputTag("slimmedPatTrigger"),
