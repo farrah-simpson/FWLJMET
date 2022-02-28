@@ -76,7 +76,7 @@ def create_crab_config( group, process, shifts ):
 	except:
 		ISVLQSIGNAL = "False"
 	try: 
-		ISTTBAR = "True" if ( ( process in samples.groups[ "TTBAR" ].keys() ) or ( process in samples.groups[ "TTMT" ].keys() ) or ( process in samples.groups[ "TTTX" ].keys() ) or ( process in samples.groups[ "TTBAR_SHIFTS" ].keys() ) or ( process in samples.groups[ "TTXY" ].keys() ) ) else "False"
+		ISTTBAR = "True" if ( ( process in samples.groups[ "TTBAR" ].keys() ) or ( process in samples.groups[ "TTMT" ].keys() ) or ( process in samples.groups[ "TTBAR_SHIFTS" ].keys() ) ) else "False"
 	except:
 		ISTTBAR = "False"
 	try:
