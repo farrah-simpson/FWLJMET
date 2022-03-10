@@ -317,8 +317,8 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ################################################
 
 ## For MET filter
-if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
-else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+# using PAT for both MC and data since BadPFMuonDzFilter (+others) only in MiniAODv2 PAT
+MET_filt_flag_tag = 'TriggerResults::PAT' 
 ecalBadCalibFilter                 = True
 
 ## For Jet corrections
