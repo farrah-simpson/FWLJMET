@@ -22,7 +22,7 @@ options.shifts = True
 options.inputFiles = [
   "/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
 ]
-options.maxEvents = 2000
+options.maxEvents = 1000
 options.parseArguments()
 
 isMC= options.isMC
@@ -39,7 +39,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -80,7 +80,8 @@ process.source = cms.Source(
   "PoolSource",
   fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),)
 )
-OUTFILENAME = "TEST_2018UL"
+
+OUTFILENAME = "DATASET"
 process.TFileService = cms.Service("TFileService", fileName = cms.string(OUTFILENAME+'.root'))
 
 ################################
@@ -302,8 +303,8 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ################################################
 
 ## For MET filter
-if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
-else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+# using PAT for both MC and data since BadPFMuonDzFilter (+others) only in MiniAODv2 PAT
+MET_filt_flag_tag = 'TriggerResults::PAT' 
 
 ## For Jet corrections
 doNewJEC                 = True

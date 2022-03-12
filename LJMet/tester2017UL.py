@@ -10,7 +10,7 @@ options.register('isMC', '', VarParsing.multiplicity.singleton, VarParsing.varTy
 options.register('isTTbar', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is TTbar')
 options.register('isVLQsignal', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Is VLQ Signal')
 options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Do Gen HT')
-options.register( 'shifts', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Include JEC/JER shift trees')
+options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Include JEC/JER shift trees')
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
@@ -41,7 +41,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 20
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -83,7 +83,7 @@ process.source = cms.Source(
   fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles),)
 )
 
-OUTFILENAME = "TEST_2017UL"
+OUTFILENAME = "DATASET"
 process.TFileService = cms.Service("TFileService", fileName = cms.string(OUTFILENAME+'.root'))
 
 # OUTFILENAME = "cmsRun" #This could be better !
@@ -337,8 +337,8 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ################################################
 
 ## For MET filter
-if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
-else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+# using PAT for both MC and data since BadPFMuonDzFilter (+others) only in MiniAODv2 PAT
+MET_filt_flag_tag = 'TriggerResults::PAT' 
 
 ## For Jet corrections
 doNewJEC                 = True

@@ -18,13 +18,13 @@ options.isMC = True
 options.isTTbar = True
 options.isVLQsignal = False
 options.doGenHT = False
-options.shifts = False
+options.shifts = True
 options.inputFiles = [
   #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPVv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v2/100000/0AD9EE2D-6792-A54B-AF1C-1BDED1C9A994.root",
   "/store/mc/RunIISummer20UL16MiniAODAPVv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/120000/2CF6A298-801D-DE4E-A94D-9F1EFC07D2DD.root"
   #"/store/data/Run2016B/SingleMuon/MINIAOD/ver2_HIPM_UL2016_MiniAODv2-v2/120000/0042DCA3-FD73-4641-B984-636AA05DFB55.root"
 ]
-options.maxEvents = 200
+options.maxEvents = 1000
 options.parseArguments()
 
 isMC= options.isMC
@@ -41,7 +41,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -83,7 +83,7 @@ process.source = cms.Source(
   fileNames = cms.untracked.vstring(cms.untracked.vstring(options.inputFiles), )
 )
 
-OUTFILENAME = "TEST_2016APVUL"
+OUTFILENAME = "DATASET"
 process.TFileService = cms.Service("TFileService", fileName = cms.string(OUTFILENAME+'.root'))
 
 ################################
@@ -114,11 +114,13 @@ process.filter_any_explicit = hlt.hltHighLevel.clone(
     'HLT_Ele15_IsoVVVL_PFHT450_PFMET50_v*',
     'HLT_Ele15_IsoVVVL_PFHT450_v*',
     'HLT_Ele50_IsoVVVL_PFHT450_v*',
-    'HLT_Ele15_IsoVVVL_PFHT600_v*',
+    'HLT_Ele15_IsoVVVL_PFHT600_v*', # 2016
     'HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v*',
     'HLT_Ele115_CaloIdVT_GsfTrkIdT_v*',
 
+    'HLT_Ele35_WPLoose_Gsf_v*', # 2016
     'HLT_Ele32_WPTight_Gsf_v*',
+    'HLT_Ele32_eta2p1_WPTight_Gsf', #2016
     'HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*',
     'HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v*',
 
@@ -316,8 +318,8 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
 ################################################
 
 ## For MET filter
-if(isMC): MET_filt_flag_tag        = 'TriggerResults::PAT'
-else:     MET_filt_flag_tag        = 'TriggerResults::RECO'
+# using PAT for both MC and data since BadPFMuonDzFilter (+others) only in MiniAODv2 PAT
+MET_filt_flag_tag = 'TriggerResults::PAT' 
 ecalBadCalibFilter                 = True
 
 ## For Jet corrections
@@ -358,14 +360,15 @@ UseElIDV1_ = False #False means using ElIDV2
 ## TriggerPaths (for ljmet): 
 hlt_path_el  = cms.vstring(
   #'digitisation_step_v',
+  'HLT_Ele32_eta2p1_WPTight_Gsf_v',
   'HLT_Ele35_WPTight_Gsf_v',
   'HLT_Ele38_WPTight_Gsf_v',
   'HLT_Ele40_WPTight_Gsf_v',
   'HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v',
-  'HLT_Ele15_IsoVVVL_PFHT350_v',
-  'HLT_Ele15_IsoVVVL_PFHT400_v',
-  'HLT_Ele15_IsoVVVL_PFHT400_PFMET50_v',
-  'HLT_Ele50_IsoVVVL_PFHT400_v',
+  'HLT_Ele15_IsoVVVL_PFHT350_v', # 2016
+  'HLT_Ele15_IsoVVVL_PFHT400_v', # 2016
+  'HLT_Ele15_IsoVVVL_PFHT400_PFMET50_v', # 2016
+  'HLT_Ele50_IsoVVVL_PFHT400_v*', # 2016
   'HLT_Ele15_IsoVVVL_PFHT450_PFMET50_v',
   'HLT_Ele15_IsoVVVL_PFHT450_v',
   'HLT_Ele50_IsoVVVL_PFHT450_v',
@@ -373,7 +376,8 @@ hlt_path_el  = cms.vstring(
   'HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v',
   'HLT_Ele115_CaloIdVT_GsfTrkIdT_v',
 
-  'HLT_Ele35_WPLoose_Gsf_v*',
+  'HLT_Ele35_WPLoose_Gsf_v',
+  'HLT_Ele27_WPTight_Gsf_v',
   'HLT_Ele32_WPTight_Gsf_v',
   'HLT_Ele32_WPTight_Gsf_L1DoubleEG_v',
   'HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v',
@@ -576,7 +580,7 @@ MultiLepCalc_cfg = cms.PSet(
   UseElMVA                 = cms.bool(True), #True means save MVA values, False means not saving.
   UseElIDV1                = cms.bool(UseElIDV1_), #False means using ElIDV2.
 
-  elTrigMatchFilters      = cms.vstring('hltEle15VVVLGsfTrackIsoFilter','hltEle38noerWPTightGsfTrackIsoFilter'), #Ele15_IsoVVVL_PFHT450, Ele38_WPTight
+  elTrigMatchFilters      = cms.vstring('hltEle15VVVLGsfTrackIsoFilter','hltEle27WPTightGsfTrackIsoFilter','hltEle32WPTightGsfTrackIsoFilter'), #Ele15_IsoVVVL_PFHT450, Ele38_WPTight
   muTrigMatchFilters      = cms.vstring('hltL3MuVVVLIsoFIlter','hltL3crIsoL1sMu22Or25L1f0L2f10QL3f27QL3trkIsoFiltered0p07','hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q'), # Mu15_IsoVVVL_PFHT450, IsoMu27, Mu50
   triggerCollection      = cms.InputTag("TriggerResults::HLT"),
   triggerSummary         = cms.InputTag("slimmedPatTrigger"),
