@@ -351,7 +351,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
 DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update, check: https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation106XUL16preVFP
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL16preVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
