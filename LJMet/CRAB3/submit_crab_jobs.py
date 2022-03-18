@@ -3,8 +3,9 @@ import os, argparse, imp
 parser = argparse.ArgumentParser()
 parser.add_argument( "-f", "--folder", required = True, help = "singleLep,doubleLep,multiLep" )
 parser.add_argument( "-g", "--groups", nargs = "+", required = True )
-parser.add_argument( "--shifts", action = "store_true" )
-parser.add_argument( "--dryrun", action = "store_true" )
+parser.add_argument( "--shifts", action = "store_true", help = "Run the JEC/JER shifts" )
+parser.add_argument( "--dryrun", action = "store_true", help = "Obtain job time estimate" )
+parser.add_argument( "--override", action = "store_true", help = "Override existing CRAB logs." )
 option = parser.parse_args()
 
 #Sample list file
@@ -23,11 +24,19 @@ def submit_crab_job( group, process, shifts, failed_submissions ):
     crab_cfg = os.path.join( CRABCONFIG_DIR, "crab_config_{}.py".format( process ) )
     print( "   + {}: {}".format( process, samples.groups[ group ][ process ].split("/")[1] ) )
   if option.dryrun:
+    if option.override:
+      try: os.system( "crab kill {}".format( crab_cfg ) )
+      except: pass
+      os.system( "rm -vrf logs_{}/crab_{}".format( postfix, process ) )
     try: 
       os.system( "crab submit --dryrun {}".format( crab_cfg ) )
     except:
       pass
   else:
+    if option.override:
+      try: os.system( "crab kill {}".format( crab_cfg ) )
+      except: pass
+      os.system( "rm -vrf logs_{}/crab_{}".format( postfix, process ) )
     try: 
       os.system( "crab submit {}".format( crab_cfg ) )
     except:
@@ -46,7 +55,7 @@ if __name__ == '__main__':
         submit_crab_job( group, process, option.shifts, failed_submissions )
         count += 1
   if len( failed_submissions ) > 0:
-    print( "[WARN] {} submissions failed, please check the naming or availability on GrASP or DAS:" )
+    print( "[WARN] {} submissions failed, please check the naming or availability on GrASP or DAS:".format( len( failed_submissions ) ) )
     for submission in failed_submissions:
       print( "   - {}".format( submission ) )
   print( "[DONE] Submitted {} CRAB jobs.".format( count ) )

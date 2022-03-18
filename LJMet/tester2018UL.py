@@ -14,14 +14,16 @@ options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.var
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
-options.isMC = True
-options.isTTbar = True 
+options.isMC = False
+options.isTTbar = False 
 options.isVLQsignal = False 
 options.doGenHT = False
-options.shifts = True
+options.shifts = False
 options.inputFiles = [
-  "/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  #"/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  "/store/data/Run2018A/EGamma/MINIAOD/UL2018_MiniAODv2-v1/230000/1DC29AF8-7091-4245-A0D8-CFDF650310CC.root"
 ]
+
 options.maxEvents = 1000
 options.parseArguments()
 
