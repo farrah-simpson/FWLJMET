@@ -349,7 +349,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 
 # b-jet settings
 btagOP                   = 'MEDIUM'
-bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
+bdisc_min                = 0.2598 # THIS HAS TO MATCH btagOP !
 DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
 DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL16preVFP_v1.csv' 
 
