@@ -350,7 +350,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 # b-jet settings
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2598 # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
+DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16preVFP_v2.csv'
 DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL16preVFP_v1.csv' 
 
 ## El MVA ID
