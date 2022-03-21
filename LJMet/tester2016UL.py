@@ -13,8 +13,7 @@ options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.va
 options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Include JEC/JER shift trees')
 
 ## SET DEFAULT VALUES
-## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
-options.isMC = False
+## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True options.isMC = False
 options.isTTbar = False
 options.isVLQsignal = False
 options.doGenHT = False
@@ -42,7 +41,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 20
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -353,8 +352,8 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunF
 # b-tag settings
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update
+DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16postVFP_v3.csv'
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XULpostVFP_v1.csv' # need to update
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
