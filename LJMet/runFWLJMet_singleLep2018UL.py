@@ -333,8 +333,8 @@ DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB
 DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 # for b-jet SF
-DeepJetfile       = "FWLJMET/LJMet/data/DeepJet_106XUL18SF.csv" 
-DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv"
+DeepJetfile       = "FWLJMET/LJMet/data/wp_deepJet_106XUL18_v2.csv" 
+DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_106XUL18_v1.csv"
 btagOP    = "MEDIUM"
 bdisc_min = 0.2783 # THIS HAS TO MATCH btagOP !
 
