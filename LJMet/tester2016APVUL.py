@@ -41,7 +41,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -350,9 +350,9 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 
 # b-jet settings
 btagOP                   = 'MEDIUM'
-bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update, check: https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation106XUL16preVFP
+bdisc_min                = 0.2598 # THIS HAS TO MATCH btagOP !
+DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16preVFP_v2.csv'
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL16preVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
