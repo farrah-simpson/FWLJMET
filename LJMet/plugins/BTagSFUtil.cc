@@ -75,6 +75,7 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
       readerSJ = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up","down"});
     }else if(btagOP == "TIGHT"){
       reader   = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up","down"});
+      reader   = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
     }else{
       reader   = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
       readerSJ = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
