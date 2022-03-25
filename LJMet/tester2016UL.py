@@ -14,14 +14,15 @@ options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.var
 
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True options.isMC = False
+options.isMC = True
 options.isTTbar = False
 options.isVLQsignal = False
 options.doGenHT = False
 options.shifts = False
 options.inputFiles = [
-    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
     #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v1/120000/01572CA8-C7AE-0346-B660-8AB4F7C2AE36.root"
-    "root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleElectron/MINIAOD/UL2016_MiniAODv2-v2/270000/4C3CDA2A-5A33-D542-A15A-DE2B3CD924E7.root"
+    #"root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleElectron/MINIAOD/UL2016_MiniAODv2-v2/270000/4C3CDA2A-5A33-D542-A15A-DE2B3CD924E7.root"
     #"root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleMuon/MINIAOD/UL2016_MiniAODv2-v2/70000/060F0B51-FCEF-F343-890C-3043A4B268C2.root"
 ]
 options.maxEvents = 1000
@@ -353,7 +354,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunF
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
 DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16postVFP_v3.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XULpostVFP_v1.csv' # need to update
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_deepCSV_106XULpostVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -455,6 +456,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),

@@ -63,6 +63,8 @@ void MultiLepEventSelector::BeginJob( const edm::ParameterSet& iConfig, edm::Con
 
     muon_relIso              = selectorConfig.getParameter<double>("muon_relIso");
     loose_muon_relIso        = selectorConfig.getParameter<double>("loose_muon_relIso");
+    loose_muon_miniIso       = selectorConfig.getParameter<double>("loose_muon_miniIso");
+    muon_miniIso             = selectorConfig.getParameter<double>("muon_miniIso");
 
     //Electron
     electronsToken           = iC.consumes<pat::ElectronCollection>(selectorConfig.getParameter<edm::InputTag>("electronsCollection"));
@@ -126,7 +128,7 @@ void MultiLepEventSelector::BeginJob( const edm::ParameterSet& iConfig, edm::Con
 
     //Misc
     PFCandToken          = iC.consumes<pat::PackedCandidateCollection>(selectorConfig.getParameter<edm::InputTag>("PFparticlesCollection"));
-    rhoJetsNC_Token      = iC.consumes<double>(selectorConfig.getParameter<edm::InputTag>("rhoJetsNCInputTag"));
+    rhoJetsNCToken      = iC.consumes<double>(selectorConfig.getParameter<edm::InputTag>("rhoJetsNCInputTag"));
     rhoJetsToken         = iC.consumes<double>(selectorConfig.getParameter<edm::InputTag>("rhoJetsInputTag"));
 
 
@@ -567,6 +569,14 @@ void MultiLepEventSelector::MuonSelection(edm::Event const & event)
 	vSelMuons.clear();
 	vSelLooseMuons.clear();
 
+	//packed pf candidates and rho source needed for miniIso
+	edm::Handle< pat::PackedCandidateCollection > packedPFCandsHandle;
+	event.getByToken( PFCandToken, packedPFCandsHandle );
+
+	edm::Handle< double > rhoJets_Handle;
+	event.getByToken( rhoJetsToken, rhoJets_Handle );
+	double myRhoJets = *rhoJets_Handle;
+
 	if ( muon_cuts ) { if(debug)std::cout << "\t" <<"Applying MuonSelection"<< std::endl;}
 	else { if(debug)std::cout << "\t" <<"NOT applying MuonSelection"<< std::endl;}
 
@@ -606,8 +616,14 @@ void MultiLepEventSelector::MuonSelection(edm::Event const & event)
 		    if(debug)std::cout<< "\t\t\t" << "pass_CutBasedID_loose" << std::endl;
 
 		    if (muon_useMiniIso){
-		    	if ( ! (*_imu).passed(reco::Muon::MiniIsoLoose) ) break;
-		    	if(debug)std::cout<< "\t\t\t" << "pass_muon_miniIso_loose"<< std::endl;
+			pat::Muon* muptr = new pat::Muon(*_imu);
+			float miniIso = getPFMiniIsolation_EffectiveArea( packedPFCandsHandle, dynamic_cast<const reco::Candidate*>(muptr), 200., 50., 10., false, false, myRhoJets );
+
+			if( miniIso > loose_muon_miniIso ){ delete muptr; break; }
+			delete muptr;
+
+		    	//if ( ! (*_imu).passed(reco::Muon::MiniIsoLoose) ) break;
+		    	//if(debug)std::cout<< "\t\t\t" << "pass_muon_miniIso_loose"<< std::endl;
 		    }
 		    else{
 		    	if ( pfIso > loose_muon_relIso) break;
@@ -653,8 +669,13 @@ void MultiLepEventSelector::MuonSelection(edm::Event const & event)
 		    if(debug)std::cout<< "\t\t\t" << "pass_CutBasedID" << std::endl;
 
 		    if (muon_useMiniIso){
-		    	if ( ! (*_imu).passed(reco::Muon::MiniIsoTight) ) break;
-		    	if(debug)std::cout<< "\t\t\t" << "pass_muon_miniIso"<< std::endl;
+			pat::Muon* muptr = new pat::Muon( *_imu );
+			float miniIso = getPFMiniIsolation_EffectiveArea( packedPFCandsHandle, dynamic_cast< const reco::Candidate* >( muptr ), 200., 50., 10., false, false, myRhoJets );			
+
+			if( miniIso > muon_miniIso ){ delete muptr; break; }
+			delete muptr;
+		    	//if ( ! (*_imu).passed(reco::Muon::MiniIsoTight) ) break;
+		    	//if(debug)std::cout<< "\t\t\t" << "pass_muon_miniIso"<< std::endl;
 		    }
 		    else{
 		    	if ( pfIso > muon_relIso) break;
@@ -731,9 +752,9 @@ void MultiLepEventSelector::ElectronSelection(edm::Event const & event)
 	event.getByToken(PFCandToken, packedPFCandsHandle);
 
 	//rho isolation from susy recommendation
-	edm::Handle<double> rhoJets_Handle;
-	event.getByToken(rhoJetsToken, rhoJets_Handle);
-	double myRhoJets = *rhoJets_Handle;
+	edm::Handle<double> miniIsoRho_Handle;
+	event.getByToken(rhoJetsToken, miniIsoRho_Handle);
+	double miniIsoRho = *miniIsoRho_Handle;
 
 	if ( electron_cuts ) { if(debug)std::cout << "\t" <<"Applying ElectronSelection"<< std::endl;}
 	else { if(debug)std::cout << "\t" <<"NOT applying ElectronSelection"<< std::endl;}
@@ -778,7 +799,7 @@ void MultiLepEventSelector::ElectronSelection(edm::Event const & event)
 			  if(electron_useMiniIso){
 
 				pat::Electron* elptr = new pat::Electron(*_iel);
-				float miniIso = getPFMiniIsolation_EffectiveArea(packedPFCandsHandle, dynamic_cast<const reco::Candidate* > (elptr), 200., 50., 10., false, false,myRhoJets);
+				float miniIso = getPFMiniIsolation_EffectiveArea(packedPFCandsHandle, dynamic_cast<const reco::Candidate* > (elptr), 200., 50., 10., false, false,miniIsoRho);
 
 				if(miniIso > loose_electron_miniIso){delete elptr;  break;}
 				if(debug)std::cout << "\t\t\t" << "pass_electron_useMiniIso_loose" <<std::endl;
@@ -836,7 +857,7 @@ void MultiLepEventSelector::ElectronSelection(edm::Event const & event)
 
 				pat::Electron* elptr = new pat::Electron(*_iel);
 				//Attention: Don't we need to update to the official CMSSW MiniIsolation.cc rather than some old file? --Rizki Mar 12, 2019.
-				float miniIso = getPFMiniIsolation_EffectiveArea(packedPFCandsHandle, dynamic_cast<const reco::Candidate* > (elptr), 200., 50., 10., false, false,myRhoJets);
+				float miniIso = getPFMiniIsolation_EffectiveArea(packedPFCandsHandle, dynamic_cast<const reco::Candidate* > (elptr), 200., 50., 10., false, false,miniIsoRho);
 
 				if(miniIso > electron_miniIso){delete elptr;  break;}
 				if(debug)std::cout << "\t\t\t" << "pass_electron_useMiniIso" <<std::endl;

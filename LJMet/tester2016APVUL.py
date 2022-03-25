@@ -352,7 +352,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2598 # THIS HAS TO MATCH btagOP !
 DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16preVFP_v2.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL16preVFP_v1.csv' 
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_deepCSV_106XUL16preVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -456,6 +456,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),

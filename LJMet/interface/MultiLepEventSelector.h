@@ -92,6 +92,8 @@ protected:
     double muon_minpt;
     double muon_maxeta;
     bool   muon_useMiniIso;
+    double muon_miniIso;
+    double loose_muon_miniIso;
     double muon_dxy;
     double muon_dz;
     double muon_relIso;
@@ -158,7 +160,7 @@ protected:
     edm::EDGetTokenT<pat::MuonCollection>            muonsToken;
     edm::EDGetTokenT<pat::ElectronCollection>        electronsToken;
     edm::EDGetTokenT<pat::PackedCandidateCollection> PFCandToken;
-    edm::EDGetTokenT<double>                         rhoJetsNC_Token;
+    edm::EDGetTokenT<double>                         rhoJetsNCToken;
     edm::EDGetTokenT<double>                         rhoJetsToken;
     edm::EDGetTokenT<pat::JetCollection>             jetsToken;
     edm::EDGetTokenT<pat::JetCollection>             AK8jetsToken;

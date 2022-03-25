@@ -336,7 +336,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB
 
 # for b-jet SF
 DeepJetfile       = "FWLJMET/LJMet/data/wp_deepJet_106XUL18_v2.csv" 
-DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_106XUL18_v1.csv"
+DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_deepCSV_106XUL18_v1.csv"
 btagOP    = "MEDIUM"
 bdisc_min = 0.2783 # THIS HAS TO MATCH btagOP !
 
@@ -430,6 +430,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),

@@ -288,9 +288,9 @@ void MultiLepCalc::AnalyzeMuon(edm::Event const & event, BaseEventSelector * sel
   edm::Handle<pat::PackedCandidateCollection> packedPFCands;
   event.getByToken(PFCandToken, packedPFCands);
   
-  edm::Handle<double> rhoJetsNC;
-  event.getByToken(rhoJetsNCToken, rhoJetsNC);
-  double myRhoJetsNC = *rhoJetsNC;
+  edm::Handle<double> miniIsoRho_Handle;
+  event.getByToken( rhoJetsToken, miniIsoRho_Handle);
+  double miniIsoRho = *miniIsoRho_Handle;
   
   edm::Handle<reco::GenParticleCollection> genParticles;
   event.getByToken(genParticlesToken, genParticles);
@@ -443,7 +443,7 @@ void MultiLepCalc::AnalyzeMuon(edm::Event const & event, BaseEventSelector * sel
 	double relIso = (chIso + std::max(0.,nhIso + gIso - 0.5*puIso)) / (*imu)->pt();
 	
 	//Do we need two of these? And don't we need to update to the official CMSSW MiniIsolation.cc rather than some old file --Rizki Mar 12, 2019.
-	double miniIso = getPFMiniIsolation_EffectiveArea(packedPFCands, dynamic_cast<const reco::Candidate *>(imu->get()), 0.05, 0.2, 10., false, false,myRhoJetsNC);
+	double miniIso = getPFMiniIsolation_EffectiveArea(packedPFCands, dynamic_cast<const reco::Candidate *>(imu->get()), 200., 50., 10., false, false, miniIsoRho);
 	double miniIsoDB = getPFMiniIsolation_DeltaBeta(packedPFCands, dynamic_cast<const reco::Candidate *>(imu->get()), 0.05, 0.2, 10., false);
 	
 	muRelIso . push_back(relIso);
@@ -622,9 +622,9 @@ void MultiLepCalc::AnalyzeElectron(edm::Event const & event, BaseEventSelector *
   edm::Handle<pat::PackedCandidateCollection> packedPFCands;
   event.getByToken(PFCandToken, packedPFCands);
   
-  edm::Handle<double> rhoJetsNC;
-  event.getByToken(rhoJetsNCToken, rhoJetsNC);
-  double myRhoJetsNC = *rhoJetsNC;
+  edm::Handle<double> miniIsoRho_Handle;
+  event.getByToken( rhoJetsToken, miniIsoRho_Handle );
+  double miniIsoRho = *miniIsoRho_Handle;
   
   edm::Handle<reco::GenParticleCollection> genParticles;
   event.getByToken(genParticlesToken, genParticles);
@@ -798,7 +798,7 @@ void MultiLepCalc::AnalyzeElectron(edm::Event const & event, BaseEventSelector *
       elHcalPFClusterIso.push_back((*iel)->hcalPFClusterIso());
       elDR03TkSumPt.push_back((*iel)->dr03TkSumPt());
       
-      double miniIso = getPFMiniIsolation_EffectiveArea(packedPFCands, dynamic_cast<const reco::Candidate *>(iel->get()), 0.05, 0.2, 10., false, false,myRhoJetsNC);
+      double miniIso = getPFMiniIsolation_EffectiveArea(packedPFCands, dynamic_cast<const reco::Candidate *>(iel->get()), 200., 50., 10., false, false, miniIsoRho );
       
       elRelIso . push_back(relIso);
       elMiniIso . push_back(miniIso);

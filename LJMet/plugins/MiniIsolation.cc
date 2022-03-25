@@ -131,12 +131,13 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
     em = 1;
   
   // used for 2016 analyses based on SUSY group recommendations on SUSLeptonSF TWiki
-  double Aeff_Spring15Anal[2][7] = {{ 0.1752, 0.1862, 0.1411, 0.1534, 0.1903 , 0.2243, 0.2687 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};
-	
+  //double Aeff_Spring15Anal[2][7] = {{ 0.1752, 0.1862, 0.1411, 0.1534, 0.1903 , 0.2243, 0.2687 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};	
   // JH 8/22/19, updating to 94X values from 92X values for electrons, a very small change (2-3rd decimal place)
   // https://github.com/cms-sw/cmssw/blob/CMSSW_10_2_X/RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt
+  // https://github.com/cms-data/PhysicsTools-NanoAOD/blob/master/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt
   double Aeff_Fall17Anal[2][7] = {{ 0.1440, 0.1562, 0.1032, 0.0859, 0.1116, 0.1321, 0.1654 },{0.0566,0.0562,0.0363,0.0119,0.0064}};
   
+
   double CorrectedTerm=0.0;
   double riso2 = r_iso*r_iso;
   
@@ -159,8 +160,7 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
   //std::cout<<"riso = "<<r_iso<<", iso_nh = "<<iso_nh<<", iso_ch = "<<iso_ch<<", iso_ph = "<<iso_ph<<",rho = "<<rho<<" adn CTerm = "<<CorrectedTerm<<"\n";  
    
   iso = iso_ch + TMath::Max(0.0, iso_ph + iso_nh - CorrectedTerm );
-  
-  
+   
   iso = iso/ptcl->pt();
 
   return iso;
