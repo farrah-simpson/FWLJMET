@@ -21,7 +21,12 @@ options.doGenHT = DOGENHT
 options.shifts = SHIFTS
 options.inputFiles = [
 "/store/mc/RunIISummer20UL17MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/00000/005708B7-331C-904E-88B9-189011E6C9DD.root"
+#"root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root",
+#"/store/data/Run2017B/SingleElectron/MINIAOD/UL2017_MiniAODv2-v1/270000/00E7B0AA-E2D6-7245-9407-D6661A8BB74B.root",
+#"/store/mc/RunIISummer20UL17MiniAODv2/TTTJ_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v2/2520000/BF92C93B-762D-AB49-A596-52AF9C4910D5.root",
+#"/store/mc/RunIISummer20UL17MiniAODv2/TTTW_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v2/2530000/8F56C3DB-7CDC-3046-9AEA-7BED8620A384.root"
 ]
+
 options.maxEvents = MAXEVENTS
 options.parseArguments()
 
@@ -368,7 +373,7 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL17_V5/Summer19UL17_RunB
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.3040 # THIS HAS TO MATCH btagOP !
 DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL17_v3.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_106XUL17_v1.csv'
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_deepCSV_106XUL17_v1.csv'
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -462,6 +467,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),
