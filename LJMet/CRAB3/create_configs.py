@@ -89,8 +89,8 @@ def create_crab_config( group, process, shifts ):
 		MAXEVENTS = "10"
 		UNITSPERJOB = "1000"
 
-	if ISMC == "TRUE" and ISTTBAR == "True":
-		UNITSPERJOB = "50"
+	if ISMC == "True" and ISTTBAR == "True":
+		UNITSPERJOB = "40"
 	
 	filename = 'crab_config_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" ) else "crab_config_{}.py".format( process )
 	cmsRunname = 'runFWLJMet_shifts_{}.py'.format( process ) if ( shifts and ISMC == "True" )  else "runFWLJMet_{}.py".format( process )

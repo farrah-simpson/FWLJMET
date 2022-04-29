@@ -69,6 +69,55 @@ double getPFMiniIsolation_DeltaBeta(edm::Handle<pat::PackedCandidateCollection> 
   return iso;
 }
 
+double getPFMiniIsolation_mu( const pat::Muon *mu, double r_iso_min, double r_iso_max, double kt_scale, double rho ){
+  double EA_mu[5] = { 0.0566, 0.0562, 0.0363, 0.0119, 0.0064 };
+  double EA;
+
+  auto iso = mu->miniPFIsolation();
+  auto chg = iso.chargedHadronIso();
+  auto neu = iso.neutralHadronIso();
+  auto pho = iso.photonIso();
+
+  if( TMath::Abs(mu->eta()) < 0.8 ) EA = EA_mu[0];
+  else if( TMath::Abs(mu->eta()) < 1.3 ) EA = EA_mu[1];
+  else if( TMath::Abs(mu->eta()) < 2.0 ) EA = EA_mu[2];
+  else if( TMath::Abs(mu->eta()) < 2.2 ) EA = EA_mu[3];
+  else EA = EA_mu[4];
+
+  double R = kt_scale / std::min( std::max( mu->pt(), r_iso_max ), r_iso_min );
+  EA *= std::pow( R / 0.3, 2 );
+
+  double miniIso = ( chg + TMath::Max( 0.0, neu + pho - (rho) * EA ) ) / mu->pt(); 
+
+  return miniIso;
+}
+
+double getPFMiniIsolation_el( const pat::Electron *el, double r_iso_min, double r_iso_max, double kt_scale, double rho ){
+  double EA_el[7] = { 0.1440, 0.1562, 0.1032, 0.0859, 0.1116, 0.1321, 0.1654 };
+  double EA;
+
+  auto iso = el->pfIsolationVariables();
+  auto chg = iso.sumChargedHadronPt;
+  auto neu = iso.sumNeutralHadronEt;
+  auto pho = iso.sumPhotonEt;
+
+  double eta = TMath::Abs( el->superCluster()->eta() );
+  if( eta < 1.0 ) EA = EA_el[0];
+  else if( eta < 1.479 ) EA = EA_el[1];
+  else if( eta < 2.000 ) EA = EA_el[2];
+  else if( eta < 2.200 ) EA = EA_el[3];
+  else if( eta < 2.300 ) EA = EA_el[4];
+  else if( eta < 2.400 ) EA = EA_el[5];
+  else EA = EA_el[6];
+  
+  double R = kt_scale / std::min( std::max( el->pt(), r_iso_max ), r_iso_min );
+  EA *= std::pow( R / 0.3, 2 );
+
+  double miniIso = ( chg + TMath::Max( 0.0, neu + pho - (rho) * EA ) ) / el->pt();
+
+  return miniIso;
+}
+
 double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollection> pfcands,
 					const reco::Candidate* ptcl,  
 					double r_iso_min, double r_iso_max, double kt_scale,
