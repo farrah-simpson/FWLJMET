@@ -188,7 +188,6 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     SetValue("theJetEta",    theJetEta);
     SetValue("theJetPhi",    theJetPhi);
     SetValue("theJetEnergy", theJetEnergy);
-
     SetValue("theJetDeepFlavB",    theJetDeepFlavB);
     SetValue("theJetPFlav",  theJetPFlav);
     SetValue("theJetHFlav",  theJetHFlav);
@@ -274,6 +273,10 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     std::vector<double> theJetAK8SoftDropn3b1;
     std::vector<double> theJetAK8SoftDropn2b2;
     std::vector<double> theJetAK8SoftDropn3b2;
+
+    std::vector<double> theJetParticleNetTvsQCD;
+    std::vector<double> theJetParticleNetWvsQCD;
+
 
     double jetCharge;
     double theSoftDrop;
@@ -380,6 +383,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
 
       theJetAK8CSV.push_back(corrak8.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
       theJetAK8DoubleB.push_back(corrak8.bDiscriminator("pfBoostedDoubleSecondaryVertexAK8BJetTags"));
+
+      theJetParticleNetTvsQCD.push_back(corrak8.bDiscriminator("pfParticleNetDiscriminatorsJetTags:TvsQCD")); 
+      theJetParticleNetWvsQCD.push_back(corrak8.bDiscriminator("pfParticleNetDiscriminatorsJetTags:WvsQCD")); 
 
       theJetAK8CHSPrunedMass.push_back(theCHSPrunedMass); // JEC only
       theJetAK8CHSSoftDropMass.push_back(theCHSSoftDropMass); // JEC only
@@ -633,6 +639,10 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     SetValue("theJetAK8SDSubjetNDeepCSVM_bSFdn",theJetAK8SDSubjetNDeepCSVM_bSFdn);
     SetValue("theJetAK8SDSubjetNDeepCSVM_lSFup",theJetAK8SDSubjetNDeepCSVM_lSFup);
     SetValue("theJetAK8SDSubjetNDeepCSVM_lSFdn",theJetAK8SDSubjetNDeepCSVM_lSFdn);
+
+    SetValue("theJetParticleNetTvsQCD",    theJetParticleNetTvsQCD);
+    SetValue("theJetParticleNetWvsQCD",    theJetParticleNetWvsQCD);
+
 
     //////////////// TRUE HADRONIC W/Z/H/Top decays //////////////////
     std::vector<int>    HadronicVHtID;
