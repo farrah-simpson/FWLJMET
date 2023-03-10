@@ -245,7 +245,9 @@ updateJetCollection(
     'pfMassDecorrelatedDeepBoostedJetTags:probQCDothers',
     'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:TvsQCD', 'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:WvsQCD',
     'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZHbbvsQCD', 'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZHccvsQCD',
-    'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:bbvsLight', 'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ccvsLight'],
+    'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:bbvsLight', 'pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ccvsLight',
+    'pfParticleNetDiscriminatorsJetTags:TvsQCD', 'pfParticleNetDiscriminatorsJetTags:WvsQCD'
+],
   postfix = 'AK8Puppi',
   printWarning = False
 )
@@ -288,6 +290,9 @@ updateJetCollection(
     'pfDeepFlavourJetTags:probc',
     'pfDeepFlavourJetTags:probuds',
     'pfDeepFlavourJetTags:probg'
+#    'pfParticleNetDiscriminatorsJetTags:WvsQCD',
+#    'pfParticleNetDiscriminatorsJetTags:TvsQCD'
+
   ],
   printWarning=False
 )
