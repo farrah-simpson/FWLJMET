@@ -287,7 +287,7 @@ updateJetCollection(
     'pfDeepFlavourJetTags:problepb',
     'pfDeepFlavourJetTags:probc',
     'pfDeepFlavourJetTags:probuds',
-    'pfDeepFlavourJetTags:probg',
+    'pfDeepFlavourJetTags:probg'
   ],
   printWarning=False
 )

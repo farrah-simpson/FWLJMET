@@ -290,9 +290,6 @@ updateJetCollection(
     'pfDeepFlavourJetTags:probc',
     'pfDeepFlavourJetTags:probuds',
     'pfDeepFlavourJetTags:probg'
-#    'pfParticleNetDiscriminatorsJetTags:WvsQCD',
-#    'pfParticleNetDiscriminatorsJetTags:TvsQCD'
-
   ],
   printWarning=False
 )

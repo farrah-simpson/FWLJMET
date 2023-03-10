@@ -23,11 +23,6 @@ groups = {
     "JetHTRun2018C": "/JetHT/Run2018C-UL2018_MiniAODv2-v1/MINIAOD",
     "JetHTRun2018D": "/JetHT/Run2018D-UL2018_MiniAODv2-v2/MINIAOD",
   },
-  "X53TH": {
-  },
-     
-  "X53TW": {
-  },
  
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM",

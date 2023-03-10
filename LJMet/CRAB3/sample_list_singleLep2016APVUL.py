@@ -27,12 +27,6 @@ groups = {
     "JetHTRun2016APVF": "/JetHT/Run2016F-HIPM_UL2016_MiniAODv2-v2/MINIAOD",
   },
 
-  "X53TH": {
-  },
-     
-  "X53TW": {
-  },
- 
   "CHARGEDHIGGS": {
     "HPTB200": "/ChargedHiggs_HplusTB_HplusToTB_M-200_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM",
     "HPTB220": "/ChargedHiggs_HplusTB_HplusToTB_M-220_TuneCP5_13TeV_amcatnlo_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM",
