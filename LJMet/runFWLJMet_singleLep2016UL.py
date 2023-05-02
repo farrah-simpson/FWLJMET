@@ -314,6 +314,21 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
   src = cms.InputTag("packedJetsAK8Puppi"),
 )
 
+#####################################
+### Re-run Pileup Jet ID for 2016 ###
+#####################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL16
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone( 
+        jets=cms.InputTag( "slimmedJets" ),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL16),
+    )
+process.updatedPatJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+process.updatedPatJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
 
 ################################################
 ### LJMET
@@ -993,6 +1008,7 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1011,6 +1027,7 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1027,6 +1044,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1044,6 +1062,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1057,6 +1076,7 @@ else: #Data
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.ljmet #(ntuplizer) 

@@ -44,7 +44,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 20
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -314,6 +314,22 @@ process.prefiringweight = l1PrefiringWeightProducer.clone(
   PrefiringRateSystematicUnctyMuon = cms.double(0.2),
 )
 
+#################################
+## Apply Pileup Jet ID to AK4 CHS
+#################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL17
+process.load("RecoJets.JetProducers.PileupJetID_cfi")
+process.pileupJetIdUpdated = process.pileupJetId.clone(
+  jets = cms.InputTag("slimmedJets"),
+  inputIsCorrected=True,
+  applyJec=False,
+  vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+  algos = cms.VPSet(_chsalgos_106X_UL17)
+)
+process.updatedPatJets.userData.userInts.src += [ "pileupJetIdUpdated:fullId" ]
+process.updatedPatJets.userData.userFloats.src += [ "pileupJetIdUpdated:fullDiscriminant" ]
+
 
 ################################
 ## Apply Jet ID to AK4 and AK8
@@ -334,6 +350,22 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
   filterParams =pfJetIDSelector.clone(),
   src = cms.InputTag("packedJetsAK8Puppi"),
 )
+
+######################################################
+### Pileup Jet ID Re-run Recipe for 2017 MiniAODv2 ###
+######################################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL17
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone(
+  jets = cms.InputTag( "slimmedJets" ),
+  inputIsCorrected=True,
+  applyJec=False,
+  vertexes=cms.InputTag( "offlineSlimmedPrimaryVertices" ),
+  algos = cms.VPSet( _chsalgos_106X_UL17 )
+)
+process.updatedPatJets.userData.userFloats.src += [ "pileupJetIdUpdated:fullDiscriminant" ]
+process.updatedPatJets.userData.userInts.src += [ "pileupJetIdUpdated:fullId" ]
 
 ################################################
 ### LJMET
@@ -1004,6 +1036,7 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1022,6 +1055,7 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1038,6 +1072,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1055,6 +1090,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1067,6 +1103,7 @@ else: #Data
        process.updatedJetsAK8PuppiSoftDropPacked *
        process.packedJetsAK8Puppi *
        process.QGTagger *
+       process.pileupJetIdUpdated *
        process.tightAK4Jets *
        process.tightPackedJetsAK8Puppi *
        process.ljmet #(ntuplizer) 

@@ -109,10 +109,10 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
       if(killHF && fabs(ijet->eta()) > 2.4) continue;
 
       thePileupJetId = -std::numeric_limits<double>::max();
-      thePileupJetId = (double)ijet->userFloat("pileupJetId:fullDiscriminant");
+      thePileupJetId = (double)ijet->userFloat("pileupJetIdUpdated:fullDiscriminant");
       theJetPileupJetId.push_back(thePileupJetId);
    
-      int thePUID = ijet->userInt("pileupJetId:fullId");
+      int thePUID = ijet->userInt("pileupJetIdUpdated:fullId");
       if(thePUID==0){
           theJetPileupJetLoose.push_back(false);
           theJetPileupJetMedium.push_back(false);
