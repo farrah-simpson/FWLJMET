@@ -35,13 +35,19 @@ double getPFMiniIsolation_DeltaBeta(edm::Handle<pat::PackedCandidateCollection> 
 			  double r_iso_min, double r_iso_max, double kt_scale,
 			  bool charged_only);
 
+double getPFMiniIsolation_el( const pat::Electron* el,
+                              double r_iso_min, double r_iso_max, double kt_scale, double rho );
+
+double getPFMiniIsolation_mu( const pat::Muon* mu,
+                              double r_iso_min, double r_iso_max, double kt_scale, double rho );
+
 double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollection> pfcands,
 			  const reco::Candidate* ptcl,  
 			  double r_iso_min, double r_iso_max, double kt_scale,
-					bool use_pfweight,  bool charged_only, double rho);
+                          bool use_pfweight,  bool charged_only, double rho);
 
 double getPFMiniIsolation_SUSY(edm::Handle<pat::PackedCandidateCollection> pfcands,
 			  const reco::Candidate* ptcl,  
 			  double r_iso_min, double r_iso_max, double kt_scale,
-					bool use_pfweight,  bool charged_only, double rho);
+                          bool use_pfweight,  bool charged_only, double rho);
 

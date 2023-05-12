@@ -20,7 +20,8 @@ options.isVLQsignal = ISVLQSIGNAL
 options.doGenHT = DOGENHT
 options.shifts = SHIFTS
 options.inputFiles = [
-  "/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  #"/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  "/store/data/Run2018A/EGamma/MINIAOD/UL2018_MiniAODv2-v1/230000/1DC29AF8-7091-4245-A0D8-CFDF650310CC.root"
 ]
 options.maxEvents = MAXEVENTS
 options.parseArguments()
@@ -140,9 +141,9 @@ process.filter_any_explicit = hlt.hltHighLevel.clone(
   throw = False
 )
 
-################################
-## For updateJetCollection
-################################
+##############################
+## For updateJetCollection ###
+##############################
 from PhysicsTools.PatAlgos.tools.helpers import getPatAlgosToolsTask
 patAlgosToolsTask = getPatAlgosToolsTask(process)
 # process.outpath = cms.EndPath(process.out, patAlgosToolsTask)
@@ -159,9 +160,10 @@ print 'Using global tag', process.GlobalTag.globaltag
 
 
 
-################################################
-## Produce new slimmedElectrons with V2 IDs - https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
-################################################
+################################################################
+### Produce new slimmedElectrons with V2 IDs                 ###
+### https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2 ###
+################################################################
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(
   process,
@@ -218,17 +220,17 @@ updateJetCollection(
   printWarning = False
 )
 
-################################################################################################
-#### Establish references between PATified fat jets and subjets using the BoostedJetMerger
-################################################################################################
+##############################################################################################
+#### Establish references between PATified fat jets and subjets using the BoostedJetMerger ###
+##############################################################################################
 process.updatedJetsAK8PuppiSoftDropPacked = cms.EDProducer(
   "BoostedJetMerger",
   jetSrc=cms.InputTag('selectedUpdatedPatJetsAK8Puppi'),
   subjetSrc=cms.InputTag('slimmedJetsAK8PFPuppiSoftDropPacked','SubJets')
 )
-################################
-#### Pack fat jets with subjets
-################################
+###################################
+#### Pack fat jets with subjets ###
+###################################
 process.packedJetsAK8Puppi = cms.EDProducer(
   "JetSubstructurePacker",
   jetSrc=cms.InputTag('selectedUpdatedPatJetsAK8Puppi'),
@@ -238,11 +240,12 @@ process.packedJetsAK8Puppi = cms.EDProducer(
   algoLabels =cms.vstring('SoftDropPuppi')
 )
 
-##############################################
-#run QGTagger code again to calculate jet axis1  (HOT Tagger) - https://github.com/susy2015/TopTagger/tree/master/TopTagger#instructions-for-saving-tagger-results-to-nanoaod-with-cmssw_9_4_11
-### 
-###  Add DeepFlavour tags for AK4
-##############################################
+#######################################################################################################################################
+### run QGTagger code again to calculate jet axis1 (HOT Tagger)                                                                     ###          
+### https://github.com/susy2015/TopTagger/tree/master/TopTagger#instructions-for-saving-tagger-results-to-nanoaod-with-cmssw_9_4_11 ###
+###                                                                                                                                 ###
+### Add DeepFlavour tags for AK4                                                                                                    ###
+#######################################################################################################################################
 updateJetCollection(
   process,
   jetSource = cms.InputTag('slimmedJets'),
@@ -265,9 +268,10 @@ process.QGTagger.srcJets = cms.InputTag('slimmedJets')
 process.updatedPatJets.userData.userFloats.src += ['QGTagger:ptD','QGTagger:axis1','QGTagger:axis2']
 process.updatedPatJets.userData.userInts.src += ['QGTagger:mult']
 
-################################
-## Produce L1 Prefiring probabilities - https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe
-################################
+############################################################################
+###  Produce L1 Prefiring probabilities                                  ###
+### https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1PrefiringWeightRecipe ###
+############################################################################
 from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
 process.prefiringweight = l1PrefiringWeightProducer.clone(
   TheJets = cms.InputTag("tightAK4Jets"),
@@ -278,9 +282,9 @@ process.prefiringweight = l1PrefiringWeightProducer.clone(
   PrefiringRateSystematicUnctyMuon = cms.double(0.2),
 )
 
-################################
-## Apply Jet ID to AK4 and AK8
-################################
+###################################
+### Apply Jet ID to AK4 and AK8 ###
+###################################
 
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 pfJetIDSelector.version = cms.string('RUN2ULCHS')
@@ -294,19 +298,36 @@ process.tightAK4Jets = cms.EDFilter(
 pfJetIDSelector.version = cms.string('RUN2ULPUPPI')
 process.tightPackedJetsAK8Puppi = cms.EDFilter(
   "PFJetIDSelectionFunctorFilter",
- filterParams =pfJetIDSelector.clone(),
- src = cms.InputTag("packedJetsAK8Puppi"),
+  filterParams =pfJetIDSelector.clone(),
+  src = cms.InputTag("packedJetsAK8Puppi"),
 )
 
-################################################
-### LJMET
-################################################
+###############################################################################################
+### Pileup Jet ID Re-run Recipe for 2018 MiniAODv2                                          ###  
+### https://twiki.cern.ch/twiki/bin/view/CMS/PileupJetIDUL#Recommendations_for_2018_UL_data ###
+###############################################################################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL18
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone( 
+        jets=cms.InputTag( "slimmedJets" ),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL18),
+    )
+process.updatedPatJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+process.updatedPatJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
+
+#############
+### LJMET ###
+#############
 
 ## For MET filter
 # using PAT for both MC and data since BadPFMuonDzFilter (+others) only in MiniAODv2 PAT
 MET_filt_flag_tag = 'TriggerResults::PAT' 
 
-## For Jet corrections
+##  For Jet corrections
 doNewJEC                 = True
 JECup                    = False
 JECdown                  = False
@@ -333,8 +354,8 @@ DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB
 DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 # for b-jet SF
-DeepJetfile       = "FWLJMET/LJMet/data/DeepJet_106XUL18SF.csv" 
-DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv"
+DeepJetfile       = "FWLJMET/LJMet/data/wp_deepJet_106XUL18_v2.csv" 
+DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_deepCSV_106XUL18_v1.csv"
 btagOP    = "MEDIUM"
 bdisc_min = 0.2783 # THIS HAS TO MATCH btagOP !
 
@@ -428,6 +449,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),
@@ -687,16 +710,15 @@ BestCalc_cfg = cms.PSet(
   
 HOTTaggerCalc_cfg = cms.PSet(
 
-ak4PtCut         = cms.double(20),
-qgTaggerKey      = cms.string('QGTagger'),
-deepCSVBJetTags  = cms.string('pfDeepCSVJetTags'),
-CvsBCJetTags     = cms.string('pfCombinedCvsBJetTags'),
-CvsLCJetTags     = cms.string('pfCombinedCvsLJetTags'),
-bTagKeyString    = cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
-taggerCfgFile    = cms.FileInPath('TopTagger/TopTagger/data/TopTaggerCfg-DeepResolved_DeepCSV_GR_noDisc_Release_v1.0.0/TopTagger.cfg'),
-discriminatorCut = cms.double(0.5),
-saveAllTopCandidates = cms.bool(False)
-
+  ak4PtCut         = cms.double(20),
+  qgTaggerKey      = cms.string('QGTagger'),
+  deepCSVBJetTags  = cms.string('pfDeepCSVJetTags'),
+  CvsBCJetTags     = cms.string('pfCombinedCvsBJetTags'),
+  CvsLCJetTags     = cms.string('pfCombinedCvsLJetTags'),
+  bTagKeyString    = cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
+  taggerCfgFile    = cms.FileInPath('TopTagger/TopTagger/data/TopTaggerCfg-DeepResolved_DeepCSV_GR_noDisc_Release_v1.0.0/TopTagger.cfg'),
+  discriminatorCut = cms.double(0.5),
+  saveAllTopCandidates = cms.bool(False)
 )
 
 ## nominal
@@ -736,7 +758,6 @@ process.ljmet = cms.EDAnalyzer(
   BestCalc      = cms.PSet(BestCalc_cfg),
 
 )
-
 
 ## JECup - reset bools for all calcs/selectors that use JEC
 MultiLepSelector_cfg.JECup = cms.bool(True)
@@ -967,14 +988,15 @@ if (isTTbar):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
       process.ttbarcat *
-      process.ljmet *#(ntuplizer) 
-      process.ljmet_JECup *#(ntuplizer) 
+      process.ljmet * #(ntuplizer) 
+      process.ljmet_JECup * #(ntuplizer) 
       process.ljmet_JECdown * #(ntuplizer) 
-      process.ljmet_JERup *#(ntuplizer) 
+      process.ljmet_JERup * #(ntuplizer) 
       process.ljmet_JERdown #(ntuplizer) 
     )
   else:
@@ -985,6 +1007,7 @@ if (isTTbar):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1001,6 +1024,7 @@ elif(isMC):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1018,6 +1042,7 @@ elif(isMC):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1030,6 +1055,7 @@ else: #Data
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.ljmet #(ntuplizer) 

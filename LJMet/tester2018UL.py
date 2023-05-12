@@ -15,14 +15,22 @@ options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.var
 ## SET DEFAULT VALUES
 ## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
 options.isMC = True
-options.isTTbar = True 
+options.isTTbar = False
 options.isVLQsignal = False 
 options.doGenHT = False
-options.shifts = True
+options.shifts = False
 options.inputFiles = [
-  "/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  #"/store/mc/RunIISummer20UL18MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/120000/006455CD-9CDB-B843-B50D-5721C39F30CE.root"
+  #"/store/mc/RunIISummer20UL18MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2520000/01CC7B01-9F49-A44F-8B48-D8B913E73DB0.root",
+  #"/store/mc/RunIISummer20UL18MiniAODv2/ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/C31C0F1B-6530-B64E-91F0-1CEB1ED9A7EC.root",
+  #"/store/mc/RunIISummer20UL18MiniAODv2/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2540000/00643986-C2BD-9348-9B61-9DA1ADC4AD02.root",
+  "/store/mc/RunIISummer20UL18MiniAODv2/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2540000/010DAB3B-35FD-8349-A56E-3AAFBD402469.root",
+  "/store/mc/RunIISummer20UL18MiniAODv2/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2540000/01174EA4-8810-B044-AFF5-0771F44EB5C0.root",
+  #"/store/mc/RunIISummer20UL18MiniAODv2/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/3E229ED2-5504-E946-9605-1E6199C3A224.root",
+  #"/store/data/Run2018A/EGamma/MINIAOD/UL2018_MiniAODv2-v1/230000/1DC29AF8-7091-4245-A0D8-CFDF650310CC.root"
 ]
-options.maxEvents = 1000
+
+options.maxEvents = 100000
 options.parseArguments()
 
 isMC= options.isMC
@@ -39,7 +47,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -298,6 +306,22 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
  src = cms.InputTag("packedJetsAK8Puppi"),
 )
 
+############################################
+### Pileup Jet ID Re-run Recipe for 2018 ###
+############################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL18
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone( 
+        jets=cms.InputTag( "slimmedJets" ),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL18),
+    )
+process.updatedPatJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+process.updatedPatJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
+
 ################################################
 ### LJMET
 ################################################
@@ -333,8 +357,8 @@ DataL3JetParAK8          = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB
 DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL18_V5/Summer19UL18_RunB_V5_DATA_L2L3Residual_AK8PFPuppi.txt'
 
 # for b-jet SF
-DeepJetfile       = "FWLJMET/LJMet/data/DeepJet_106XUL18SF.csv" 
-DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_DeepCSV_94XSF_V3_B_F.csv"
+DeepJetfile       = "FWLJMET/LJMet/data/wp_deepJet_106XUL18_v2.csv" 
+DeepCSVSubjetfile = "FWLJMET/LJMet/data/subjet_deepCSV_106XUL18_v1.csv"
 btagOP    = "MEDIUM"
 bdisc_min = 0.2783 # THIS HAS TO MATCH btagOP !
 
@@ -428,6 +452,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),
@@ -482,7 +508,7 @@ MultiLepSelector_cfg = cms.PSet(
   LepJetDRAK8              = cms.double(0.8),
   jet_cuts                 = cms.bool(True),
   jet_minpt                = cms.double(20.0),
-  jet_maxeta               = cms.double(3.0),
+  jet_maxeta               = cms.double(4.7),
   jet_minpt_AK8            = cms.double(170.0),
   jet_maxeta_AK8           = cms.double(2.4),
   min_jet                  = cms.int32(4),
@@ -967,6 +993,7 @@ if (isTTbar):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -985,6 +1012,7 @@ if (isTTbar):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1001,6 +1029,7 @@ elif(isMC):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1018,6 +1047,7 @@ elif(isMC):
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1030,6 +1060,7 @@ else: #Data
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.ljmet #(ntuplizer) 

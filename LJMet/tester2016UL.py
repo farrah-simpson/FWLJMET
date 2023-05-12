@@ -13,16 +13,16 @@ options.register('doGenHT', '', VarParsing.multiplicity.singleton, VarParsing.va
 options.register('shifts', '', VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Include JEC/JER shift trees')
 
 ## SET DEFAULT VALUES
-## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True 
-options.isMC = False
+## ATTENTION: THESE DEFAULT VALUES ARE SET FOR VLQ SIGNAL ! isMC=True, isTTbar=False, isVLQsignal=True options.isMC = False
+options.isMC = True
 options.isTTbar = False
 options.isVLQsignal = False
 options.doGenHT = False
 options.shifts = False
 options.inputFiles = [
-    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
+    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v2/2430000/074033FA-63D9-8D4F-89F7-E0F96C6F2846.root"
     #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_v17-v1/120000/01572CA8-C7AE-0346-B660-8AB4F7C2AE36.root"
-    "root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleElectron/MINIAOD/UL2016_MiniAODv2-v2/270000/4C3CDA2A-5A33-D542-A15A-DE2B3CD924E7.root"
+    #"root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleElectron/MINIAOD/UL2016_MiniAODv2-v2/270000/4C3CDA2A-5A33-D542-A15A-DE2B3CD924E7.root"
     #"root://cmsxrootd.fnal.gov//store/data/Run2016F/SingleMuon/MINIAOD/UL2016_MiniAODv2-v2/70000/060F0B51-FCEF-F343-890C-3043A4B268C2.root"
 ]
 options.maxEvents = 1000
@@ -42,7 +42,7 @@ process = cms.Process("LJMET")
 
 ## MessageLogger
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 20
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -314,6 +314,22 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
   src = cms.InputTag("packedJetsAK8Puppi"),
 )
 
+############################################
+### Pileup Jet ID Re-run Recipe for 2016 ###
+############################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL16
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone( 
+        jets=cms.InputTag( "slimmedJets" ),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL16),
+    )
+process.updatedPatJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+process.updatedPatJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
+
 
 ################################################
 ### LJMET
@@ -353,8 +369,8 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16_RunF
 # b-tag settings
 btagOP                   = 'MEDIUM'
 bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update
+DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16postVFP_v3.csv'
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_deepCSV_106XUL16postVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -456,6 +472,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),
@@ -544,7 +562,7 @@ MultiLepSelector_cfg = cms.PSet(
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
   DeepJetfile              = cms.FileInPath(DeepJetfile),
-  DeepCSVSubjetfile        = cms.FileInPath(DeepJetfile), # need to update
+  DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile), # need to update
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -632,7 +650,7 @@ MultiLepCalc_cfg = cms.PSet(
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
   DeepJetfile              = cms.FileInPath(DeepJetfile),
-  DeepCSVSubjetfile        = cms.FileInPath(DeepJetfile), # need to update
+  DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile), # need to update
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -687,7 +705,7 @@ JetSubCalc_cfg = cms.PSet(
   bdisc_min                = cms.double(bdisc_min), # THIS HAS TO MATCH btagOP !
   applyBtagSF              = cms.bool(True), #This is implemented by BTagSFUtil.cc
   DeepJetfile              = cms.FileInPath(DeepJetfile),
-  DeepCSVSubjetfile        = cms.FileInPath(DeepJetfile), # need to update
+  DeepCSVSubjetfile        = cms.FileInPath(DeepCSVSubjetfile), # need to update
   BTagUncertUp             = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   BTagUncertDown           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
   MistagUncertUp           = cms.bool(False), # no longer needed, but can still be utilized. Keep false as default.
@@ -991,6 +1009,8 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1009,6 +1029,8 @@ if isTTbar:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1025,6 +1047,8 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1042,6 +1066,8 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1055,6 +1081,8 @@ else: #Data
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.ljmet #(ntuplizer) 

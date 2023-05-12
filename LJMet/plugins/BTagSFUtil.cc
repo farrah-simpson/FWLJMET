@@ -60,9 +60,10 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
     MistagUncertUp     = iConfig.getParameter<bool>("MistagUncertUp");
     MistagUncertDown   = iConfig.getParameter<bool>("MistagUncertDown");
 
-    if(DeepJetfile.find("UL16") != std::string::npos) year = 2016;
-    else if(DeepJetfile.find("UL17") != std::string::npos) year = 2017;
-    else year = 2018;
+    if( DeepJetfile.find("UL16preVFP") != std::string::npos) year = "2016APV";
+    else if( DeepJetfile.find("UL16postVFP") != std::string::npos) year = "2016";
+    else if( DeepJetfile.find("UL17") != std::string::npos) year = "2017";
+    else year = "2018";
 
     std::cout << mLegend << "b-tag check: DeepJet "<<btagOP<<" > "<<bdisc_min<<std::endl;
     std::cout << mLegend << "b-tag files: " << DeepJetfile << ", " << DeepCSVSubjetfile << std::endl;
@@ -74,34 +75,34 @@ void BTagSFUtil::Initialize(const edm::ParameterSet& iConfig){
       readerSJ = BTagCalibrationReader(BTagEntry::OP_LOOSE, "central", {"up","down"});
     }else if(btagOP == "TIGHT"){
       reader   = BTagCalibrationReader(BTagEntry::OP_TIGHT, "central", {"up","down"});
+      readerSJ = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
     }else{
       reader   = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
       readerSJ = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up","down"});
     }
-    //reader.load(calib, BTagEntry::FLAV_B, "comb");
-    //reader.load(calib, BTagEntry::FLAV_C, "comb");
-    //reader.load(calib, BTagEntry::FLAV_UDSG, "incl");
-    //readerSJ.load(calibsj, BTagEntry::FLAV_B, "lt");
-    //readerSJ.load(calibsj, BTagEntry::FLAV_C, "lt");
-    //readerSJ.load(calibsj, BTagEntry::FLAV_UDSG, "incl");
+    reader.load(calib, BTagEntry::FLAV_B, "comb");
+    reader.load(calib, BTagEntry::FLAV_C, "comb");
+    reader.load(calib, BTagEntry::FLAV_UDSG, "incl");
+    readerSJ.load(calibsj, BTagEntry::FLAV_B, "lt");
+    readerSJ.load(calibsj, BTagEntry::FLAV_C, "lt");
+    readerSJ.load(calibsj, BTagEntry::FLAV_UDSG, "incl");
 
     // Set Subjet WPs manually since we need DeepCSV instead of DeepJet
     if(btagOP == "LOOSE"){	      
-      if (year == 2016) bdisc_sj = 0.2217;
-      else if(year == 2017) bdisc_sj = 0.1355;
-      else bdisc_sj = 0.1241;
+      if ( year == "2016APV" ) bdisc_sj = 0.2027;
+      else if( year == "2016" ) bdisc_sj = 0.1918;
+      else if( year == "2017" ) bdisc_sj = 0.1355;
+      else bdisc_sj = 0.1208;
     }else{ // medium, only loose & medium for subjets
-      if (year == 2016) bdisc_sj = 0.6321;
-      else if(year == 2017) bdisc_sj = 0.4506;
-      else bdisc_sj = 0.4184;
+      if ( year == "2016APV" ) bdisc_sj = 0.6001;
+      else if( year == "2016" ) bdisc_sj = 0.5847;
+      else if( year == "2017" ) bdisc_sj = 0.4506;
+      else bdisc_sj = 0.4506;
     }
-
 }
 
 void BTagSFUtil::SetSeed( int seed ) {
-
   rand_ . SetSeed(seed);
-
 }
 
 

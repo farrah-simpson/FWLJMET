@@ -1,11 +1,6 @@
 #include "FWLJMET/LJMet/interface/MiniIsolation.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
-// Source:
-// https://hypernews.cern.ch/HyperNews/CMS/get/susy/1991.html
-// https://github.com/manuelfs/CfANtupler/blob/master/minicfa/interface/miniAdHocNTupler.h#L54
-
-
 double getPFMiniIsolation_DeltaBeta(edm::Handle<pat::PackedCandidateCollection> pfcands,
 		      const reco::Candidate* ptcl,  
 		      double r_iso_min, double r_iso_max, double kt_scale,
@@ -74,11 +69,59 @@ double getPFMiniIsolation_DeltaBeta(edm::Handle<pat::PackedCandidateCollection> 
   return iso;
 }
 
+double getPFMiniIsolation_mu( const pat::Muon *mu, double r_iso_min, double r_iso_max, double kt_scale, double rho ){
+  double EA_mu[5] = { 0.0566, 0.0562, 0.0363, 0.0119, 0.0064 };
+  double EA;
+
+  auto iso = mu->miniPFIsolation();
+  auto chg = iso.chargedHadronIso();
+  auto neu = iso.neutralHadronIso();
+  auto pho = iso.photonIso();
+
+  if( TMath::Abs(mu->eta()) < 0.8 ) EA = EA_mu[0];
+  else if( TMath::Abs(mu->eta()) < 1.3 ) EA = EA_mu[1];
+  else if( TMath::Abs(mu->eta()) < 2.0 ) EA = EA_mu[2];
+  else if( TMath::Abs(mu->eta()) < 2.2 ) EA = EA_mu[3];
+  else EA = EA_mu[4];
+
+  double R = kt_scale / std::min( std::max( mu->pt(), r_iso_max ), r_iso_min );
+  EA *= std::pow( R / 0.3, 2 );
+
+  double miniIso = ( chg + TMath::Max( 0.0, neu + pho - (rho) * EA ) ) / mu->pt(); 
+
+  return miniIso;
+}
+
+double getPFMiniIsolation_el( const pat::Electron *el, double r_iso_min, double r_iso_max, double kt_scale, double rho ){
+  double EA_el[7] = { 0.1440, 0.1562, 0.1032, 0.0859, 0.1116, 0.1321, 0.1654 };
+  double EA;
+
+  auto iso = el->pfIsolationVariables();
+  auto chg = iso.sumChargedHadronPt;
+  auto neu = iso.sumNeutralHadronEt;
+  auto pho = iso.sumPhotonEt;
+
+  double eta = TMath::Abs( el->superCluster()->eta() );
+  if( eta < 1.0 ) EA = EA_el[0];
+  else if( eta < 1.479 ) EA = EA_el[1];
+  else if( eta < 2.000 ) EA = EA_el[2];
+  else if( eta < 2.200 ) EA = EA_el[3];
+  else if( eta < 2.300 ) EA = EA_el[4];
+  else if( eta < 2.400 ) EA = EA_el[5];
+  else EA = EA_el[6];
+  
+  double R = kt_scale / std::min( std::max( el->pt(), r_iso_max ), r_iso_min );
+  EA *= std::pow( R / 0.3, 2 );
+
+  double miniIso = ( chg + TMath::Max( 0.0, neu + pho - (rho) * EA ) ) / el->pt();
+
+  return miniIso;
+}
+
 double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollection> pfcands,
 					const reco::Candidate* ptcl,  
 					double r_iso_min, double r_iso_max, double kt_scale,
 					bool use_pfweight, bool charged_only, double rho) {
-
   if (ptcl->pt()<5.) return 99999.;
 
   double deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);
@@ -94,7 +137,8 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
   double iso_ph(0.); double iso_pu(0.);
   double ptThresh(0.5);
   if(ptcl->isElectron()) ptThresh = 0;
-  double r_iso = std::max(r_iso_min,std::min(r_iso_max, kt_scale/ptcl->pt()));
+  double r_iso = kt_scale / std::min( std::max( ptcl->pt(), r_iso_max ), r_iso_min );
+
   for (const pat::PackedCandidate &pfc : *pfcands) {
     if (abs(pfc.pdgId())<7) continue;
 
@@ -105,19 +149,6 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
     if (pfc.charge()==0){
       if (pfc.pt()>ptThresh) {
 	double wpf(1.);
-	/*if (use_pfweight){
-            double wpv(0.), wpu(0.);
-            for (const pat::PackedCandidate &jpfc : *pfcands) {
-              double jdr = deltaR(pfc, jpfc);
-              if (pfc.charge()!=0 || jdr<0.00001) continue;
-              double jpt = jpfc.pt();
-              if (pfc.fromPV()>1) wpv *= jpt/jdr;
-              else wpu *= jpt/jdr;
-            }
-            wpv = log(wpv);
-            wpu = log(wpu);
-            wpf = wpv/(wpv+wpu);
-	    }*/
 	/////////// PHOTONS ////////////
 	if (abs(pfc.pdgId())==22) {
 	  if(dr < deadcone_ph) continue;
@@ -143,32 +174,19 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
     }
   }
   double iso(0.);
-  //if (charged_only){
-  //  iso = iso_ch;
-  //} else {
-  //  iso = iso_ph + iso_nh;
-  //  if (!use_pfweight) iso -= 0.5*iso_pu;
-  //  if (iso>0) iso += iso_ch;
-  //  else iso = iso_ch;
-  //}
   
   int em = 0;
   if(ptcl->isMuon())
     em = 1;
   
-  //double Aeff[2][5] = {{ 0.1013, 0.0988, 0.0572, 0.0842, 0.1530 },{ 0.0913, 0.0765, 0.0546, 0.0728, 0.1177 }}; // ancient SUSY
-  
   // used for 2016 analyses based on SUSY group recommendations on SUSLeptonSF TWiki
-  double Aeff_Fall15Anal[2][7] = {{ 0.1752, 0.1862, 0.1411, 0.1534, 0.1903 , 0.2243, 0.2687 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};
-  // Possible values that we might want when rerunning 2016....SUSY keeps the 2015 versions
-  //https://github.com/cms-sw/cmssw/blob/CMSSW_10_2_X/RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt
-  double Aeff_Summer16Anal[2][7] = {{ 0.1703, 0.1715, 0.1213, 0.1230, 0.1635, 0.1937, 0.2393 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};
-	
+  //double Aeff_Spring15Anal[2][7] = {{ 0.1752, 0.1862, 0.1411, 0.1534, 0.1903 , 0.2243, 0.2687 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};	
   // JH 8/22/19, updating to 94X values from 92X values for electrons, a very small change (2-3rd decimal place)
   // https://github.com/cms-sw/cmssw/blob/CMSSW_10_2_X/RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt
-  // Muon values might be old but also are no longer used, in favor of the built-in flag 
-  double Aeff_Fall17Anal[2][7] = {{ 0.1440, 0.1562, 0.1032, 0.0859, 0.1116, 0.1321, 0.1654 },{ 0.0735, 0.0619, 0.0465, 0.0433, 0.0577 , 0.0,0.0}};
+  // https://github.com/cms-data/PhysicsTools-NanoAOD/blob/master/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt
+  double Aeff_Fall17Anal[2][7] = {{ 0.1440, 0.1562, 0.1032, 0.0859, 0.1116, 0.1321, 0.1654 },{0.0566,0.0562,0.0363,0.0119,0.0064}};
   
+
   double CorrectedTerm=0.0;
   double riso2 = r_iso*r_iso;
   
@@ -191,8 +209,7 @@ double getPFMiniIsolation_EffectiveArea(edm::Handle<pat::PackedCandidateCollecti
   //std::cout<<"riso = "<<r_iso<<", iso_nh = "<<iso_nh<<", iso_ch = "<<iso_ch<<", iso_ph = "<<iso_ph<<",rho = "<<rho<<" adn CTerm = "<<CorrectedTerm<<"\n";  
    
   iso = iso_ch + TMath::Max(0.0, iso_ph + iso_nh - CorrectedTerm );
-  
-  
+   
   iso = iso/ptcl->pt();
 
   return iso;

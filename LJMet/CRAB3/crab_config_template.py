@@ -60,7 +60,7 @@ if isMC:
 		config.Data.splitting = 'LumiBased'
 		config.Data.unitsPerJob = 2
         elif isTTbar:
-                config.Data.splitting = "FileBased"
+                config.Data.splitting = "LumiBased"
                 config.Data.unitsPerJob = UNITSPERJOB
 	else:
 		config.Data.splitting = 'FileBased'

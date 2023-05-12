@@ -43,9 +43,9 @@ BtagHardcodedConditions::~BtagHardcodedConditions() {
   // root://cmseos.fnal.gov//store/user/jmanagan/FWLJMET102X_BEffDeepFlav_101819/*.root for DeepJet
   // ~jmanagan/nobackup/EffsAndNegWeights/BEffFullRun2/*.root for DeepCSV
 
-double BtagHardcodedConditions::GetBtagEfficiency(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetBtagEfficiency(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2018){
+  if(year == "2018"){
     if(tagger == "DeepCSVMEDIUM" or tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.403823;
       else if(pt < 50)   return 0.618852;
@@ -114,7 +114,7 @@ double BtagHardcodedConditions::GetBtagEfficiency(double pt, double eta, std::st
       std::cerr << "Tagger " << tagger << " not coded into GetBtagEfficiency!" << std::endl;
       return 0;
     }
-  }else if(year == 2017){
+  }else if(year == "2017"){
     if(tagger == "DeepCSVMEDIUM" or tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.447390;
       else if(pt < 50)   return 0.652679;
@@ -257,9 +257,9 @@ double BtagHardcodedConditions::GetBtagEfficiency(double pt, double eta, std::st
   }
 }
 
-double BtagHardcodedConditions::GetCtagEfficiency(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetCtagEfficiency(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2018){
+  if(year == "2018"){
     if(tagger == "DeepCSVMEDIUM" or tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.055637;
       else if(pt < 50)   return 0.089934;
@@ -329,7 +329,7 @@ double BtagHardcodedConditions::GetCtagEfficiency(double pt, double eta, std::st
       std::cerr << "Tagger " << tagger << " not coded into GetCtagEfficiency!" << std::endl;
       return 0;
     }
-  }else if(year == 2017){ // 2017
+  }else if(year == "2017"){ // 2017
     if(tagger == "DeepCSVMEDIUM" or tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.070384;
       else if(pt < 50)   return 0.107334;
@@ -472,9 +472,9 @@ double BtagHardcodedConditions::GetCtagEfficiency(double pt, double eta, std::st
   }
 }
 
-double BtagHardcodedConditions::GetMistagRate(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetMistagRate(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2018){
+  if(year == "2018"){
     if(tagger == "DeepCSVMEDIUM" || tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.00308;
       else if(pt < 50)   return 0.007497;
@@ -544,7 +544,7 @@ double BtagHardcodedConditions::GetMistagRate(double pt, double eta, std::string
       std::cerr << "Tagger " << tagger << " not coded into MistagRate!" << std::endl;
       return 0;
     }
-  }else if(year == 2017){ // 2017
+  }else if(year == "2017"){ // 2017
     if(tagger == "DeepCSVMEDIUM" || tagger == "SJDeepCSVMEDIUM"){
       if(pt < 30)        return 0.004377;
       else if(pt < 50)   return 0.010659;
@@ -722,13 +722,13 @@ float BtagHardcodedConditions::getDiscriminant(const std::string & op)
   throw cms::Exception("InvalidInput") << "Unknown operating point: "<< op << std::endl;
 }
 
-double BtagHardcodedConditions::GetBtagScaleFactor(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetBtagScaleFactor(double pt, double eta, std::string tagger, std::string year)
 {
   //The main getter for B-tag Scale Factors
-  if      (year==2016) return GetBtagSF2016_comb(tagger, central, pt, eta);
-  else if (year==2015) return GetBtagScaleFactor2015(pt,eta,tagger);
-  else if (year==2012) return GetBtagScaleFactor2012(pt, eta, tagger);
-  else if (year==2011) return GetBtagScaleFactor2011(pt, eta, tagger);
+  if      (year=="2016") return GetBtagSF2016_comb(tagger, central, pt, eta);
+  else if (year=="2015") return GetBtagScaleFactor2015(pt,eta,tagger);
+  else if (year=="2012") return GetBtagScaleFactor2012(pt, eta, tagger);
+  else if (year=="2011") return GetBtagScaleFactor2011(pt, eta, tagger);
   else return 0.;
 }//end GetBtagScaleFactor
 
@@ -1122,27 +1122,27 @@ double BtagHardcodedConditions::GetBtagSF2016Loose_subjet(shift Shift, double pt
    `---'                                                         `---'*/
 
 
-double BtagHardcodedConditions::GetBtagSFUncertUp(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetBtagSFUncertUp(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2016){
+  if(year == "2016"){
     if(tagger == "CSVMsubjet" or tagger == "CSVLsubjet") return (pt>450 ? 2.0 : 1.0) * GetBtagSF2016_comb(tagger, uncert, pt, eta);
     else return (pt>1000 ? 2.0 : 1.0) * GetBtagSF2016_comb(tagger, uncert, pt, eta);
   }
-  else if(year == 2015) return GetBtagSFUncertainty2015(pt, eta, tagger);
-  else if(year == 2012) return GetBtagSFUncertainty2012(pt, eta, tagger);
-  else if(year == 2011) return GetBtagSFUncertainty2011(pt, eta, tagger);
+  else if(year == "2015") return GetBtagSFUncertainty2015(pt, eta, tagger);
+  else if(year == "2012") return GetBtagSFUncertainty2012(pt, eta, tagger);
+  else if(year == "2011") return GetBtagSFUncertainty2011(pt, eta, tagger);
   else return 0.;
 }//end GetBtagSFUncertUp
 
-double BtagHardcodedConditions::GetBtagSFUncertDown(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetBtagSFUncertDown(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2016){
+  if(year == "2016"){
     if(tagger == "CSVMsubjet" or tagger == "CSVLsubjet") return (pt>450 ? 2.0 : 1.0) * GetBtagSF2016_comb(tagger, uncert, pt, eta);
     else return (pt>1000 ? 2.0 : 1.0) * GetBtagSF2016_comb(tagger, uncert, pt, eta);
   }
-  else if(year == 2015) return GetBtagSFUncertainty2015(pt, eta, tagger);
-  else if(year == 2012) return GetBtagSFUncertainty2012(pt, eta, tagger);
-  else if(year == 2011) return GetBtagSFUncertainty2011(pt, eta, tagger);
+  else if(year == "2015") return GetBtagSFUncertainty2015(pt, eta, tagger);
+  else if(year == "2012") return GetBtagSFUncertainty2012(pt, eta, tagger);
+  else if(year == "2011") return GetBtagSFUncertainty2011(pt, eta, tagger);
   else return 0.;
 }//end GetBtagSFUncertDown
 
@@ -1159,19 +1159,19 @@ double BtagHardcodedConditions::GetBtagSFUncertDown(double pt, double eta, std::
    `---'                                                         `---'*/
 
 
-double BtagHardcodedConditions::GetCtagScaleFactor(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetCtagScaleFactor(double pt, double eta, std::string tagger, std::string year)
 {
   //The main getter for C-tag Scale Factors
-  if(year==2016) return GetCtagSF2016_comb(tagger, central, pt, eta);
+  if(year=="2016") return GetCtagSF2016_comb(tagger, central, pt, eta);
   else {
     std::cerr << "Year " << year << " not coded for C-tag SFs. Are you really earlier than 2016 data?" << std::endl;
     return 0.;
   }
 }//end GetCtagScaleFactor
 
-double BtagHardcodedConditions::GetCtagSFUncertUp(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetCtagSFUncertUp(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2016){
+  if(year == "2016"){
     if(tagger == "CSVMsubjet" or tagger == "CSVLsubjet") return (pt>450 ? 2.0 : 1.0) * GetCtagSF2016_comb(tagger, uncert, pt, eta);
     else return (pt>1000 ? 2.0 : 1.0) * GetCtagSF2016_comb(tagger, uncert, pt, eta);
   }
@@ -1181,9 +1181,9 @@ double BtagHardcodedConditions::GetCtagSFUncertUp(double pt, double eta, std::st
   }
 }//end GetCtagSFUncertUp
 
-double BtagHardcodedConditions::GetCtagSFUncertDown(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetCtagSFUncertDown(double pt, double eta, std::string tagger, std::string year)
 {
-  if(year == 2016){
+  if(year == "2016"){
     if(tagger == "CSVMsubjet" or tagger == "CSVLsubjet") return (pt>450 ? 2.0 : 1.0) * GetCtagSF2016_comb(tagger, uncert, pt, eta);
     else return (pt>1000 ? 2.0 : 1.0) * GetCtagSF2016_comb(tagger, uncert, pt, eta);
   }
@@ -1385,41 +1385,41 @@ double BtagHardcodedConditions::GetCtagSF2016Loose_subjet(shift Shift, double pt
   \     /                                                       \     /
    `---'                                                         `---'*/
 
-double BtagHardcodedConditions::GetMistagScaleFactor(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetMistagScaleFactor(double pt, double eta, std::string tagger, std::string year)
 {
-    if(year == 2016) return GetLFSF2016( tagger, central, pt, eta);
-    else if(year == 2015){
+    if(year == "2016") return GetLFSF2016( tagger, central, pt, eta);
+    else if(year == "2015"){
 	// 2015 scale factors from csv file in https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation76X
 	if(tagger == "CSVT") return 0.992339;
 	else return GetMistagSF2015(pt,eta,tagger,"mean");
     }
-    else if(year == 2012) return GetMistagSF2012(pt, eta, tagger, "mean");
-    else if(year == 2011) return GetMistagSF2011(pt, eta, tagger, "mean");
+    else if(year == "2012") return GetMistagSF2012(pt, eta, tagger, "mean");
+    else if(year == "2011") return GetMistagSF2011(pt, eta, tagger, "mean");
     else return 0.;
 }//end GetMistagScaleFactor
 
-double BtagHardcodedConditions::GetMistagSFUncertDown(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetMistagSFUncertDown(double pt, double eta, std::string tagger, std::string year)
 {
 
-    if(year == 2016) return (pt>1000 ? 2.0 : 1.0) * GetLFSF2016( tagger, uncert, pt, eta);
-    else if(year==2015){
+    if(year == "2016") return (pt>1000 ? 2.0 : 1.0) * GetLFSF2016( tagger, uncert, pt, eta);
+    else if(year=="2015"){
 	if(tagger == "CSVT") return (pt>1000 ? 2.0 : 1.0) * (0.992339-0.810103);
 	else return (pt>1000 ? 2.0 : 1.0) * (GetMistagSF2015(pt,eta,tagger,"mean") - GetMistagSF2015(pt,eta,tagger,"min"));
     }
-    else if(year==2012) return (pt>800?2.0:1.0) * (GetMistagSF2012(pt, eta, tagger, "mean")- GetMistagSF2012(pt, eta, tagger, "min"));
-    else if(year==2011) return (pt>670?2.0:1.0) * (GetMistagSF2011(pt, eta, tagger, "mean")- GetMistagSF2011(pt, eta, tagger, "min"));
+    else if(year=="2012") return (pt>800?2.0:1.0) * (GetMistagSF2012(pt, eta, tagger, "mean")- GetMistagSF2012(pt, eta, tagger, "min"));
+    else if(year=="2011") return (pt>670?2.0:1.0) * (GetMistagSF2011(pt, eta, tagger, "mean")- GetMistagSF2011(pt, eta, tagger, "min"));
     else return 0.;
 }//end GetMistagSFUncertDown
 
-double BtagHardcodedConditions::GetMistagSFUncertUp(double pt, double eta, std::string tagger, int year)
+double BtagHardcodedConditions::GetMistagSFUncertUp(double pt, double eta, std::string tagger, std::string year)
 {
-    if(year == 2016) return (pt>1000 ? 2.0 : 1.0) * GetLFSF2016( tagger, uncert, pt, eta);
-    else if(year==2015){
+    if(year == "2016") return (pt>1000 ? 2.0 : 1.0) * GetLFSF2016( tagger, uncert, pt, eta);
+    else if(year=="2015"){
 	if(tagger == "CSVT") return (pt>1000 ? 2.0 : 1.0) * (1.17457-0.992339);
 	else return (pt>1000 ? 2.0 : 1.0) * (GetMistagSF2015(pt,eta,tagger,"max") - GetMistagSF2015(pt,eta,tagger,"mean"));
     }
-    else if(year==2012) return (pt>800?2.0:1.0) * (GetMistagSF2012(pt, eta, tagger, "max")- GetMistagSF2012(pt, eta, tagger, "mean"));
-    else if(year==2011) return (pt>670?2.0:1.0) * (GetMistagSF2011(pt, eta, tagger, "max")- GetMistagSF2011(pt, eta, tagger, "mean"));
+    else if(year=="2012") return (pt>800?2.0:1.0) * (GetMistagSF2012(pt, eta, tagger, "max")- GetMistagSF2012(pt, eta, tagger, "mean"));
+    else if(year=="2011") return (pt>670?2.0:1.0) * (GetMistagSF2011(pt, eta, tagger, "max")- GetMistagSF2011(pt, eta, tagger, "mean"));
     else return 0.;
 }//end GetMistagSFUncertUp
 

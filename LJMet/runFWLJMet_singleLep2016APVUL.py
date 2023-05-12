@@ -22,6 +22,7 @@ options.shifts = SHIFTS
 options.inputFiles = [
   #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL16MiniAODAPVv2/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v2/100000/0AD9EE2D-6792-A54B-AF1C-1BDED1C9A994.root",
   "/store/mc/RunIISummer20UL16MiniAODAPVv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/120000/2CF6A298-801D-DE4E-A94D-9F1EFC07D2DD.root"
+  #"/store/data/Run2016B/SingleMuon/MINIAOD/ver2_HIPM_UL2016_MiniAODv2-v2/120000/0042DCA3-FD73-4641-B984-636AA05DFB55.root"
 ]
 options.maxEvents = MAXEVENTS
 options.parseArguments()
@@ -311,6 +312,21 @@ process.tightPackedJetsAK8Puppi = cms.EDFilter(
   src = cms.InputTag("packedJetsAK8Puppi"),
 )
 
+########################################
+### Re-run Pileup Jet ID for 2016APV ###
+########################################
+
+from RecoJets.JetProducers.PileupJetID_cfi import _chsalgos_106X_UL16APV
+process.load( "RecoJets.JetProducers.PileupJetID_cfi" )
+process.pileupJetIdUpdated = process.pileupJetId.clone( 
+        jets=cms.InputTag( "slimmedJets" ),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL16APV),
+    )
+process.updatedPatJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+process.updatedPatJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
 
 ################################################
 ### LJMET
@@ -349,9 +365,9 @@ DataResJetParAK8         = 'FWLJMET/LJMet/data/Summer19UL16_V7/Summer19UL16APV_R
 
 # b-jet settings
 btagOP                   = 'MEDIUM'
-bdisc_min                = 0.2489 # THIS HAS TO MATCH btagOP !
-DeepJetfile              = 'FWLJMET/LJMet/data/DeepJet_106XUL16SF.csv'
-DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_DeepCSV_2016LegacySF_V1.csv' # need to update, check: https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation106XUL16preVFP
+bdisc_min                = 0.2598 # THIS HAS TO MATCH btagOP !
+DeepJetfile              = 'FWLJMET/LJMet/data/wp_deepJet_106XUL16preVFP_v2.csv'
+DeepCSVSubjetfile        = 'FWLJMET/LJMet/data/subjet_deepCSV_106XUL16preVFP_v1.csv' 
 
 ## El MVA ID
 UseElIDV1_ = False #False means using ElIDV2
@@ -455,6 +471,8 @@ MultiLepSelector_cfg = cms.PSet(
   muon_minpt               = cms.double(20.0),
   muon_maxeta              = cms.double(2.4),
   muon_useMiniIso          = cms.bool(True),
+  muon_miniIso             = cms.double(0.1),
+  loose_muon_miniIso       = cms.double(0.4),
   loose_muon_minpt         = cms.double(15.0),
   loose_muon_maxeta        = cms.double(2.4),
   muon_dxy                 = cms.double(0.2),
@@ -992,6 +1010,7 @@ if isTTbar:
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.prefiringweight *
@@ -1010,6 +1029,7 @@ if isTTbar:
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.prefiringweight *
@@ -1026,6 +1046,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1043,6 +1064,7 @@ elif isMC:
       process.updatedJetsAK8PuppiSoftDropPacked *
       process.packedJetsAK8Puppi *
       process.QGTagger *
+      process.pileupJetIdUpdated *
       process.tightAK4Jets *
       process.tightPackedJetsAK8Puppi *
       process.prefiringweight *
@@ -1055,6 +1077,7 @@ else: #Data
     process.updatedJetsAK8PuppiSoftDropPacked *
     process.packedJetsAK8Puppi *
     process.QGTagger *
+    process.pileupJetIdUpdated *
     process.tightAK4Jets *
     process.tightPackedJetsAK8Puppi *
     process.ljmet #(ntuplizer) 
