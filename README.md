@@ -54,14 +54,9 @@ __Adding `Axis1` information for `RecoJets`:__
 
 The old instruction for adding Axis1 information "git cms-merge-topic -u pastika:AddAxis1_1026" doesn't work for `CMSSW_10_6_29`, please do the following steps by hand:
 * Replace `RecoJets/JetProducers/plugins/QGTagger.cc` with [this version](https://github.com/jingyuluo/QG_SA/blob/master/QGTagger.cc)
-	* Instructions using 'vim':
-		1. Open `QGTagger.cc` with 'vim': `vim RecoJets/JetProducers/plugins/QGTagger.cc`
-		2. Delete all contents: `dG`
-		3. Set 'paste' mode: `:set paste`
-		4. Set 'insert' mode: `i`
-		5. Copy new `QGTagger.cc` contents into empty file using 'copy+paste'
-		6. Exit 'insert' mode: `esc` key
-		7. Save and exit: `:wq`
+cd RecoJets/JetProducers/plugins/
+wget https://raw.githubusercontent.com/jingyuluo/QG_SA/master/QGTagger.cc -O QGTagger.cc
+cd ${CMSSW_BASE}/src/
 * Update `RecoJets/JetProducers/interface/QGTagger.h` by replacing L24: `std::tuple<int, float, float> calcVariables` with `std::tuple<int, float, float, float> calcVariables`
 
 __Adding `EGammaPostRecoTools` and `ElectronTools` for [Electron MVA ID](https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2):__
@@ -75,7 +70,7 @@ __Adding `EGammaPostRecoTools` and `ElectronTools` for [Electron MVA ID](https:/
 __Adding `BestCalc`:__  
 Copy `lwtnn` for `BestCalc.cc` to compile:
 
-	cp -r ~jmanagan/nobackup/CMSSW_9_4_12/src/lwtnn .
+	cp -r ~dsunyou/nobackup/CMSSW_10_6_29/src/lwtnn .
 	
 If not running on the LPC, use `scp` instead. 
 
