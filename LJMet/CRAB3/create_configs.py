@@ -66,7 +66,7 @@ def create_crab_config( group, process, shifts ):
 
 	MAXEVENTS = "-1"
 	#eos out folder
-	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
+	OUTFOLDER           = "FWLJMET106XUL_{}{}UL_RunIISummer20v2".format( option.finalState, option.year ) if option.outfolder == "default" else option.outfolder
 	
 	ISMC = "True" if ( ( process not in samples.groups[ "DATAE" ].keys() ) and ( process not in samples.groups[ "DATAM" ].keys() ) and ( process not in samples.groups[ "DATAJ" ].keys() ) ) else "False"
 	UNITSPERJOB = "1" if ISMC == "True" else "25"
