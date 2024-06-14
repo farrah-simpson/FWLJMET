@@ -101,6 +101,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
 
     std::vector<int> maxProb;
 
+    std::vector<double> theJetchargedEmEnergyFraction;
+    std::vector<double> theJetneutralEmEnergyFraction;
+
     double thePileupJetId;
 
     for (std::vector<pat::Jet>::const_iterator ijet = theJets.begin(); ijet != theJets.end(); ijet++) {
@@ -163,6 +166,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
       theJetIndex.push_back(index);
       theJetnDaughters.push_back((int)ijet->numberOfDaughters());
 
+      theJetchargedEmEnergyFraction.push_back(ijet->chargedEmEnergyFraction());
+      theJetneutralEmEnergyFraction.push_back(ijet->neutralEmEnergyFraction());
+
       //HT
       theJetHT += ijet->pt();
 
@@ -207,6 +213,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     SetValue("theJetPileupJetTight", theJetPileupJetTight);
     SetValue("theJetnDaughters", theJetnDaughters);
 
+    SetValue("theJetchargedEmEnergyFraction", theJetchargedEmEnergyFraction);
+    SetValue("theJetneutralEmEnergyFraction", theJetneutralEmEnergyFraction);
+    
     // Load in AK8 jets (no selection performed on these)
 
     // Four std::vector
@@ -277,6 +286,8 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     std::vector<double> theJetParticleNetTvsQCD;
     std::vector<double> theJetParticleNetWvsQCD;
 
+    std::vector<double> theJetAK8chargedEmEnergyFraction;
+    std::vector<double> theJetAK8neutralEmEnergyFraction;
 
     double jetCharge;
     double theSoftDrop;
@@ -319,6 +330,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
       theJetAK8Phi   .push_back(corrak8.phi());
       theJetAK8Energy.push_back(corrak8.energy());
       theJetAK8Mass  .push_back(corrak8.mass());
+
+      theJetAK8chargedEmEnergyFraction.push_back(corrak8.chargedEmEnergyFraction());
+      theJetAK8neutralEmEnergyFraction.push_back(corrak8.neutralEmEnergyFraction());
 
       double theCHSPt = -std::numeric_limits<double>::max();
       double theCHSEta = -std::numeric_limits<double>::max();
@@ -643,7 +657,9 @@ int JetSubCalc::AnalyzeEvent(edm::Event const & event, BaseEventSelector * selec
     SetValue("theJetParticleNetTvsQCD",    theJetParticleNetTvsQCD);
     SetValue("theJetParticleNetWvsQCD",    theJetParticleNetWvsQCD);
 
-
+    SetValue("theJetAK8chargedEmEnergyFraction", theJetAK8chargedEmEnergyFraction);
+    SetValue("theJetAK8neutralEmEnergyFraction", theJetAK8neutralEmEnergyFraction);
+ 
     //////////////// TRUE HADRONIC W/Z/H/Top decays //////////////////
     std::vector<int>    HadronicVHtID;
     std::vector<int>    HadronicVHtStatus;
